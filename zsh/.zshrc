@@ -1,13 +1,11 @@
 # Dotfiles
-export DOTFILES=$HOME/.dotfiles
+export DOTFILES=$HOME/dotfiles
 
 # zsh related env
 ZSH=$DOTFILES/zsh
 
 # load zgen
 source $DOTFILES/zgen/zgen.zsh
-
-source $HOME/.profile
 
 # adding path directory for custom scripts
 export PATH=$DOTFILES/bin:$PATH
@@ -30,7 +28,6 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/command-not-found
     zgen oh-my-zsh plugins/brew
     zgen oh-my-zsh plugins/brew-cask
-    zgen oh-my-zsh plugins/mvn
     zgen oh-my-zsh plugins/bower
     zgen oh-my-zsh plugins/heroku
     zgen oh-my-zsh plugins/npm
@@ -43,8 +40,8 @@ if ! zgen saved; then
 
     # other plugins
     zgen load zsh-users/zsh-syntax-highlighting
-    zgen load tmuxinator/tmuxinator
-    zgen load jimeh/tmuxifier
+    zgen load tmuxinator/tmuxinator completion
+    zgen load jimeh/tmuxifier completion
     zgen load github/hub etc
 
     # local plugins
@@ -71,4 +68,7 @@ fi
 export BASE16_SHELL="$DOTFILES/.config/base16-shell/$THEME.$BACKGROUND.sh"
 # [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 source $BASE16_SHELL
+
+# source localrc
+source $HOME/.localrc
 
