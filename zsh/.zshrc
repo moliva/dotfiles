@@ -22,6 +22,9 @@ if ! zgen saved; then
 
     zgen oh-my-zsh
 
+    # autouptdate for zgen
+    zgen load unixorn/autoupdate-zgen
+
     # plugins from oh-my-zsh
     zgen oh-my-zsh plugins/git
     zgen oh-my-zsh plugins/sudo
