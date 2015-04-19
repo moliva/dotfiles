@@ -3,7 +3,6 @@ export DOTFILES=$HOME/.dotfiles
 
 # zsh related env
 ZSH=$DOTFILES/zsh
-ZSH_PLUGINS=moliva/dotfiles
 
 # load zgen
 source $DOTFILES/zgen/zgen.zsh
@@ -49,7 +48,7 @@ if ! zgen saved; then
     zgen load github/hub etc
 
     # local plugins
-    #zgen load $ZSH_PLUGINS zsh/plugins
+    zgen load $DOTFILES zsh/plugins
 
     # completions
     zgen load zsh-users/zsh-completions src
