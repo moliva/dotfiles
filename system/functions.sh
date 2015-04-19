@@ -27,3 +27,19 @@ function extract () {
    echo "'$1' is not a valid file to extract"
  fi
 }
+
+function findfileswith() {
+	find . -name $1 -print | xargs grep $2
+}
+
+# autoload function for help
+autoload run-help
+
+# Vim related
+# TODO: should use vundle instead
+function installvimplugin() {
+	local current=`pwd`
+	cd $HOME/.vim/bundle
+	git clone $1
+	cd $current
+}
