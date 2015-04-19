@@ -73,6 +73,8 @@ alias lgrep="l | grep $1"
 alias cpwd="pwd | ccopy"
 
 # Git aliases
+alias git=hub
+
 alias gpull="git pull --rebase"
 alias gpush="git push origin HEAD"
 alias gstashedpull="git stash; git pull --rebase; git stash pop"
