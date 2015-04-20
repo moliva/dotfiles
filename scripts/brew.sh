@@ -11,6 +11,8 @@ brew install tree
 brew install wget
 
 # development server setup
+brew install docker
+brew install boot2docker
 #brew install nginx
 #brew install dnsmasq
 
