@@ -70,5 +70,5 @@ export BASE16_SHELL="$DOTFILES/.config/base16-shell/$THEME.$BACKGROUND.sh"
 source $BASE16_SHELL
 
 # source localrc
-source $HOME/.localrc
+[ -f $HOME/.localrc ] && source $HOME/.localrc
 
