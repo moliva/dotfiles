@@ -4,14 +4,14 @@ export DOTFILES=$HOME/dotfiles
 # zsh related env
 ZSH=$DOTFILES/zsh
 
-# load zgen
-source $DOTFILES/zgen/zgen.zsh
-
 # adding path directory for custom scripts
 export PATH=$DOTFILES/bin:$PATH
 
 # load all sh system config files
 for config ($DOTFILES/system/*.sh) source $config
+
+# load zgen
+source $DOTFILES/zgen/zgen.zsh
 
 # check if there's no init script
 if ! zgen saved; then
@@ -20,7 +20,7 @@ if ! zgen saved; then
     zgen oh-my-zsh
 
     # autouptdate for zgen
-    zgen load unixorn/autoupdate-zgen
+    # zgen load unixorn/autoupdate-zgen
 
     # plugins from oh-my-zsh
     zgen oh-my-zsh plugins/git
@@ -65,9 +65,8 @@ if [ -z "$BACKGROUND" ]; then
     export BACKGROUND="dark"
 fi
 
-export BASE16_SHELL="$DOTFILES/.config/base16-shell/$THEME.$BACKGROUND.sh"
-# [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
-source $BASE16_SHELL
+BASE16_SHELL="$DOTFILES/.config/base16-shell/$THEME.$BACKGROUND.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 # source localrc
 [ -f $HOME/.localrc ] && source $HOME/.localrc

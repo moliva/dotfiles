@@ -1,6 +1,8 @@
 # Example aliases
-alias zshconfig="vim ~/.zshrc"
+alias zshconfig="edit ~/.zshrc"
 alias zshreload='source ~/.zshrc'
+
+alias vimconfig="edit ~/.vimrc"
 
 alias l='ls -l -a -h'
 

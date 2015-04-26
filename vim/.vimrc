@@ -117,6 +117,8 @@ if has("autocmd")
     \   exe "normal! g`\"" |
     \ endif
 
+  au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
+
   augroup END
 
 else
@@ -153,6 +155,15 @@ set laststatus=2 " show the satus line all the time
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" add a blank line without entering in insert mode
+nnoremap <leader>o :set paste<CR>m`o<Esc>``:set nopaste<CR>
+nnoremap <leader>r :<C-U>exe "normal " . v:count1 . "o"<CR>
+nnoremap <leader>R :<C-U>exe "normal " . v:count1 . "O"<CR>
+nnoremap <leader>O :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
+" append to end of file
+nmap <leader>A GA
 
 " remove extra whitespace
 nmap <leader><space> :%s/\s\+$<cr>
