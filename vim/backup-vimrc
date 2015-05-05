@@ -175,8 +175,7 @@ map <leader>eg :e! ~/.gitconfig<cr>
 noremap <space> :set hlsearch! hlsearch?<cr>
 
 " activate spell-checking alternatives
-nmap ;s :set invspell spelllang=es<cr>
-nmap ;e :set invspell spelllang=en<cr>
+nmap ;s :set invspell spelllang=en<cr>
 
 set showbreak=↪
 nmap <leader>l :set list!<cr>
@@ -252,3 +251,4 @@ nmap <leader>s :SyntasticToggleMode<cr>
 " search the nearest ancestor that contains .git, .hg, .svn
 let g:ctrlp_working_path_mode = 2
 
+" last comment :)
