@@ -177,6 +177,7 @@ noremap <space> :set hlsearch! hlsearch?<cr>
 " activate spell-checking alternatives
 nmap ;s :set invspell spelllang=es<cr>
 nmap ;e :set invspell spelllang=en<cr>
+nmap ;f :set invspell spelllang=fr<cr>
 
 set showbreak=↪
 nmap <leader>l :set list!<cr>

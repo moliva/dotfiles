@@ -9,6 +9,7 @@ brew tap caskroom/versions
 brew install ack
 brew install tree
 brew install wget
+brew install pstree
 
 # development server setup
 brew install docker
