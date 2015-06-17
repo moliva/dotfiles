@@ -36,6 +36,7 @@ brew install gradle
 brew install leiningen
 brew install ghc
 brew install cabal-install
+brew install heroku-toolbelt
 
 # gitsh
 brew tap thoughtbot/formulae
