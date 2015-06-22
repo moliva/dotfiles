@@ -118,6 +118,7 @@ if has("autocmd")
     \ endif
 
   au BufRead,BufNewFile *.txt,*.tex set wrap linebreak nolist textwidth=0 wrapmargin=0
+  au BufNewFile,BufRead *.cljc set filetype=clojure
 
   augroup END
 
