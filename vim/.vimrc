@@ -163,6 +163,14 @@ nnoremap <leader>r :<C-U>exe "normal " . v:count1 . "o"<CR>
 nnoremap <leader>R :<C-U>exe "normal " . v:count1 . "O"<CR>
 nnoremap <leader>O :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
+" go to last word's last character
+nnoremap <leader>b be
+
+nnoremap ,<tab> <C-V><tab>
+
+" insert spaces in normal mode
+nnoremap <space> i<space><esc>
+
 " append to end of file
 nmap <leader>A GA
 
