@@ -5,6 +5,9 @@ brew tap caskroom/cask
 brew install brew-cask
 brew tap caskroom/versions
 
+# gem
+brew install brew-gem
+
 # cli tools
 brew install ack
 brew install tree
@@ -41,6 +44,9 @@ brew install heroku-toolbelt
 # gitsh
 brew tap thoughtbot/formulae
 brew install gitsh
+
+# gems
+brew gem install tmuxinator
 
 # some gui apps
 brew cask install alfred
