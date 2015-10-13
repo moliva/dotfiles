@@ -11,3 +11,4 @@ skype
 add lns (zsh, tmux)
 add powerline fonts (powerline/fonts + install.sh)
 add :PluginInstall for VIM
+add tmuxinator (sudo? gem install tmuxinator)
