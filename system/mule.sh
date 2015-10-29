@@ -15,5 +15,4 @@ function installmuleapp() {
 }
 
 export MULE_HOME=/Applications/mule-enterprise-standalone-3.3.2
-export MULE_TOOLING="$WS_HOME/Mule-Tooling"
 
