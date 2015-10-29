@@ -8,7 +8,7 @@ configure zsh as the default shell http://zanshin.net/2013/09/03/how-to-use-home
 chrome
 keycastr
 skype
-add lns (zsh, tmux)
+add lns (zsh [.zshrc], tmux [.tmux.conf .tmuxtheme.sh], tmuxinator [.tmuxinator], vim [.vimrc])
 add powerline fonts (powerline/fonts + install.sh)
 add :PluginInstall for VIM
 add tmuxinator (sudo? gem install tmuxinator)
