@@ -1,5 +1,3 @@
-# Studio aliases
-# WS_HOME=$HOME/repos
 MULE_TOOLING_DEFAULT=mule-tooling
 
 export MULE_TOOLING=$WS_HOME/$MULE_TOOLING_DEFAULT
@@ -11,10 +9,10 @@ PATH_TO_PRODUCT=org.mule.tooling.products/org.mule.tooling.studio.product/target
 
 function __studioproductpathfromcontext {
 	if [ -z $1 ]; then return 1; else
-	       	if [ $1 = "/" ]; then return 1; else
+	       	if [ $1 = "/" ]; then __path="Error trying to find path from this context"; else
 			if [ -d "$1/$PATH_TO_PRODUCT" ]; then __path=$1; else 
 				__dir=$(dirname $1)
-				__path=$(studioproductpathfromcontext $__dir)
+				__path=$(__studioproductpathfromcontext $__dir)
 			fi
 		fi
 	fi
