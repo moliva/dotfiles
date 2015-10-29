@@ -35,11 +35,3 @@ function findfileswith() {
 # autoload function for help
 autoload run-help
 
-# Vim related
-# TODO: should use vundle instead
-function installvimplugin() {
-	local current=`pwd`
-	cd $HOME/.vim/bundle
-	git clone $1
-	cd $current
-}
