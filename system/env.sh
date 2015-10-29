@@ -1,6 +1,9 @@
 # Make vim the default editor.
 export EDITOR='vim';
 
+# Set env for workspace
+export WS_HOME=$HOME/repos
+
 # Increase Bash history size. Allow 32³ entries; the default is 500.
 export HISTSIZE='32768';
 export HISTFILESIZE="${HISTSIZE}";
