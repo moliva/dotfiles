@@ -1,14 +1,29 @@
 # Studio aliases
+# WS_HOME=$HOME/repos
 MULE_TOOLING_DEFAULT=mule-tooling
+
 export MULE_TOOLING=$WS_HOME/$MULE_TOOLING_DEFAULT
 
 STUDIO_EXEC_NAME=AnypointStudio
 STUDIO_BUILD_PATH=$MULE_TOOLING/$PATH_TO_PRODUCT
 
+PATH_TO_PRODUCT=org.mule.tooling.products/org.mule.tooling.studio.product/target/products/studio.product/macosx/cocoa/x86_64/AnypointStudio
+
+function __studioproductpathfromcontext {
+	if [ -z $1 ]; then return 1; else
+	       	if [ $1 = "/" ]; then return 1; else
+			if [ -d "$1/$PATH_TO_PRODUCT" ]; then __path=$1; else 
+				__dir=$(dirname $1)
+				__path=$(studioproductpathfromcontext $__dir)
+			fi
+		fi
+	fi
+	echo $__path
+}
+
 function studioproductpath {
-	if [ -z $1 ]; then REPO_NAME=$MULE_TOOLING_DEFAULT; else REPO_NAME=$1; fi
-	local PATH_TO_PRODUCT=org.mule.tooling.products/org.mule.tooling.studio.product/target/products/studio.product/macosx/cocoa/x86_64/AnypointStudio
-	echo $WS_HOME/$REPO_NAME/$PATH_TO_PRODUCT
+	if [ -z $1 ]; then REPO_NAME=$(__studioproductpathfromcontext `pwd`); else REPO_NAME=$WS_HOME/$1; fi
+	echo $REPO_NAME/$PATH_TO_PRODUCT
 }
 
 function studioproductini {
