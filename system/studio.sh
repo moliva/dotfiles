@@ -29,6 +29,11 @@ function studioproductini {
 	echo $PRODUCT_PATH/$STUDIO_EXEC_NAME.app/Contents/MacOS/$STUDIO_EXEC_NAME.ini
 }
 
+function editstudioproductini {
+	local ini_file=$(studioproductini $1)
+	edit $ini_file
+}
+
 function openstudio {
 	local PRODUCT_PATH=$(studioproductpath $1)
 	open $PRODUCT_PATH/$STUDIO_EXEC_NAME
