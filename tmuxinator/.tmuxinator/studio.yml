@@ -32,8 +32,7 @@ windows:
   - tooling-2: cd repos/mule-tooling-2
   - tooling-3: cd repos/mule-tooling-3
   - utils: 
-    - layout: 2d63,204x48,0,0[204x14,0,0,3,204x33,0,15,4]
-    - panes:
-      - 
-      - 
-
+     layout: 2d63,204x48,0,0[204x14,0,0,3,204x33,0,15,4]
+     panes:
+       - # console
+       - # console
