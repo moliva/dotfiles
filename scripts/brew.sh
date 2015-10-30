@@ -48,13 +48,24 @@ brew install gitsh
 # gems
 brew gem install tmuxinator
 
-# some gui apps
+# production apps
 brew cask install alfred
+brew cask install sizeup
+brew cask install caffeine
+
+# some gui apps
 brew cask install virtualbox
-brew cask install sage
+#brew cask install sage
+brew cask install utorrent
+brew cask install skype
+brew cask install calibre
+brew cask install xee
+brew cask install keycastr
+brew cask install adobe-reader
 
 # file syncing
 brew cask install dropbox
+brew cask install evernote
 
 # browsers
 brew cask install firefox
@@ -63,7 +74,7 @@ brew cask install google-chrome
 # editors
 brew cask install atom
 brew cask install sublime-text3
-brew cask install lighttable
+#brew cask install lighttable
 
 # media players
 brew cask install vlc
