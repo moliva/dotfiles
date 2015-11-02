@@ -9,4 +9,4 @@
 	url = https://github.com/tmux-plugins/tpm
 [submodule "system/studio"]
 	path = system/studio
-	url = git://github.com/moliva/studio-functions.git
+	url = https://github.com/moliva/studio-functions.git
