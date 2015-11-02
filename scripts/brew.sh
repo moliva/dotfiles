@@ -20,7 +20,7 @@ brew install boot2docker
 #brew install nginx
 #brew install dnsmasq
 
-# development tools
+# development tools + utils
 brew install git
 brew install hub
 #brew install macvim --override-system-vim
@@ -48,12 +48,12 @@ brew install gitsh
 # gems
 brew gem install tmuxinator
 
-# production apps
+# production gui apps
 brew cask install alfred
 brew cask install sizeup
 brew cask install caffeine
 
-# some gui apps
+# some gui apps + utils
 brew cask install virtualbox
 #brew cask install sage
 brew cask install utorrent
@@ -62,6 +62,7 @@ brew cask install calibre
 brew cask install xee
 brew cask install keycastr
 brew cask install adobe-reader
+brew cask install tuxera-ntfs
 
 # file syncing
 brew cask install dropbox
