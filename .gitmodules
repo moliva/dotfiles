@@ -7,3 +7,6 @@
 [submodule "tmux/.tmux/plugins/tpm"]
 	path = tmux/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "system/studio"]
+	path = system/studio
+	url = git://github.com/moliva/studio-functions.git
