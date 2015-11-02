@@ -8,7 +8,7 @@ ZSH=$DOTFILES/zsh
 export PATH=$DOTFILES/bin:$PATH
 
 # load all sh system config files
-for config ($DOTFILES/system/*.sh) source $config
+for config ($DOTFILES/system/**/*.sh) source $config
 
 # load zgen
 source $DOTFILES/zgen/zgen.zsh
