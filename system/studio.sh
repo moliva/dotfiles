@@ -1,11 +1,6 @@
-MULE_TOOLING_DEFAULT=mule-tooling
-
-export MULE_TOOLING=$WS_HOME/$MULE_TOOLING_DEFAULT
-
-STUDIO_EXEC_NAME=AnypointStudio
-STUDIO_BUILD_PATH=$MULE_TOOLING/$PATH_TO_PRODUCT
 
 PATH_TO_PRODUCT=org.mule.tooling.products/org.mule.tooling.studio.product/target/products/studio.product/macosx/cocoa/x86_64/AnypointStudio
+STUDIO_EXEC_NAME=AnypointStudio
 
 function __studioproductpathfromcontext {
 	if [ -z $1 ]; then return 1; else
