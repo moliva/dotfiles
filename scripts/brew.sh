@@ -62,11 +62,12 @@ brew cask install calibre
 brew cask install xee
 brew cask install keycastr
 brew cask install adobe-reader
-brew cask install tuxera-ntfs
 
 # file syncing
 brew cask install dropbox
 brew cask install evernote
+brew cask install tuxera-ntfs
+brew cask install android-file-transfer
 
 # browsers
 brew cask install firefox
