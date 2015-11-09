@@ -68,6 +68,7 @@ brew cask install dropbox
 brew cask install evernote
 brew cask install tuxera-ntfs
 brew cask install android-file-transfer
+brew cask install filezilla
 
 # browsers
 brew cask install firefox
