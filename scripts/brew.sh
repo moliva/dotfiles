@@ -62,8 +62,8 @@ brew cask install calibre
 brew cask install xee
 brew cask install keycastr
 brew cask install adobe-reader
-brew cask install tuxera-ntfs
 brew cask install vagrant
+brew cask install unrarx
 
 # file syncing
 brew cask install dropbox
