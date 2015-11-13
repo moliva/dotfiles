@@ -41,8 +41,9 @@ if ! zgen saved; then
     # other plugins
     zgen load zsh-users/zsh-syntax-highlighting
     zgen load tmuxinator/tmuxinator completion
-    zgen load jimeh/tmuxifier completion
+    # zgen load jimeh/tmuxifier completion
     zgen load github/hub etc
+    zgen load akoenig/gulp.plugin.zsh
 
     # local plugins
     zgen load $DOTFILES zsh/plugins
