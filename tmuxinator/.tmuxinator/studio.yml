@@ -33,7 +33,8 @@ windows:
   - tooling-3: cd repos/mule-tooling-3
   - tooling-4: cd repos/mule-tooling-4
   - utils: 
-     layout: 2d63,204x48,0,0[204x14,0,0,3,204x33,0,15,4]
+     layout: 47bc,204x48,0,0[204x14,0,0,4,204x33,0,15{102x33,0,15,5,101x33,103,15,6}]
      panes:
-       - # console
-       - # console
+       - cd $DOTFILES # console
+       - cd $DOTFILES # console
+       - cd $DOTFILES # console
