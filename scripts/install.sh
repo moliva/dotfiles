@@ -58,7 +58,7 @@ if [ "$(uname)" == "Darwin" ]; then
     success "NPM tools installed"
 
     info "installing VIm plugins"
-    vim +PluginInstall +qall
+    source scripts/vim-install.sh
     success "VIm plugins installed"
 
     source scripts/symlink.sh
