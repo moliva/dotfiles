@@ -7,4 +7,3 @@
 # left to do
 - add lns (zsh [.zshrc], tmux [.tmux.conf .tmuxtheme.sh], tmuxinator [.tmuxinator], vim [.vimrc])
 - add powerline fonts (powerline/fonts + install.sh)
-- add :PluginInstall for VIM

@@ -5,8 +5,6 @@ echo "installing dotfiles"
 echo "initializing submodule(s)"
 git submodule update --init --recursive
 
-source install/link.sh
-
 if [ "$(uname)" == "Darwin" ]; then
     echo "running on OSX"
 
@@ -25,6 +23,9 @@ if [ "$(uname)" == "Darwin" ]; then
 
     echo "installing node tools (from npm)"
     source scripts/npm.sh
+
+    echo "installing VIm plugins"
+    vim +PluginInstall +qall
 fi
 
 echo "configuring zsh as default shell"
