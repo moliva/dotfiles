@@ -1,12 +1,12 @@
 [submodule "zgen"]
 	path = zgen
 	url = git@github.com:tarjoilija/zgen.git
-[submodule ".config/base16-shell"]
-	path = .config/base16-shell
+[submodule "themes.symlink/base16-shell"]
+	path = themes.symlink/base16-shell
 	url = git@github.com:chriskempson/base16-shell.git
 [submodule "tmux/.tmux/plugins/tpm"]
 	path = tmux/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
 [submodule "system/studio"]
 	path = system/studio
-	url = https://github.com/moliva/studio-functions.git
+	url = https://github.com/moliva/studio-utils.git
