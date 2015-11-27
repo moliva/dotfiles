@@ -1,6 +1,32 @@
 #!/bin/bash
 
-source scripts/echoing-functions.sh
+info () {
+  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+}
+
+user () {
+  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+}
+
+success () {
+  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+}
+
+fail () {
+  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
+  echo ''
+  exit
+}
+
+ORIGINAL_DIR=$(pwd -P)
+
+REPO_LOCATION=https://github.com/moliva/dotfiles.git
+DOTFILES=$HOME/dotfiles
+
+info "cloning dotfiles into home"
+cd $HOME
+git clone $REPO_LOCATION $DOTFILES
+cd $DOTFILES
 
 info "installing dotfiles"
 
@@ -41,4 +67,7 @@ fi
 info "configuring zsh as default shell"
 chsh -s $(which zsh)
 
-sucess "installed dotfiles"
+success "installed dotfiles"
+
+cd $ORIGINAL_DIR
+env zsh
