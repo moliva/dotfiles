@@ -19,9 +19,12 @@ if [ "$(uname)" == "Darwin" ]; then
     echo "updating OSX settings"
     source scripts/osx.sh
 
-    echo "installing node (from nvm)"
+    echo "installing node + npm (from nvm)"
     nvm install stable
     nvm alias default stable
+
+    echo "installing node tools (from npm)"
+    source scripts/npm.sh
 fi
 
 echo "configuring zsh as default shell"
