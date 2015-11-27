@@ -1,14 +1,10 @@
 # dotfiles
-install input mono (http://input.fontbureau.com/download)
-run install.sh
-configure zsh as the default shell http://zanshin.net/2013/09/03/how-to-use-homebrew-zsh-instead-of-max-os-x-default/
+- install input mono (http://input.fontbureau.com/download)
+- run install.sh
+- configure zsh as the default shell http://zanshin.net/2013/09/03/how-to-use-homebrew-zsh-instead-of-max-os-x-default/
 
 
 # left to do
-chrome
-keycastr
-skype
-add lns (zsh [.zshrc], tmux [.tmux.conf .tmuxtheme.sh], tmuxinator [.tmuxinator], vim [.vimrc])
-add powerline fonts (powerline/fonts + install.sh)
-add :PluginInstall for VIM
-add tmuxinator (sudo? gem install tmuxinator)
+- add lns (zsh [.zshrc], tmux [.tmux.conf .tmuxtheme.sh], tmuxinator [.tmuxinator], vim [.vimrc])
+- add powerline fonts (powerline/fonts + install.sh)
+- add :PluginInstall for VIM

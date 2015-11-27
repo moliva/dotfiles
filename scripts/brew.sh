@@ -35,7 +35,6 @@ brew install fasd
 # building tools
 brew install nvm
 # brew install npm # use nvm to install node
-nvm install node
 brew install maven
 brew install gradle
 brew install leiningen
