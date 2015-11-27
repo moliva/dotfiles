@@ -43,8 +43,8 @@ brew install cabal-install
 brew install heroku-toolbelt
 
 # gitsh
-brew tap thoughtbot/formulae
-brew install gitsh
+# brew tap thoughtbot/formulae
+# brew install gitsh
 
 # gems
 brew gem install tmuxinator
