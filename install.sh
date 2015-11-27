@@ -1,32 +1,44 @@
 #!/bin/bash
 
-echo "installing dotfiles"
+source scripts/echoing-functions.sh
 
-echo "initializing submodule(s)"
+info "installing dotfiles"
+
+info "initializing submodule(s)"
 git submodule update --init --recursive
 
 if [ "$(uname)" == "Darwin" ]; then
-    echo "running on OSX"
+    info "running on OSX"
 
-    echo "installing homebrew"
+    info "installing homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    success "homebrew installed"
 
-    echo "brewing all the things"
+    info "brewing all the things"
     source scripts/brew.sh
+    success "hombrew deps installed"
 
-    echo "updating OSX settings"
+    info "updating OSX settings"
     source scripts/osx.sh
+    success "OSX settings set"
 
-    echo "installing node + npm (from nvm)"
+    info "installing node + npm (from nvm)"
     nvm install stable
     nvm alias default stable
+    success "node + npm installed"
 
-    echo "installing node tools (from npm)"
+    info "installing node tools (from npm)"
     source scripts/npm.sh
+    success "NPM tools installed"
 
-    echo "installing VIm plugins"
+    info "installing VIm plugins"
     vim +PluginInstall +qall
+    success "VIm plugins installed"
+
+    source scripts/symlink.sh
 fi
 
-echo "configuring zsh as default shell"
+info "configuring zsh as default shell"
 chsh -s $(which zsh)
+
+sucess "installed dotfiles"
