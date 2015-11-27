@@ -10,9 +10,9 @@ set -e
 echo ''
 
 setup_gitconfig () {
-  if ! [ -f git/gitconfig.symlink ]
+  if ! [ -f "$HOME/.gitconfig.local" ]
   then
-    info 'setup gitconfig'
+    info 'setup gitconfig local'
 
     git_credential='cache'
     if [ "$(uname -s)" == "Darwin" ]
@@ -25,9 +25,12 @@ setup_gitconfig () {
     user ' - What is your github author email?'
     read -e git_authoremail
 
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.symlink.example > git/gitconfig.symlink
+    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e
+    "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.example > $HOME/.gitconfig.local
 
-    success 'gitconfig'
+    success 'gitconfig local'
+  else
+    info 'gitconfig local already configured'
   fi
 }
 
@@ -121,6 +124,6 @@ create_symlinks () {
   success 'all symlinks created!'
 }
 
-#setup_gitconfig
+setup_gitconfig
 create_symlinks
 

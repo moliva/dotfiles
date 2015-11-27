@@ -1,0 +1,8 @@
+# common git config
+
+[url "https://github.com"]
+	insteadOf = git://github.com
+[color "status"]
+	untracked = cyan
+[include]
+	path = ~/.gitconfig.local
