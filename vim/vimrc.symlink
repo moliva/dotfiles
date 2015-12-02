@@ -41,7 +41,7 @@ Plugin 'vim-scripts/paredit.vim'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'msanders/snipmate.vim'
 Plugin 'ervandew/supertab'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic' " slow when saving bash files :(
 Plugin 'godlygeek/tabular'
 Plugin 'timcharper/textile.vim'
 Plugin 'tomtom/tlib_vim'
@@ -61,10 +61,10 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'reedes/vim-lexical'
 Plugin 'tpope/vim-markdown'
 Plugin 'jceb/vim-orgmode'
-Plugin 'tpope/vim-rails'
+"Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-repeat'
 Plugin 'vim-ruby/vim-ruby'
-Plugin 'astashov/vim-ruby-debugger'
+"Plugin 'astashov/vim-ruby-debugger'
 Plugin 'tsaleh/vim-shoulda'
 Plugin 'tpope/vim-surround'
 Plugin 'tmux-plugins/vim-tmux'
@@ -87,7 +87,7 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 " Emmet 
-let g:user_emmet_mode='a'    "enable all function in all mode.
+"let g:user_emmet_mode='a'    "enable all function in all mode.
 
 set number
 set relativenumber

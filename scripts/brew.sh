@@ -43,8 +43,7 @@ brew install cabal-install
 brew install heroku-toolbelt
 
 # other dev tools
-brew cask install mongodb
-brew cask install vagrant
+brew install mongodb
 
 # gitsh
 # brew tap thoughtbot/formulae
@@ -58,14 +57,17 @@ brew cask install alfred
 brew cask install sizeup
 brew cask install caffeine
 
-# some gui apps + utils
-brew cask install virtualbox
+# other dev gui tools
+brew cask install vagrant
 #brew cask install sage
+brew cask install virtualbox
+
+# some gui apps + utils
+brew cask install keycastr
 brew cask install utorrent
 brew cask install skype
 brew cask install calibre
 brew cask install xee
-brew cask install keycastr
 brew cask install adobe-reader
 brew cask install unrarx
 
