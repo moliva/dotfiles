@@ -16,7 +16,7 @@ alias gustash="git stash save --include-untracked"
 alias glstash="git stash list | cat"
 alias gpstash="git stash pop"
 
-alias glasthash='git log -n 1 --pretty=format:"%H" && ccopy | echo `git log -n 1 --pretty=format:"%H"`'
+alias glasthash='git log -n 1 --pretty=format:"%H" | ccopy &&  echo `git log -n 1 --pretty=format:"%H"`'
 alias glastdiff="git diff HEAD~1 HEAD"
 alias glean="git checkout -- . && git clean -f"
 
