@@ -42,6 +42,10 @@ brew install ghc
 brew install cabal-install
 brew install heroku-toolbelt
 
+# other dev tools
+brew cask install mongodb
+brew cask install vagrant
+
 # gitsh
 # brew tap thoughtbot/formulae
 # brew install gitsh
@@ -63,7 +67,6 @@ brew cask install calibre
 brew cask install xee
 brew cask install keycastr
 brew cask install adobe-reader
-brew cask install vagrant
 brew cask install unrarx
 
 # file syncing
