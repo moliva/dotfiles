@@ -8,13 +8,29 @@
 
 # present menu for user to choose which workspace to open
 PS3="Please choose your session: "
-options=($(tmux list-sessions -F "#S") "New Session" "zsh")
+
+options=($(tmux list-sessions -F "#S") "tmuxinator projects" "New Session" "zsh")
 echo "Available sessions"
 echo "------------------"
-echo " "
 select opt in "${options[@]}"
 do
 	case $opt in
+		"tmuxinator projects")
+			projects=($(mux list | sed -e "/^tmuxinator projects:$/d"))
+			echo "Available projects"
+			echo "------------------"
+			PS3="Please choose your project: "
+			select project in "${projects[@]}"
+			do
+				case $project in
+					*)
+						mux $project
+					break
+					;;
+				esac
+			done
+			break
+			;;
 		"New Session")
 			read -p "Enter new session name: " SESSION_NAME
 			tmux new -s "$SESSION_NAME"
