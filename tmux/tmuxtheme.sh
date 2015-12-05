@@ -1,10 +1,10 @@
 #### COLOUR
 
-tm_icon="♟"
-tm_color_active=colour213
+tm_icon="⚡"
+tm_color_active=colour214
 tm_color_inactive=colour241
-tm_color_feature=colour4
-tm_color_music=colour203
+tm_color_feature=colour209
+tm_color_music=colour158
 
 # separators
 tm_separator_left_bold="◀"
@@ -25,12 +25,12 @@ set-option -g status-attr default
 # default window title colors
 set-window-option -g window-status-fg $tm_color_inactive
 set-window-option -g window-status-bg default
-set -g window-status-format "#I #W"
+set -g window-status-format "#I‣#W"
 
 # active window title colors
 set-window-option -g window-status-current-fg $tm_color_active
 set-window-option -g window-status-current-bg default
-set-window-option -g  window-status-current-format "#[bold]#I #W"
+set-window-option -g window-status-current-format "#[bold]#I‣#W"
 
 # pane border
 set-option -g pane-border-fg $tm_color_inactive
@@ -55,5 +55,5 @@ tm_date="#[fg=$tm_color_inactive] %R %d %b"
 tm_host="#[fg=$tm_color_feature,bold]#h"
 tm_session_name="#[fg=$tm_color_feature,bold]$tm_icon #S"
 
-set -g status-left $tm_session_name
+set -g status-left $tm_session_name' '
 set -g status-right $tm_itunes' '$tm_spotify' '$tm_date' '$tm_host' '$tm_battery
