@@ -42,6 +42,10 @@ brew install ghc
 brew install cabal-install
 brew install heroku-toolbelt
 
+# installing joe for gitignores
+brew tap karan/karan
+brew install gitignore
+
 # other dev tools
 brew install mongodb
 
