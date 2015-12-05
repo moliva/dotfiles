@@ -36,6 +36,15 @@ git submodule update --init --recursive
 if [ "$(uname)" == "Darwin" ]; then
     info "running on OSX"
 
+    # creating tmp dir for installation
+    local TMP_DIR="~/.tmpdotfilesinstallation"
+    mkdir -p TMP_DIR
+
+    info "installing powerline fonts"
+    git clone https://github.com/powerline/fonts.git $TMP_DIR/powerlinefonts
+    sh $TMP_DIR/powerlinefonts/install.sh
+    success "powerline fonts installed"
+
     info "installing homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     success "homebrew installed"
@@ -62,6 +71,9 @@ if [ "$(uname)" == "Darwin" ]; then
     success "VIm plugins installed"
 
     source scripts/symlink.sh
+
+    # deleting tmp dir
+    rm -fr $TMP_DIR
 fi
 
 info "configuring zsh as default shell"
