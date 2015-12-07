@@ -56,6 +56,10 @@ brew install mongodb
 # gems
 brew gem install tmuxinator
 
+# fonts
+brew tap caskroom/fonts 
+brew cask install font-meslo-lg-for-powerline
+
 # production gui apps
 brew cask install alfred
 brew cask install sizeup
