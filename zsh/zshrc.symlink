@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 #PS4='+ $(date)\011 '
 #exec 3>&2 2>~/bashstart.$$.log
 #set -x
@@ -85,11 +87,17 @@ if ! zgen saved; then
 fi
 
 # Base16 Shell
-export THEME="base16-harmonic16"
-export BACKGROUND="dark"
+if [ -z "$THEME" ]; then
+	export THEME="base16-harmonic16"
+fi
+if [ -z "$BACKGROUND" ]; then
+	export BACKGROUND="dark"
+fi
 
-BASE16_SHELL="$HOME/.themes/base16-shell/$THEME.$BACKGROUND.sh"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+if [ -z "$BASE16_SHELL" ]; then # if base16 is already working, don't source it again
+	BASE16_SHELL="$HOME/.themes/base16-shell/$THEME.$BACKGROUND.sh"
+	[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+fi
 
 # load all sh system config files
 for config ($DOTFILES/system/**/*.sh) source $config
