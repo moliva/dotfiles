@@ -72,6 +72,7 @@ if [ "$(uname)" == "Darwin" ]; then
     success "VIm plugins installed"
 
     source scripts/symlink.sh
+    source scripts/iterm2-preferences.sh
 
     # deleting tmp dir
     rm -fr $TMP_DIR
