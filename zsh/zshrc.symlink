@@ -1,11 +1,12 @@
+#PS4='+ $(date)\011 '
+#exec 3>&2 2>~/bashstart.$$.log
+#set -x
+
 # Dotfiles
 export DOTFILES=$HOME/dotfiles
 
 # adding path directory for custom scripts
 export PATH=$DOTFILES/bin:$PATH
-
-# load all sh system config files
-for config ($DOTFILES/system/**/*.sh) source $config
 
 # load zgen
 source $DOTFILES/zgen/zgen.zsh
@@ -19,34 +20,62 @@ if ! zgen saved; then
     # autouptdate for zgen
     # zgen load unixorn/autoupdate-zgen
 
-    # plugins from oh-my-zsh
-    zgen oh-my-zsh plugins/git
+    # common plugins
     zgen oh-my-zsh plugins/sudo
     zgen oh-my-zsh plugins/command-not-found
+    zgen load zsh-users/zsh-completions src/_ack
+    zgen load zsh-users/zsh-completions src/_ps
+    zgen load zsh-users/zsh-completions src/_watch
+    zgen load zsh-users/zsh-syntax-highlighting
+
+    # zgen oh-my-zsh plugins/tmux
+    zgen load zsh-users/zsh-completions src/_tmuxinator
+    # zgen load tmuxinator/tmuxinator completion # using the completion from zsh-users
+    # zgen load jimeh/tmuxifier completion
+
+    # osx pugins
     zgen oh-my-zsh plugins/brew
     zgen oh-my-zsh plugins/brew-cask
-    zgen oh-my-zsh plugins/bower
-    zgen oh-my-zsh plugins/heroku
-    zgen oh-my-zsh plugins/npm
-    zgen oh-my-zsh plugins/grunt
-    zgen oh-my-zsh plugins/gem
-    zgen oh-my-zsh plugins/sbt
-    zgen oh-my-zsh plugins/docker
-    zgen oh-my-zsh plugins/cabal
-    zgen oh-my-zsh plugins/lein
 
-    # other plugins
-    zgen load zsh-users/zsh-syntax-highlighting
-    zgen load tmuxinator/tmuxinator completion
-    # zgen load jimeh/tmuxifier completion
-    zgen load github/hub etc
+    # build tool plugins 
+    zgen oh-my-zsh plugins/git
+    zgen load github/hub etc/hub.zsh_completion
+    zgen load zsh-users/zsh-completions src/_gist
+    zgen oh-my-zsh plugins/heroku
+
+    # java world plugins
+    zgen load zsh-users/zsh-completions src/_gradle
+    zgen load zsh-users/zsh-completions src/_mvn
+
+    # js/node world plugins
+    zgen load zsh-users/zsh-completions src/_node
+    zgen load zsh-users/zsh-completions src/_nvm
+    zgen oh-my-zsh plugins/npm
+    zgen oh-my-zsh plugins/bower
+    # zgen load zsh-users/zsh-completions src/_bower # usign the one from oh-my-zsh
+    zgen oh-my-zsh plugins/grunt
     zgen load akoenig/gulp.plugin.zsh
+
+    # haskell world plugins
+    # zgen load zsh-users/zsh-completions src/_ghc
+    # zgen oh-my-zsh plugins/cabal
+
+    # other world plugins
+    # zgen oh-my-zsh plugins/gem
+    # zgen oh-my-zsh plugins/sbt
+    # zgen oh-my-zsh plugins/lein
+
+    # vm plugins
+    zgen oh-my-zsh plugins/docker
+    # zgen load zsh-users/zsh-completions src/_docker # using the one from oh-my-zsh
+    zgen load zsh-users/zsh-completions src/_boot2docker
+    zgen load zsh-users/zsh-completions src/_docker-compose
+    zgen load zsh-users/zsh-completions src/_docker-machine
+    zgen load zsh-users/zsh-completions src/_vagrant
+    zgen load zsh-users/zsh-completions src/_virtualbox
 
     # local plugins
     zgen load $DOTFILES zsh/plugins
-
-    # completions
-    zgen load zsh-users/zsh-completions src
 
     # theme
     zgen oh-my-zsh themes/robbyrussell
@@ -62,6 +91,11 @@ export BACKGROUND="dark"
 BASE16_SHELL="$HOME/.themes/base16-shell/$THEME.$BACKGROUND.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
+# load all sh system config files
+for config ($DOTFILES/system/**/*.sh) source $config
+
 # source localrc
 [ -f $HOME/.localrc ] && source $HOME/.localrc
 
+#set +x
+#exec 12>&3 3>&-
