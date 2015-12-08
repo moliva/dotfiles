@@ -8,3 +8,9 @@ function clastcommand() {
         echo $lastcommand | ccopy
 	echo "\"$lastcommand\" copied to clipboard!"
 }
+
+function listcolors() {
+	for i in {0..255} ; do    
+		printf "[38;5;${i}mcolour${i}\n"
+	done
+}
