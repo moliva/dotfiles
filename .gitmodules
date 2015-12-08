@@ -1,9 +1,6 @@
 [submodule "zgen"]
 	path = zgen
 	url = git@github.com:tarjoilija/zgen.git
-[submodule "themes.symlink/base16-shell"]
-	path = themes.symlink/base16-shell
-	url = git@github.com:chriskempson/base16-shell.git
 [submodule "system/studio"]
 	path = system/studio
 	url = https://github.com/moliva/studio-utils.git
