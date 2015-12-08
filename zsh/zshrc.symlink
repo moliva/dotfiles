@@ -10,12 +10,13 @@ export DOTFILES=$HOME/dotfiles
 # adding path directory for custom scripts
 export PATH=$DOTFILES/bin:$PATH
 
-# load zgen
-source $DOTFILES/zgen/zgen.zsh
-
 # check if there's no init script
-if ! zgen saved; then
+if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without sourcing all zgen :)
+# if ! zgen saved; then
     echo "Creating a zgen save"
+
+    # load zgen
+    source $DOTFILES/zgen/zgen.zsh
 
     zgen oh-my-zsh
 
