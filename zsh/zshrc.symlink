@@ -95,7 +95,7 @@ if [ -z "$BACKGROUND" ]; then
 fi
 
 if [ -z "$BASE16_SHELL" ]; then # if base16 is already working, don't source it again
-	BASE16_SHELL="$HOME/.themes/base16-shell/$THEME.$BACKGROUND.sh"
+	BASE16_SHELL="$DOTFILES/themes/base16-shell/$THEME.$BACKGROUND.sh"
 	[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 fi
 
