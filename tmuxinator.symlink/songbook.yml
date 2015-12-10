@@ -1,7 +1,7 @@
 # ~/.tmuxinator/songbook.yml
 
 name: songbook
-root: ~/repos/songbook-workspace/songbook
+root: <%= ENV["WS_HOME"] %>/songbook
 
 # Optional tmux socket
 # socket_name: foo
@@ -30,3 +30,4 @@ windows:
         - # console
   - db: # nothing to do here for now
   - logs: tail -f figwheel_server.log
+  - repl: lein repl
