@@ -13,6 +13,7 @@ brew install ack
 brew install tree
 brew install wget
 brew install pstree
+brew install ctags
 
 # development server setup
 brew install docker
@@ -31,6 +32,7 @@ brew install zsh
 brew install highlight
 #brew install z
 brew install fasd
+brew install shellcheck # linter for sh scripts
 
 # building tools
 brew install nvm
@@ -78,6 +80,7 @@ brew cask install calibre
 brew cask install xee
 brew cask install adobe-reader
 brew cask install unrarx
+brew cask install mucommander
 
 # file syncing
 brew cask install dropbox
