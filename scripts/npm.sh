@@ -18,3 +18,5 @@ npm install -g yo # yeoman
 npm install -g angular-generator 
 npm install -g express-generator
 npm install -g generator-zurb-ink # generator for zurb email inliner
+
+npm install -g js-beautify
