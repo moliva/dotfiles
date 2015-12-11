@@ -5,7 +5,7 @@ function manpdf() {
 }
 # Extra many types of compressed packages
 # Credit: http://nparikh.org/notes/zshrc.txt
-function extract () {
+function extract() {
   if [ -f $1 ]; then
     case $1 in
       *.tar.bz2) tar -jxvf $1 ;;
@@ -35,3 +35,18 @@ function findfileswith() {
 # autoload function for help
 autoload run-help
 
+function alert() {
+	osascript -e 'display notification "Studio has finished building :)" with title "Built finished!" sound name "default"'
+}
+
+function clastcommand() {
+	local lastcommand=$(fc -ln -1)
+        echo "$lastcommand" | ccopy
+	echo "\"$lastcommand\" copied to clipboard!"
+}
+
+function listcolors() {
+	for i in {0..255} ; do    
+		printf "[38;5;${i}mcolour${i}\n"
+	done
+}
