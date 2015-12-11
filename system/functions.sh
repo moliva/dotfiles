@@ -35,10 +35,6 @@ function findfileswith() {
 # autoload function for help
 autoload run-help
 
-function alert() {
-	osascript -e 'display notification "Studio has finished building :)" with title "Built finished!" sound name "default"'
-}
-
 function clastcommand() {
 	local lastcommand=$(fc -ln -1)
         echo "$lastcommand" | ccopy
