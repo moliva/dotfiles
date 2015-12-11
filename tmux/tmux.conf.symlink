@@ -113,6 +113,14 @@ bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
 bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer")
 
 ##############################
+### Plugin management ###
+##############################
+
+# resurrect vim + neovim
+set -g @resurrect-strategy-vim 'session'
+set -g @resurrect-strategy-nvim 'session'
+
+##############################
 ### Color & Style Settings ###
 ##############################
 
@@ -133,6 +141,11 @@ set -g @plugin 'tmux-plugins/tpm'
 # for better mouse management
 set -g @plugin 'nhdaly/tmux-scroll-copy-mode'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @plugin 'tmux-plugins/tmux-resurrect' # needs tpope/obsession.vim
+# set -g @plugin 'tmux-plugins/tmux-continuum'
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'

@@ -10,6 +10,7 @@ brew install brew-gem
 
 # cli tools
 brew install ack
+brew install gawk # for better tmux copycat support
 brew install tree
 brew install wget
 brew install pstree
