@@ -45,7 +45,7 @@ set-option -g message-fg $tm_color_active
 set-option -g display-panes-active-colour $tm_color_active
 set-option -g display-panes-colour $tm_color_inactive
 
-set-window-option -g mode-style-bg $tm_color_feature
+set-window-option -g mode-style bg=$tm_color_feature,fg=black
 
 # clock
 set-window-option -g clock-mode-colour $tm_color_active
