@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # cask
 brew tap caskroom/cask
@@ -29,15 +29,17 @@ brew install hub
 brew install vim --override-system-vim
 brew install reattach-to-user-namespace
 brew install tmux
+brew gem install tmuxinator
 brew install zsh
 brew install highlight
-#brew install z
+# brew install z
 brew install fasd
 brew install shellcheck # linter for sh scripts
 
 # building tools
 brew install nvm
 # brew install npm # use nvm to install node
+# brew install flow # javascript static analyzer
 brew install maven
 brew install gradle
 brew install leiningen
@@ -56,12 +58,9 @@ brew install mongodb
 # brew tap thoughtbot/formulae
 # brew install gitsh
 
-# gems
-brew gem install tmuxinator
-
 # fonts
 brew tap caskroom/fonts 
-brew cask install font-meslo-lg-for-powerline
+brew cask install font-meslo-lg-for-powerline # TODO - change for the same meslo with all font awesome icons for vim devicons support
 
 # production gui apps
 brew cask install alfred
