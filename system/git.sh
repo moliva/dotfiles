@@ -9,7 +9,7 @@ alias gcommit="git commit -m"
 alias gaddall="git add --all"
 alias gdiff="git diff"
 alias ghead="cat .git/HEAD" # TODO: would be cool to make this recursively
-alias gammit="gaddall; gcommit"
+alias gammit="gaddall && gcommit"
 alias gapush="gammit $1 &&  gpush"
 
 alias gustash="git stash save --include-untracked"
