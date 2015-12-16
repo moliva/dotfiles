@@ -74,6 +74,7 @@ brew cask install virtualbox
 
 # some gui apps + utils
 brew cask install keycastr
+brew cask install bettertouchtool # improve magic mouse experience
 brew cask install utorrent
 brew cask install skype
 brew cask install calibre
