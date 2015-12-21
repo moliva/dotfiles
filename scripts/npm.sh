@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 npm install -g live-server # live reload for websites
 
 npm install -g nodemon # live reload for node apps
