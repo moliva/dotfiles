@@ -8,7 +8,9 @@
 export DOTFILES=$HOME/dotfiles
 
 # adding path directory for custom scripts
-export PATH=$DOTFILES/bin:$PATH
+new_paths=($DOTFILES/bin)
+path=($path ${new_paths:|path})
+new_paths=
 
 # check if there's no init script
 if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without sourcing all zgen :)
