@@ -114,7 +114,7 @@ link_file () {
 
     if [ "$skip" == "true" ]
     then
-      success "skipped $src"
+      info "skipped $src"
     fi
   fi
 
