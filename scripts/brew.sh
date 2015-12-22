@@ -35,6 +35,7 @@ brew install highlight
 # brew install z
 brew install fasd
 brew install shellcheck # linter for sh scripts
+brew install watch
 
 # building tools
 brew install nvm
