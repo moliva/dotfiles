@@ -21,7 +21,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Plugin 'vim-scripts/FuzzyFinder'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
+Plugin 'vladh/tagbar'
 Plugin 'vim-scripts/IndexedSearch' " adds a bit of information when doing a typical vim search
 " Plugin 'christoomey/vim-tmux-navigator' " is it necessary?
 Plugin 'mileszs/ack.vim'
@@ -154,32 +154,38 @@ let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 "let g:rbpt_max = 16
 "let g:rbpt_loadcmd_toggle = 0
 let g:rainbow_conf = {
-    \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-    \   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-    \   'operators': '_,_',
-    \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-    \   'separately': {
-    \       '*': {},
-    \       'tex': {
-    \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-    \       },
-    \       'lisp': {
-    \           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
-    \       },
-    \       'vim': {
-    \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-    \       },
-    \       'html': {
-    \           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-    \       },
-    \       'css': 0,
-    \   }
-    \}
+			\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+			\   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+			\   'operators': '_,_',
+			\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+			\   'separately': {
+			\       '*': {},
+			\       'tex': {
+			\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+			\       },
+			\       'lisp': {
+			\           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+			\       },
+			\       'vim': {
+			\           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+			\       },
+			\       'html': {
+			\           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+			\       },
+			\       'css': 0,
+			\   }
+			\}
 
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
-  finish
+	finish
 endif
+
+" CtrlPTag
+nnoremap <leader>, :CtrlPTag<cr>
+nnoremap <silent> <Leader>t :TagbarToggle<CR>
+
+set tags=.git/tags,tags;$HOME
 
 " set a map leader for more key combos
 let mapleader = ','
@@ -189,9 +195,9 @@ let g:mapleader = ','
 set backspace=indent,eol,start
 
 if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
+	set nobackup		" do not keep a backup file, use versions instead
 else
-  set backup		" keep a backup file
+	set backup		" keep a backup file
 endif
 set history=10000 	" change history to 1000
 set ruler		" show the cursor position all the time
@@ -212,10 +218,10 @@ nnoremap <C-f> :Autoformat<CR>
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
-  set mouse=a
-  if !has('nvim')
-    set ttymouse=xterm2
-  endif
+	set mouse=a
+	if !has('nvim')
+		set ttymouse=xterm2
+	endif
 endif
 
 set ttyfast
@@ -224,8 +230,8 @@ set encoding=utf8
 set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors"
 
 if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
+	let base16colorspace=256
+	source ~/.vimrc_background
 endif
 
 " Searching
@@ -249,45 +255,45 @@ set tm=500
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+	syntax on
+	set hlsearch
 endif
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
+	" Enable file type detection.
+	" Use the default filetype settings, so that mail gets 'tw' set to 72,
+	" 'cindent' is on in C files, etc.
+	" Also load indent files, to automatically do language-dependent indenting.
+	filetype plugin indent on
 
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
+	" Put these in an autocmd group, so that we can delete them easily.
+	augroup vimrcEx
+		au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  " autocmd FileType text setlocal textwidth=78
+		" For all text files set 'textwidth' to 78 characters.
+		" autocmd FileType text setlocal textwidth=78
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+		" When editing a file, always jump to the last known cursor position.
+		" Don't do it when the position is invalid or when inside an event handler
+		" (happens when dropping a file on gvim).
+		" Also don't do it when the mark is in the first line, that is the default
+		" position when opening a file.
+		autocmd BufReadPost *
+					\ if line("'\"") > 1 && line("'\"") <= line("$") |
+					\   exe "normal! g`\"" |
+					\ endif
 
-  au BufRead,BufNewFile * set wrap linebreak nolist textwidth=0 wrapmargin=0
-  au BufNewFile,BufRead *.cljc set filetype=clojure
+		au BufRead,BufNewFile * set wrap linebreak nolist textwidth=0 wrapmargin=0
+		au BufNewFile,BufRead *.cljc set filetype=clojure
 
-  augroup END
+	augroup END
 
 else
 
-set autoindent		" always set autoindenting on
-set smartindent
+	set autoindent		" always set autoindenting on
+	set smartindent
 
 endif " has("autocmd")
 
@@ -295,8 +301,8 @@ endif " has("autocmd")
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
 if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+	command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+				\ | wincmd p | diffthis
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -381,16 +387,16 @@ nnoremap <silent> $ g$
 " Window movement shortcuts
 " move to the window in the direction shown, or create a new window
 function! WinMove(key)
-    let t:curwin = winnr()
-    exec "wincmd ".a:key
-    if (t:curwin == winnr())
-        if (match(a:key,'[jk]'))
-            wincmd v
-        else
-            wincmd s
-        endif
-        exec "wincmd ".a:key
-    endif
+	let t:curwin = winnr()
+	exec "wincmd ".a:key
+	if (t:curwin == winnr())
+		if (match(a:key,'[jk]'))
+			wincmd v
+		else
+			wincmd s
+		endif
+		exec "wincmd ".a:key
+	endif
 endfunction
 " search for word under the cursor
 nnoremap <leader>/ "fyiw :/<c-r>f<cr>
@@ -410,20 +416,20 @@ let NERDTreeIgnore = ['\.git$', '\~$', '.DS_Store']
 " Toggle NERDTree
 nmap <silent> <leader>k :NERDTreeToggle<cr>
 " expand to the path of the file in the current buffer
-nmap <silent> <leader>y :NERDTreeFind<cr>
+nmap <silent> <leader>j :NERDTreeFind<cr>
 
 " nerdtree-git-plugin
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
+			\ "Modified"  : "✹",
+			\ "Staged"    : "✚",
+			\ "Untracked" : "✭",
+			\ "Renamed"   : "➜",
+			\ "Unmerged"  : "═",
+			\ "Deleted"   : "✖",
+			\ "Dirty"     : "✗",
+			\ "Clean"     : "✔︎",
+			\ "Unknown"   : "?"
+			\ }
 
 " Fugitive Shortcuts
 nmap <silent> <leader>gs :Gstatus<cr>
@@ -447,24 +453,24 @@ let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
 "let g:DevIconsEnableFoldersOpenClose = 1
 
 let g:lightline = {
-      \ 'component_function': {
-      \   'filetype': 'MyFiletype',
-      \   'fileformat': 'MyFileformat',
-      \ }
-      \ }
+			\ 'component_function': {
+			\   'filetype': 'MyFiletype',
+			\   'fileformat': 'MyFileformat',
+			\ }
+			\ }
 
 function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+	return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
 endfunction
 
 function! MyFileformat()
-  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+	return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
 
 " NERDTress File highlighting
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+	exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+	exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 
 call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
@@ -555,98 +561,98 @@ command! -bang WatchForChangesAllFile           :call WatchForChanges('*', {'tog
 "     (Presumably, having too much going on for those events could slow things down,
 "     since they are triggered so frequently...)
 function! WatchForChanges(bufname, ...)
-  " Figure out which options are in effect
-  if a:bufname == '*'
-    let id = 'WatchForChanges'.'AnyBuffer'
-    " If you try to do checktime *, you'll get E93: More than one match for * is given
-    let bufspec = ''
-  else
-    if bufnr(a:bufname) == -1
-      echoerr "Buffer " . a:bufname . " doesn't exist"
-      return
-    end
-    let id = 'WatchForChanges'.bufnr(a:bufname)
-    let bufspec = a:bufname
-  end
-  if len(a:000) == 0
-    let options = {}
-  else
-    if type(a:1) == type({})
-      let options = a:1
-    else
-      echoerr "Argument must be a Dict"
-    end
-  end
-  let autoread    = has_key(options, 'autoread')    ? options['autoread']    : 0
-  let toggle      = has_key(options, 'toggle')      ? options['toggle']      : 0
-  let disable     = has_key(options, 'disable')     ? options['disable']     : 0
-  let more_events = has_key(options, 'more_events') ? options['more_events'] : 1
-  let while_in_this_buffer_only = has_key(options, 'while_in_this_buffer_only') ? options['while_in_this_buffer_only'] : 0
-  if while_in_this_buffer_only
-    let event_bufspec = a:bufname
-  else
-    let event_bufspec = '*'
-  end
-  let reg_saved = @"
-  "let autoread_saved = &autoread
-  let msg = "\n"
-  " Check to see if the autocommand already exists
-  redir @"
-    silent! exec 'au '.id
-  redir END
-  let l:defined = (@" !~ 'E216: No such group or event:')
-  " If not yet defined...
-  if !l:defined
-    if l:autoread
-      let msg = msg . 'Autoread enabled - '
-      if a:bufname == '*'
-        set autoread
-      else
-        setlocal autoread
-      end
-    end
-    silent! exec 'augroup '.id
-      if a:bufname != '*'
-        "exec "au BufDelete    ".a:bufname . " :silent! au! ".id . " | silent! augroup! ".id
-        "exec "au BufDelete    ".a:bufname . " :echomsg 'Removing autocommands for ".id."' | au! ".id . " | augroup! ".id
-        exec "au BufDelete    ".a:bufname . " execute 'au! ".id."' | execute 'augroup! ".id."'"
-      end
-        exec "au BufEnter     ".event_bufspec . " :checktime ".bufspec
-        exec "au CursorHold   ".event_bufspec . " :checktime ".bufspec
-        exec "au CursorHoldI  ".event_bufspec . " :checktime ".bufspec
-      " The following events might slow things down so we provide a way to disable them...
-      " vim docs warn:
-      "   Careful: Don't do anything that the user does
-      "   not expect or that is slow.
-      if more_events
-        exec "au CursorMoved  ".event_bufspec . " :checktime ".bufspec
-        exec "au CursorMovedI ".event_bufspec . " :checktime ".bufspec
-      end
-    augroup END
-    let msg = msg . 'Now watching ' . bufspec . ' for external updates...'
-  end
-  " If they want to disable it, or it is defined and they want to toggle it,
-  if l:disable || (l:toggle && l:defined)
-    if l:autoread
-      let msg = msg . 'Autoread disabled - '
-      if a:bufname == '*'
-        set noautoread
-      else
-        setlocal noautoread
-      end
-    end
-    " Using an autogroup allows us to remove it easily with the following
-    " command. If we do not use an autogroup, we cannot remove this
-    " single :checktime command
-    " augroup! checkforupdates
-    silent! exec 'au! '.id
-    silent! exec 'augroup! '.id
-    let msg = msg . 'No longer watching ' . bufspec . ' for external updates.'
-  elseif l:defined
-    let msg = msg . 'Already watching ' . bufspec . ' for external updates'
-  end
-  echo msg
-  let @"=reg_saved
+	" Figure out which options are in effect
+	if a:bufname == '*'
+		let id = 'WatchForChanges'.'AnyBuffer'
+		" If you try to do checktime *, you'll get E93: More than one match for * is given
+		let bufspec = ''
+	else
+		if bufnr(a:bufname) == -1
+			echoerr "Buffer " . a:bufname . " doesn't exist"
+			return
+		end
+		let id = 'WatchForChanges'.bufnr(a:bufname)
+		let bufspec = a:bufname
+	end
+	if len(a:000) == 0
+		let options = {}
+	else
+		if type(a:1) == type({})
+			let options = a:1
+		else
+			echoerr "Argument must be a Dict"
+		end
+	end
+	let autoread    = has_key(options, 'autoread')    ? options['autoread']    : 0
+	let toggle      = has_key(options, 'toggle')      ? options['toggle']      : 0
+	let disable     = has_key(options, 'disable')     ? options['disable']     : 0
+	let more_events = has_key(options, 'more_events') ? options['more_events'] : 1
+	let while_in_this_buffer_only = has_key(options, 'while_in_this_buffer_only') ? options['while_in_this_buffer_only'] : 0
+	if while_in_this_buffer_only
+		let event_bufspec = a:bufname
+	else
+		let event_bufspec = '*'
+	end
+	let reg_saved = @"
+	"let autoread_saved = &autoread
+	let msg = "\n"
+	" Check to see if the autocommand already exists
+	redir @"
+	silent! exec 'au '.id
+	redir END
+	let l:defined = (@" !~ 'E216: No such group or event:')
+	" If not yet defined...
+	if !l:defined
+		if l:autoread
+			let msg = msg . 'Autoread enabled - '
+			if a:bufname == '*'
+				set autoread
+			else
+				setlocal autoread
+			end
+		end
+		silent! exec 'augroup '.id
+		if a:bufname != '*'
+			"exec "au BufDelete    ".a:bufname . " :silent! au! ".id . " | silent! augroup! ".id
+			"exec "au BufDelete    ".a:bufname . " :echomsg 'Removing autocommands for ".id."' | au! ".id . " | augroup! ".id
+			exec "au BufDelete    ".a:bufname . " execute 'au! ".id."' | execute 'augroup! ".id."'"
+		end
+		exec "au BufEnter     ".event_bufspec . " :checktime ".bufspec
+		exec "au CursorHold   ".event_bufspec . " :checktime ".bufspec
+		exec "au CursorHoldI  ".event_bufspec . " :checktime ".bufspec
+		" The following events might slow things down so we provide a way to disable them...
+		" vim docs warn:
+		"   Careful: Don't do anything that the user does
+		"   not expect or that is slow.
+		if more_events
+			exec "au CursorMoved  ".event_bufspec . " :checktime ".bufspec
+			exec "au CursorMovedI ".event_bufspec . " :checktime ".bufspec
+		end
+	augroup END
+	let msg = msg . 'Now watching ' . bufspec . ' for external updates...'
+end
+" If they want to disable it, or it is defined and they want to toggle it,
+if l:disable || (l:toggle && l:defined)
+	if l:autoread
+		let msg = msg . 'Autoread disabled - '
+		if a:bufname == '*'
+			set noautoread
+		else
+			setlocal noautoread
+		end
+	end
+	" Using an autogroup allows us to remove it easily with the following
+	" command. If we do not use an autogroup, we cannot remove this
+	" single :checktime command
+	" augroup! checkforupdates
+	silent! exec 'au! '.id
+	silent! exec 'augroup! '.id
+	let msg = msg . 'No longer watching ' . bufspec . ' for external updates.'
+elseif l:defined
+	let msg = msg . 'Already watching ' . bufspec . ' for external updates'
+end
+echo msg
+let @"=reg_saved
 endfunction
 
 map <F7> :checktime<CR>
