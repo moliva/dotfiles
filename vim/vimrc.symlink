@@ -70,6 +70,9 @@ Plugin 'vim-scripts/vim-coffee-script'
 " Plugin 'scrooloose/syntastic' " slow when saving bash files :(
 Plugin 'benekastah/neomake'
 
+" tags
+Plugin 'szw/vim-tags'
+
 Plugin 'msanders/snipmate.vim'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
