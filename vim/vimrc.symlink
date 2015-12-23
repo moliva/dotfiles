@@ -188,7 +188,7 @@ endif
 nnoremap <leader>, :CtrlPTag<cr>
 nnoremap <silent> <Leader>t :TagbarToggle<CR>
 
-set tags=.git/tags,tags;$HOME
+set tags=tags;$HOME
 
 " set a map leader for more key combos
 let mapleader = ','
