@@ -3,7 +3,7 @@
 export M2_SETTINGS=$HOME/.m2
 export M2_REPO=$M2_SETTINGS/repository
 
-export MAVEN_OPTS="-Xmx1G -XX:MaxPermSize=512m -Djava.awt.headless=true"
+export MAVEN_OPTS="-Xmx1G -XX:MaxPermSize=512m -Djava.awt.headless=true -XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
 alias mvnsettings="edit $M2_SETTINGS/settings.xml"
 
