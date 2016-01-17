@@ -8,11 +8,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-"Plugin 'user/L9', {'name': 'newL9'}
 Plugin 'vim-scripts/L9'
 Plugin 'tpope/vim-repeat'
 
@@ -23,7 +18,6 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'vladh/tagbar'
 Plugin 'vim-scripts/IndexedSearch' " adds a bit of information when doing a typical vim search
-" Plugin 'christoomey/vim-tmux-navigator' " is it necessary?
 Plugin 'mileszs/ack.vim'
 
 " themes
@@ -91,10 +85,18 @@ Plugin 'jceb/vim-orgmode'
 "Plugin 'tpope/vim-rails'
 "Plugin 'tsaleh/vim-shoulda'
 
+" raml
+Plugin 'IN3D/vim-raml'
+
+" tmux
 Plugin 'tmux-plugins/vim-tmux'
 Plugin 'benmills/vimux'
+" Plugin 'christoomey/vim-tmux-navigator' " is it necessary?
 
+" ui style + decorations
 Plugin 'ryanoasis/vim-devicons'
+
+Plugin 'tpope/vim-obsession' " vim sessions
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
