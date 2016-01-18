@@ -36,6 +36,7 @@ brew install highlight
 brew install fasd
 brew install shellcheck # linter for sh scripts
 brew install watch
+brew install coreutils # installs gsort (for git tag semantic ordering)
 
 # misc
 brew install fortune

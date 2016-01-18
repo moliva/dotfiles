@@ -19,6 +19,7 @@ alias gpstash="git stash pop"
 alias glasthash='git log -n 1 --pretty=format:"%H" | ccopy &&  echo `git log -n 1 --pretty=format:"%H"`'
 alias glastdiff="git diff HEAD~1 HEAD"
 alias glean="git checkout -- . && git clean -f -d"
+alias gtagls="git tag | gsort -V"
 
 alias gsubpull="git submodule foreach git pull origin HEAD"
 
