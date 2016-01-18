@@ -37,6 +37,10 @@ brew install fasd
 brew install shellcheck # linter for sh scripts
 brew install watch
 
+# misc
+brew install fortune
+brew install cowsay
+
 # building tools
 brew install nvm
 # brew install npm # use nvm to install node
