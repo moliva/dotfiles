@@ -28,13 +28,12 @@ root: ~/
 # post: tmux -CC attach -t studio
 
 windows:
-  - tooling: cd repos/mule-tooling && clear
-  - tooling-2: cd repos/mule-tooling-2 && clear
-  - tooling-3: cd repos/mule-tooling-3 && clear
-  - tooling-4: cd repos/mule-tooling-4 && clear
+  - tooling: cd $WS_HOME/mule-tooling && clear
+  - tooling-2: cd $WS_HOME/mule-tooling-2 && clear
+  - tooling-3: cd $WS_HOME/mule-tooling-3 && clear
+  - tooling-4: cd $WS_HOME/mule-tooling-4 && clear
   - utils: 
-     layout: 47bc,204x48,0,0[204x14,0,0,4,204x33,0,15{102x33,0,15,5,101x33,103,15,6}]
+     layout: even-horizontal
      panes:
-       - cd $DOTFILES && clear # console
        - cd $DOTFILES && clear # console
        - cd $DOTFILES && clear # console
