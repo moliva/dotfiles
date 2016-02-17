@@ -8,7 +8,9 @@ export MAVEN_OPTS="-Xmx1G -XX:MaxPermSize=512m -Djava.awt.headless=true -XX:+Tie
 alias mvnsettings="edit $M2_SETTINGS/settings.xml"
 
 linkmaven() {
-	local current_maven_formula=$(basename $(dirname $(dirname `mvn --version | sed '/^Maven home: /!d' | sed "s/^Maven home: \(.*\)/\1/"`))) # two dirnames for libexec and version
-	brew unlink $current_maven_formula
+	#if [ command -v mvn >/dev/null 2>&1 ] ; then
+		local current_maven_formula=$(basename $(dirname $(dirname `mvn --version | sed '/^Maven home: /!d' | sed "s/^Maven home: \(.*\)/\1/"`))) # two dirnames for libexec and version
+		brew unlink $current_maven_formula
+	#fi
 	brew link $1
 }
