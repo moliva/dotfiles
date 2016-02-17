@@ -20,6 +20,7 @@ alias glasthash='git log -n 1 --pretty=format:"%H" | ccopy &&  echo `git log -n 
 alias glastdiff="git diff HEAD~1 HEAD"
 alias glean="git checkout -- . && git clean -f -d"
 alias gtagls="git tag | gsort -V"
+alias gcontainscommit="git branch -r --contains"
 
 alias gsubpull="git submodule foreach git pull origin HEAD"
 
