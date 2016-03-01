@@ -88,6 +88,7 @@ brew cask install xee
 brew cask install adobe-reader
 brew cask install unrarx
 brew cask install mucommander
+brew cask install all2mp3
 
 # file syncing
 brew cask install dropbox
