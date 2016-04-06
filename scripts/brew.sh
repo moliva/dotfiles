@@ -44,8 +44,9 @@ brew install cowsay
 
 # building tools
 brew install nvm
-# brew install npm # use nvm to install node
+# brew install npm # use nvm to install node to avoid errors
 # brew install flow # javascript static analyzer
+brew install ant
 brew install maven
 brew install gradle
 brew install leiningen
