@@ -5,6 +5,24 @@ alias gpull="git pull --rebase"
 alias gpush="git push origin HEAD"
 alias gstashedpull="git stash && git pull --rebase && git stash pop"
 
+info () {
+  printf "\033[00;34m$1\033[0m\n"
+}
+
+grlog () {
+  git fetch
+
+  info "***********************************"
+  info "Incoming commits"
+  info "***********************************"
+  git log ..origin/master | cat # TODO - should check the current remote/branch pair to compare
+
+  info "***********************************"
+  info "Outgoing commits"
+  info "***********************************"
+  git log origin/master.. | cat # TODO - should check the current remote/branch pair to compare
+}
+
 alias gcommit="git commit -m"
 alias gaddall="git add --all"
 alias gdiff="git diff"
