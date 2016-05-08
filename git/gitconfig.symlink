@@ -6,3 +6,5 @@
 	untracked = cyan
 [include]
 	path = ~/.gitconfig.local
+[hub]
+        protocol = git
