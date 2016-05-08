@@ -60,6 +60,7 @@ brew install gitignore
 
 # other dev tools
 brew install mongodb
+brew install redis
 
 # gitsh
 # brew tap thoughtbot/formulae
@@ -78,6 +79,7 @@ brew cask install caffeine
 brew cask install vagrant
 #brew cask install sage
 brew cask install virtualbox
+brew cask install clipmenu
 
 # some gui apps + utils
 brew cask install keycastr
@@ -90,6 +92,7 @@ brew cask install adobe-reader
 brew cask install unrarx
 brew cask install mucommander
 brew cask install all2mp3
+brew cask install gimp
 
 # file syncing
 brew cask install dropbox

@@ -9,18 +9,23 @@ info () {
   printf "\033[00;34m$1\033[0m\n"
 }
 
+grbranch () {
+  git status -sb | sed -En 's/^## [a-zA-Z1-9\-_]+\.\.\.([a-zA-Z1-9\-_]+\/[a-zA-Z1-9\-_]+).*$/\1/p'
+} 
+
 grlog () {
   git fetch
 
-  info "***********************************"
-  info "Incoming commits"
-  info "***********************************"
-  git log ..origin/master | cat # TODO - should check the current remote/branch pair to compare
+  local remote_current_branch=`grbranch`
 
-  info "***********************************"
-  info "Outgoing commits"
-  info "***********************************"
-  git log origin/master.. | cat # TODO - should check the current remote/branch pair to compare
+  info "*** Incoming commits"
+  info "***********************************************"
+ 
+  git log ..$remote_current_branch | cat 
+
+  info "*** Outgoing commits"
+  info "***********************************************"
+  git log $remote_current_branch.. | cat
 }
 
 alias gcommit="git commit -m"
@@ -28,11 +33,11 @@ alias gaddall="git add --all"
 alias gdiff="git diff"
 alias ghead="cat .git/HEAD" # TODO: would be cool to make this recursively
 alias gammit="gaddall && gcommit"
-alias gapush="gammit $1 &&  gpush"
+# alias gapush="gammit $1 &&  gpush"
 
 alias gustash="git stash save --include-untracked"
 alias glstash="git stash list | cat"
-alias gpstash="git stash pop"
+# alias gpstash="git stash pop"
 
 alias glasthash='git log -n 1 --pretty=format:"%H" | ccopy &&  echo `git log -n 1 --pretty=format:"%H"`'
 alias glastdiff="git diff HEAD~1 HEAD"
