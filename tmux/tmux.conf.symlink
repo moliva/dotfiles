@@ -95,8 +95,11 @@ bind Up new-window -d -n fullscreen \; swap-pane -s fullscreen.1 \; select-windo
 unbind Down
 bind Down last-window \; swap-pane -s fullscreen.2 \; kill-window -t fullscreen
 
-# go back to last window
+# go back to last active window
 bind C-a last-window
+
+# Select last window (i.e. with biggest index)
+bind 9 run "tmux select-window -t `tmux list-windows | tail -n 1 | head -c 1`"
 
 # set vi mode for copy mode
 setw -g mode-keys vi
