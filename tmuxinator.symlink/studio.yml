@@ -36,8 +36,3 @@ windows:
      panes:
        - cd $WS_HOME/rajapa && clear
        - cd $WS_HOME/mule-tooling-raml && clear
-  - utils: 
-     layout: even-horizontal
-     panes:
-       - cd $DOTFILES && clear # console
-       - cd $DOTFILES && clear # console
