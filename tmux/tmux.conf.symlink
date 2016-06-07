@@ -123,6 +123,8 @@ bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-
 set -g @resurrect-strategy-vim 'session'
 set -g @resurrect-strategy-nvim 'session'
 
+set -g @continuum-restore 'on'
+
 ##############################
 ### Color & Style Settings ###
 ##############################
@@ -148,7 +150,7 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-copycat'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-resurrect' # needs tpope/obsession.vim
-# set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-continuum'
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'
