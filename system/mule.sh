@@ -14,5 +14,5 @@ function installmuleapp() {
 	cp $1 $MULE_HOME/apps
 }
 
-export MULE_HOME=/Applications/mule-enterprise-standalone-3.3.2
+# export MULE_HOME=/Applications/mule-enterprise-standalone-3.3.2
 
