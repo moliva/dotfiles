@@ -11,3 +11,5 @@ alias ccopy="tr -d '\n' | pbcopy"
 alias lgrep="l | grep $1"
 alias cpwd="pwd | ccopy"
 
+# force miguel to use nvim instead of vim
+alias vim=nvim

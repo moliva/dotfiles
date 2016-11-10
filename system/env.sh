@@ -2,7 +2,7 @@
 
 # Make vim the default editor.
 if [[ -z $EDITOR ]]; then
-	export EDITOR='vim'
+	export EDITOR='nvim'
 fi
 
 # Set env for workspace
