@@ -96,7 +96,10 @@ Plugin 'benmills/vimux'
 " ui style + decorations
 Plugin 'ryanoasis/vim-devicons'
 
-Plugin 'tpope/vim-obsession' " vim sessions
+" crystal lang tooling
+Plugin 'rhysd/vim-crystal'
+
+Plugin 'tpope/vim-obsession' " vim sessionshttps://github.com/jceb/vim-orgmode
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
