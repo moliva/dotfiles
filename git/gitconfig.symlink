@@ -8,3 +8,8 @@
 	path = ~/.gitconfig.local
 [hub]
         protocol = git
+[alias]
+        show-files = diff-tree --no-commit-id --name-only -r
+	perri-chyck = cherry-pick
+	perri-quest = pull-request
+[core]

@@ -1,6 +1,6 @@
-# ~/.tmuxinator/studio.yml
+# ~/.tmuxinator/taas.yml
 
-name: studio
+name: taas
 root: ~/
 
 # Optional tmux socket
@@ -25,14 +25,13 @@ root: ~/
 # attach: false
 
 # Runs after everything. Use it to attach to tmux with custom options etc.
-# post: tmux -CC attach -t studio
+# post: tmux -CC attach -t taas
 
 windows:
-  - tooling: cd $WS_HOME/mule-tooling && clear
-  - tooling-2: cd $WS_HOME/mule-tooling-2 && clear
-  - tooling-3: cd $WS_HOME/mule-tooling-3 && clear
-  - raml: 
-     layout: even-horizontal
-     panes:
-       - cd $WS_HOME/raml-java-parser && clear
-       - cd $WS_HOME/mule-tooling-raml && clear
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim
+        - guard
+  - server: bundle exec rails s
+  - logs: tail -f log/development.log

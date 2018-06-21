@@ -32,7 +32,7 @@ export HELPDIR=/usr/local/share/zsh/help
 
 # adding basic bin directories to PATH
 # TODO: is this necessary?
-new_paths=(/usr/local/bin /usr/bin /bin /usr/sbin /sbin)
+new_paths=(/usr/local/bin /usr/bin /bin /usr/sbin /sbin $HOME/bin)
 path=($path ${new_paths:|path})
 new_paths=
 

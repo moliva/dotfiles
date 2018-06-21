@@ -12,6 +12,7 @@ npm install -g flightplan # deploy app to host through ssh with rsync
 # build tools
 npm install -g gulp
 npm install -g grunt-cli
+npm install -g webpack
 
 npm install -g surge # deploy to surge.sh
 
@@ -25,6 +26,8 @@ npm install -g nwb
 npm install -g express-generator
 # npm install -g generator-zurb-ink # generator for zurb email inliner
 
+npm install -g eslint
 npm install -g js-beautify
 npm install -g tldr
 
+npm install -g yarn

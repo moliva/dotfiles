@@ -1,7 +1,6 @@
 set -g default-command "reattach-to-user-namespace -l zsh"
 # tmux display things in 256 colors
 set -g default-terminal "screen-256color"
-set -g status-utf8 on
 
 set -g history-limit 20000
 
@@ -112,8 +111,10 @@ unbind [
 bind Escape copy-mode
 unbind p
 bind p paste-buffer
-bind -t vi-copy 'v' begin-selection
-bind -t vi-copy 'y' copy-selection
+#bind -t vi-copy 'v' begin-selection
+bind -Tcopy-mode-vi v send -X begin-selection
+#bind -t vi-copy 'y' copy-selection
+bind -Tcopy-mode-vi y send -X copy-selection
 
 # Buffers to/from Mac clipboard, yay tmux book from pragprog
 bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
@@ -133,7 +134,8 @@ set -g @continuum-restore 'on'
 ### Color & Style Settings ###
 ##############################
 
-source $DOTFILES/tmux/tmuxtheme.sh
+#source $DOTFILES/tmux/tmuxtheme.sh
+source $DOTFILES/tmux/tmuxtheme_nounicode.sh
 
 ##############################
 ### Tmux plugins ###
@@ -151,7 +153,7 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'nhdaly/tmux-scroll-copy-mode'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
 set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @plugin 'tmux-plugins/tmux-copycat'
+#set -g @plugin 'tmux-plugins/tmux-copycat'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-resurrect' # needs tpope/obsession.vim
 set -g @plugin 'tmux-plugins/tmux-continuum'

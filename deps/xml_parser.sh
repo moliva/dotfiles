@@ -143,7 +143,10 @@ parse_xml() {
 
 	while ${_XML_CONTINUE_READING}; do
 		_read_dom
-		eval ${XML_FUNCTION}
+		local should_continue=eval ${XML_FUNCTION}
+		if [ "$should_continue" = false ]; then 
+			break;
+		fi
 	done
 
 	_close_xml
