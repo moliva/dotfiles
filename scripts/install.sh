@@ -37,7 +37,7 @@ if [ "$(uname)" == "Darwin" ]; then
     info "running on OSX"
 
     # creating tmp dir for installation
-    local TMP_DIR="~/.tmpdotfilesinstallation"
+    TMP_DIR="~/.tmpdotfilesinstallation"
     mkdir -p TMP_DIR
 
     # TODO - Erase, doing this with brew cask now
