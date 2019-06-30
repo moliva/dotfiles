@@ -93,7 +93,7 @@ fi
 
 # Base16 Shell
 if [ -z "$THEME" ]; then
-	export THEME="base16-harmonic16"
+	export THEME="base16-harmonic"
 fi
 if [ -z "$BACKGROUND" ]; then
 	export BACKGROUND="dark"

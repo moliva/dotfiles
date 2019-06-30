@@ -13,3 +13,5 @@
 	perri-chyck = cherry-pick
 	perri-quest = pull-request
 [core]
+[review]
+	status = true
