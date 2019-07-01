@@ -4,3 +4,6 @@
 [submodule "system/studio"]
 	path = system/studio
 	url = https://github.com/moliva/studio-utils.git
+[submodule "themes/base16-shell"]
+	path = themes/base16-shell
+	url = git@github.com:JohnMorales/base16-shell.git
