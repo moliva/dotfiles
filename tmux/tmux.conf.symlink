@@ -70,6 +70,9 @@ bind j select-pane -D
 bind k select-pane -U
 bind l select-pane -R
 
+bind -r C-o swap-pane -D
+bind -r C-i swap-pane -U
+
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
 
@@ -134,8 +137,8 @@ set -g @continuum-restore 'on'
 ### Color & Style Settings ###
 ##############################
 
-#source $DOTFILES/tmux/tmuxtheme.sh
-source $DOTFILES/tmux/tmuxtheme_nounicode.sh
+source $DOTFILES/tmux/tmuxtheme.sh
+#source $DOTFILES/tmux/tmuxtheme_nounicode.sh
 
 ##############################
 ### Tmux plugins ###

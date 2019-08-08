@@ -2,6 +2,9 @@
 alias zshconfig="edit ~/.zshrc"
 alias zshreload='source ~/.zshrc'
 
+alias localconfig="edit ~/.localrc"
+alias localreload='source ~/.localrc'
+
 alias vimconfig="edit ~/.vimrc"
 
 alias l='ls -l -a -h'

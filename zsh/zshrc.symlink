@@ -28,40 +28,41 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # common plugins
     zgen oh-my-zsh plugins/sudo
     zgen oh-my-zsh plugins/command-not-found
-    zgen load zsh-users/zsh-completions src/_ack
-    zgen load zsh-users/zsh-completions src/_ps
-    zgen load zsh-users/zsh-completions src/_watch
+    # zgen load zsh-users/zsh-completions src/_ack
+    # zgen load zsh-users/zsh-completions src/_ps
+    # zgen load zsh-users/zsh-completions src/_watch
     zgen load zsh-users/zsh-syntax-highlighting
 
     # zgen oh-my-zsh plugins/tmux
-    zgen load zsh-users/zsh-completions src/_tmuxinator
+    # zgen load zsh-users/zsh-completions src/_tmuxinator
     # zgen load tmuxinator/tmuxinator completion # using the completion from zsh-users
     # zgen load jimeh/tmuxifier completion
+    zgen load b4b4r07/enhancd init.sh
 
     # osx pugins
     # zgen oh-my-zsh plugins/brew
-    zgen load zsh-users/zsh-completions src/_brew
+    # zgen load zsh-users/zsh-completions src/_brew
     # zgen oh-my-zsh plugins/brew-cask
-    zgen load zsh-users/zsh-completions src/_cask
+    # zgen load zsh-users/zsh-completions src/_cask
 
     # build tool plugins 
     zgen oh-my-zsh plugins/git
-    zgen load github/hub etc/hub.zsh_completion
-    zgen load zsh-users/zsh-completions src/_gist
-    zgen oh-my-zsh plugins/heroku
+    # zgen load github/hub etc/hub.zsh_completion
+    # zgen load zsh-users/zsh-completions src/_gist
+    # zgen oh-my-zsh plugins/heroku
 
     # java world plugins
-    zgen load zsh-users/zsh-completions src/_gradle
-    zgen load zsh-users/zsh-completions src/_mvn
+    # zgen load zsh-users/zsh-completions src/_gradle
+    # zgen load zsh-users/zsh-completions src/_mvn
 
     # js/node world plugins
-    zgen load zsh-users/zsh-completions src/_node
-    zgen load zsh-users/zsh-completions src/_nvm
-    zgen oh-my-zsh plugins/npm
-    zgen oh-my-zsh plugins/bower
+    # zgen load zsh-users/zsh-completions src/_node
+    # zgen load zsh-users/zsh-completions src/_nvm
+    # zgen oh-my-zsh plugins/npm
+    # zgen oh-my-zsh plugins/bower
     # zgen load zsh-users/zsh-completions src/_bower # usign the one from oh-my-zsh
-    zgen oh-my-zsh plugins/grunt
-    zgen load akoenig/gulp.plugin.zsh
+    # zgen oh-my-zsh plugins/grunt
+    # zgen load akoenig/gulp.plugin.zsh
 
     # haskell world plugins
     # zgen load zsh-users/zsh-completions src/_ghc
@@ -73,13 +74,13 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # zgen oh-my-zsh plugins/lein
 
     # vm plugins
-    zgen oh-my-zsh plugins/docker
+    # zgen oh-my-zsh plugins/docker
     # zgen load zsh-users/zsh-completions src/_docker # using the one from oh-my-zsh
-    zgen load zsh-users/zsh-completions src/_boot2docker
-    zgen load zsh-users/zsh-completions src/_docker-compose
-    zgen load zsh-users/zsh-completions src/_docker-machine
-    #zgen load zsh-users/zsh-completions src/_vagrant
-    zgen load zsh-users/zsh-completions src/_virtualbox
+    # zgen load zsh-users/zsh-completions src/_boot2docker
+    # zgen load zsh-users/zsh-completions src/_docker-compose
+    # zgen load zsh-users/zsh-completions src/_docker-machine
+    # zgen load zsh-users/zsh-completions src/_vagrant
+    # zgen load zsh-users/zsh-completions src/_virtualbox
 
     # local plugins
     zgen load $DOTFILES zsh/plugins

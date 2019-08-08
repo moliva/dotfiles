@@ -5,6 +5,14 @@ alias gpull="git pull --rebase"
 alias gpush="git push origin HEAD"
 alias gstashedpull="git stash && git pull --rebase && git stash pop"
 
+gprune() {
+  git fetch --prune
+}
+
+gtoprepo() {
+  cd `git rev-parse --show-toplevel`
+}
+
 info () {
   printf "\033[00;34m$1\033[0m\n"
 }
@@ -30,7 +38,10 @@ grlog () {
 
 alias gmlog="git log --author=`git config user.name`"
 
-alias gcommit="git commit -m"
+gcommit () {
+	git commit -m "`echo $@`"
+}
+
 alias gaddall="git add --all"
 alias gdiff="git diff"
 alias ghead="cat .git/HEAD" # TODO: would be cool to make this recursively

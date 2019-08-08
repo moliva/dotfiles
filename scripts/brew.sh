@@ -15,6 +15,7 @@ brew install tree
 brew install wget
 brew install pstree
 brew install ctags
+brew cask install ngrok
 
 # development server setup
 brew install docker
@@ -42,6 +43,10 @@ brew install jq # filter/accessor for command line for json and other formats
 # misc
 brew install fortune
 brew install cowsay
+
+# filters for enhancd
+brew tap jhawthorn/fzy
+brew install fzy ccat
 
 # building tools
 brew install nvm
@@ -80,7 +85,7 @@ brew cask install caffeine
 brew cask install vagrant
 #brew cask install sage
 brew cask install virtualbox
-brew cask install clipmenu
+brew cask install clipy
 
 # some gui apps + utils
 brew cask install keycastr
