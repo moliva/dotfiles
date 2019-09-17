@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 npm install -g live-server # live reload for websites
+npm install -g local-web-server # static web server
 
 npm install -g pug-cli # html dsl cli
 
