@@ -87,6 +87,12 @@ brew cask install vagrant
 brew cask install virtualbox
 brew cask install clipy
 
+# quick looks
+brew cask install qlstephen
+brew cask install qlcolocode
+brew cask install qlmarkdown
+brew cask install quicklook-json
+
 # some gui apps + utils
 brew cask install keycastr
 brew cask install licecap
