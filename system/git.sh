@@ -1,9 +1,19 @@
 # Git aliases
 alias git=hub
 
-alias gpull="git pull --rebase"
-alias gpush="git push origin HEAD"
-alias gstashedpull="git stash && git pull --rebase && git stash pop"
+alias gpush="git push -u origin HEAD"
+
+gpull() {
+  git diff --exit-code --quiet 1> /dev/null
+  any_diff="$?"
+  if [ "$any_diff" -ne "0" ]; then
+    git stash
+  fi
+  git pull --rebase
+  if [ "$any_diff" -ne "0" ]; then
+    git stash pop
+  fi
+}
 
 gprune() {
   git fetch --prune
@@ -42,6 +52,10 @@ gcommit () {
 	git commit -m "`echo $@`"
 }
 
+gncommit () {
+	git commit -n -m "`echo $@`"
+}
+
 alias gaddall="git add --all"
 alias gdiff="git diff"
 alias ghead="cat .git/HEAD" # TODO: would be cool to make this recursively
@@ -60,6 +74,15 @@ alias gtagls="git tag | gsort -V"
 alias gcontainscommit="git branch -r --contains"
 
 alias gsubpull="git submodule foreach git pull origin HEAD"
+
+gsetremotebranch() {
+	LOCAL_BRANCH=$(git branch | grep \* | cut -d ' ' -f2)
+	git branch --set-upstream-to="origin/$LOCAL_BRANCH" "$LOCAL_BRANCH"
+}
+
+ggetremotebranch() {
+	git branch -vv | grep \*
+}
 
 gpr () {
 #	local url=$(bash -i -c "hub pull-request") # | ccopy
