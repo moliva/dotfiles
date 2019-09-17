@@ -50,8 +50,8 @@ set-window-option -g mode-style bg=$tm_color_feature,fg=black
 # clock
 set-window-option -g clock-mode-colour $tm_color_active
 
-tm_spotify="#[fg=$tm_color_music]#(osascript $DOTFILES/applescripts/spotify.scpt)"
-tm_itunes="#[fg=$tm_color_music]#(osascript $DOTFILES/applescripts/itunes.scpt)"
+#tm_spotify="#[fg=$tm_color_music]#(osascript $DOTFILES/applescripts/spotify.scpt)"
+#tm_itunes="#[fg=$tm_color_music]#(osascript $DOTFILES/applescripts/itunes.scpt)"
 tm_battery="#($DOTFILES/bin/battery_indicator.sh)"
 
 tm_date="#[fg=$tm_color_inactive] %R %d %b"
@@ -62,4 +62,4 @@ set -g @prefix_highlight_fg colour232
 set -g @prefix_highlight_bg colour209
 
 set -g status-left $tm_session_name' '
-set -g status-right "#{prefix_highlight}"' '$tm_itunes' '$tm_spotify' '$tm_date' '$tm_host' '$tm_battery
+set -g status-right "#{prefix_highlight}"' '$tm_date' '$tm_host' '$tm_battery
