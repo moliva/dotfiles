@@ -52,3 +52,8 @@ function ssh-up() {
 	eval $(ssh-agent)
 	ssh-add
 }
+
+function systemreload() {
+	for config ($DOTFILES/system/**/*.sh) source $config
+}
+
