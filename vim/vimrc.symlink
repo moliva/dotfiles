@@ -60,6 +60,14 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'vim-scripts/vim-coffee-script'
 
+" typescript
+Plugin 'HerringtonDarkholme/yats.vim'
+Plugin 'mhartington/nvim-typescript', {'do': './install.sh'}
+" For async completion
+Plugin 'Shougo/deoplete.nvim'
+ " For Denite features
+Plugin 'Shougo/denite.nvim'
+
 " linter
 " Plugin 'scrooloose/syntastic' " slow when saving bash files :(
 Plugin 'benekastah/neomake'

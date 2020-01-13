@@ -53,7 +53,10 @@ function ssh-up() {
 	ssh-add
 }
 
+function cpmod() {
+	chmod `stat -f %A $1` $2
+}
+
 function systemreload() {
 	for config ($DOTFILES/system/**/*.sh) source $config
 }
-

@@ -13,6 +13,7 @@ gpull() {
   if [ "$any_diff" -ne "0" ]; then
     git stash pop
   fi
+  gprune
 }
 
 gprune() {

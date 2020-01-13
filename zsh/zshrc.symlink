@@ -37,7 +37,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # zgen load zsh-users/zsh-completions src/_tmuxinator
     # zgen load tmuxinator/tmuxinator completion # using the completion from zsh-users
     # zgen load jimeh/tmuxifier completion
-    zgen load b4b4r07/enhancd init.sh
+    # zgen load b4b4r07/enhancd init.sh
 
     # osx pugins
     # zgen oh-my-zsh plugins/brew
