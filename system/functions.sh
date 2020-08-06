@@ -60,3 +60,7 @@ function cpmod() {
 function systemreload() {
 	for config ($DOTFILES/system/**/*.sh) source $config
 }
+
+function wacho() {
+	watch "`echo $@`"
+}
