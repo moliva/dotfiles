@@ -39,6 +39,7 @@ brew install shellcheck # linter for sh scripts
 brew install watch
 brew install coreutils # installs gsort (for git tag semantic ordering)
 brew install jq # filter/accessor for command line for json and other formats
+brew install entr
 
 # misc
 brew install fortune
@@ -82,8 +83,6 @@ brew cask install sizeup
 brew cask install caffeine
 
 # other dev gui tools
-brew cask install vagrant
-#brew cask install sage
 brew cask install virtualbox
 brew cask install clipy
 
@@ -96,15 +95,11 @@ brew cask install quicklook-json
 # some gui apps + utils
 brew cask install keycastr
 brew cask install licecap
-#brew cask install bettertouchtool # improve magic mouse experience
 brew cask install utorrent
 brew cask install skype
 brew cask install calibre
-brew cask install xee
 brew cask install adobe-reader
 brew cask install unrarx
-brew cask install mucommander
-brew cask install all2mp3
 brew cask install gimp
 
 # file syncing
@@ -112,7 +107,6 @@ brew cask install dropbox
 brew cask install evernote
 brew cask install tuxera-ntfs
 brew cask install android-file-transfer
-brew cask install filezilla
 
 # browsers
 brew cask install firefox
