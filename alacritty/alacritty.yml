@@ -45,6 +45,12 @@
   #padding:
   #  x: 0
   #  y: 0
+window:
+        padding:
+                x: 5
+                y: 0
+        dynamic_padding: true
+        decorations: buttonless
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -171,6 +177,7 @@
 font:
         normal:
                 family: Meslo LG M DZ for PowerLine
+                style: Book
         size: 12.0
 
 # If `true`, bold text is drawn using the bright color variants.
