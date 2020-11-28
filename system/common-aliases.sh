@@ -15,6 +15,7 @@ alias lgrep="l | grep $1"
 alias cpwd="pwd | ccopy"
 
 # force miguel to use nvim instead of vim
+alias vimo=/usr/bin/vim
 alias vim=nvim
 
 systemconfig() {
