@@ -94,7 +94,7 @@ fi
 
 # Base16 Shell
 if [ -z "$THEME" ]; then
-	export THEME="base16-harmonic16"
+	export THEME="base16-harmonic"
 fi
 if [ -z "$BACKGROUND" ]; then
 	export BACKGROUND="dark"
@@ -106,6 +106,7 @@ if [ -z "$BASE16_SHELL" ]; then # if base16 is already working, don't source it 
 fi
 
 if [ -n "$PS1" ]; then # if statement guards adding these helpers for non-interative shells
+	BASE16_SHELL_SET_BACKGROUND=false
 	eval "$($DOTFILES/themes/base16-shell/profile_helper.sh)"
 fi
 
