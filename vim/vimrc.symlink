@@ -240,10 +240,6 @@ if filereadable(expand("~/.vimrc_background"))
 	source ~/.vimrc_background
 endif
 
-" disables opaque background                                                
-hi Normal ctermbg=none
-hi NonText ctermbg=none
-
 " Searching
 set ignorecase " case insensitive searching
 set smartcase " case-sensitive if expresson contains a capital letter
@@ -836,4 +832,9 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+
+" disables opaque background                                                
+hi Normal ctermbg=none
+hi NonText ctermbg=none
 

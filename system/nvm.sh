@@ -7,8 +7,9 @@ NODE_GLOBALS+=("node")
 NODE_GLOBALS+=("nvm")
 
 # Lazy-loading nvm + npm on node globals call
-load_nvm () {
-  [ -s "$(brew --prefix nvm)/nvm.sh" ] && source "$(brew --prefix nvm)/nvm.sh"
+function load_nvm () {
+  [ -s "usr/local/opt/nvm/nvm.sh" ] && source "usr/local/opt/nvm/nvm.sh"
+  #[ -s "$(brew --prefix nvm)/nvm.sh" ] && source "$(brew --prefix nvm)/nvm.sh"
 }
 
 # Making node global trigger the lazy loading
