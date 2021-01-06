@@ -31,7 +31,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # common plugins
     zgenom oh-my-zsh plugins/sudo
     zgenom oh-my-zsh plugins/command-not-found
-    zgenom load zsh-users/zsh-completions src/_ack
+    #zgenom load zsh-users/zsh-completions src/_ack
     # zgen load zsh-users/zsh-completions src/_ps
     # zgen load zsh-users/zsh-completions src/_watch
     zgenom load zsh-users/zsh-syntax-highlighting
@@ -86,7 +86,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # zgen load zsh-users/zsh-completions src/_virtualbox
 
     # local plugins
-    zgenom load $DOTFILES zsh/plugins
+    # zgenom load $DOTFILES zsh/plugins
 
     # theme
     zgenom oh-my-zsh themes/robbyrussell
@@ -108,7 +108,7 @@ if [ -z "$BASE16_SHELL" ]; then # if base16 is already working, don't source it 
 	[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 fi
 
-if [ -n "$PS1" ]; then # if statement guards adding these helpers for non-interative shells
+if [[ -n "$PS1" ]]; then # if statement guards adding these helpers for non-interative shells
 	BASE16_SHELL_SET_BACKGROUND=false
 	eval "$($DOTFILES/themes/base16-shell/profile_helper.sh)"
 fi
@@ -118,10 +118,11 @@ fi
 for config ($DOTFILES/system/**/*.sh) source $config
 
 # source localrc
-[ -f $HOME/.localrc ] && source $HOME/.localrc
+#[ -f $HOME/.localrc ] && source $HOME/.localrc
 
 #set +x
 #exec 12>&3 3>&-
 
 # Turns on profiling of zsh startup, uncomment first line as well as this
 #zprof
+#zmodload -u zsh/zprof
