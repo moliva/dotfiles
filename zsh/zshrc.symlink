@@ -25,11 +25,14 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
 
     zgenom compile ~/.zshrc
     zgenom compile $DOTFILES/system/all.sh
+    [ -f $HOME/.localrc ] && zgenom compile ~/.localrc
 
     zgenom ohmyzsh
 
     # autouptdate for zgen
     # zgen load unixorn/autoupdate-zgen
+    #
+    zgenom load mroth/evalcache
 
     # common plugins
     zgenom ohmyzsh plugins/sudo
@@ -121,7 +124,7 @@ fi
 for config ($DOTFILES/system/**/*.sh) source $config
 
 # source localrc
-#[ -f $HOME/.localrc ] && source $HOME/.localrc
+[ -f $HOME/.localrc ] && source $HOME/.localrc
 
 #set +x
 #exec 12>&3 3>&-

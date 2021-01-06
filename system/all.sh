@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 
 
 # *************************************************************
@@ -32,9 +33,29 @@ systemconfig() {
 alias loadzgenom="source $DOTFILES/zgen/zgenom.zsh"
 
 
+
+alias ls=exa
+alias cat='bat --paging=never'
+alias batp='bat --paging==always'
+
+#alias ps=procs alias cat=bat alias less=bat alias grep=ripgrep
+#alias nano=kibi
+#alias find=fd
+alias duh=dust
+alias timeh=hyperfine
+#alias top=ytop
+#alias iftop=bandwhich
+#alias hexdump=hx
+#alias objdump=bringrep
+#alias http-server=miniserve
+#alias license=licensor
+
+
+
 # *************************************************************
 # climode
 # *************************************************************
+
 
 function zle-line-init zle-keymap-select {
 	VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]%  %{$reset_color%}"
@@ -68,10 +89,12 @@ vimode() {
 
 	# trying if this fixes the issue when backspacing chars after normal mode
 	bindkey "^?" backward-delete-char
+
+	# this overrides bindings above
+	[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 }
 
 vimode
-
 
 
 
@@ -122,7 +145,8 @@ new_paths=
 # fasd
 # *************************************************************
 
-eval "$(fasd --init auto)"
+#eval "$(fasd --init auto)"
+_evalcache fasd --init auto
 alias v="a -e edit" 
 alias e="a -e"
 
@@ -131,6 +155,17 @@ alias e="a -e"
 # *************************************************************
 # functions
 # *************************************************************
+
+
+b64s() {
+	echo -n $1 | base64 | ccopy
+}
+
+mvp() {
+	last=$@[$#]
+	mkdir -p "$last"
+	mv "$@"
+}
 
 
 # From https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789
@@ -302,6 +337,9 @@ ggetremotebranch() {
 # go lang related
 export GOPATH=$HOME/go
 
+# TODO - write output of eval to some env in home and load conditionally
+#GO_INSTALLATION=_evalcache brew --prefix go
+#export PATH=$PATH:$GO_INSTALLATION/libexec/bin:$GOPATH/bin
 #export PATH=$PATH:`brew --prefix go`/libexec/bin:$GOPATH/bin
 export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 
@@ -311,6 +349,9 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 # groovy
 # *************************************************************
 
+# TODO - write output of eval to some env in home and load conditionally
+#GROOVY_INSTALLATION={ _evalcache brew --prefix groovy }
+#export GROOVY_HOME=$GROOVY_INSTALLATION/libexec
 #export GROOVY_HOME=`brew --prefix groovy`/libexec
 export GROOVY_HOME=/usr/local/Cellar/groovy/3.0.7/libexec
 
@@ -363,10 +404,30 @@ for cmd in "${NODE_GLOBALS[@]}"; do
 done
 
 
+# *************************************************************
+# python
+# *************************************************************
+export PATH=$PATH:$HOME/Library/Python/3.7/bin
+
+loadpyenv() {
+	#eval "$(pyenv init -)"
+	_evalcache pyenv init -
+	#eval "$(pyenv virtualenv-init -)" # takes a HUGE amount of time
+}
+
+# Add every binary that requires nvm, npm or node to run to an array of node globals
+PYENV_COMMANDS=("pyenv")
+
+# Making node global trigger the lazy loading
+for cmd in "${PYENV_COMMANDS[@]}"; do
+  eval "${cmd}(){ unset -f ${PYENV_COMMANDS}; loadpyenv; ${cmd} \$@ }"
+done
 
 # *************************************************************
 # rust
 # *************************************************************
+
+export PATH="$HOME/.cargo/bin:$PATH"
 
 source $HOME/.cargo/env
 
