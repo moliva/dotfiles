@@ -36,3 +36,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Compiled ZSH files
+**/*.zwc
+

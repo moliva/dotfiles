@@ -18,19 +18,22 @@ new_paths=
 # check if there's no init script
 if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without sourcing all zgen :)
 #if ! zgenom saved; then
-    echo "Creating a zgen save"
+    echo "Creating a zgenom save"
 
     # load zgen
     source $DOTFILES/zgen/zgenom.zsh
 
-    zgenom oh-my-zsh
+    zgenom compile ~/.zshrc
+    zgenom compile $DOTFILES/system/all.sh
+
+    zgenom ohmyzsh
 
     # autouptdate for zgen
     # zgen load unixorn/autoupdate-zgen
 
     # common plugins
-    zgenom oh-my-zsh plugins/sudo
-    zgenom oh-my-zsh plugins/command-not-found
+    zgenom ohmyzsh plugins/sudo
+    zgenom ohmyzsh plugins/command-not-found
     #zgenom load zsh-users/zsh-completions src/_ack
     # zgen load zsh-users/zsh-completions src/_ps
     # zgen load zsh-users/zsh-completions src/_watch
@@ -49,7 +52,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # zgen load zsh-users/zsh-completions src/_cask
 
     # build tool plugins 
-    zgenom oh-my-zsh plugins/git
+    zgenom ohmyzsh plugins/git
     # zgen load github/hub etc/hub.zsh_completion
     # zgen load zsh-users/zsh-completions src/_gist
     # zgen oh-my-zsh plugins/heroku
@@ -89,7 +92,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # zgenom load $DOTFILES zsh/plugins
 
     # theme
-    zgenom oh-my-zsh themes/robbyrussell
+    zgenom ohmyzsh themes/robbyrussell
 
     # save all to init script
     zgenom save

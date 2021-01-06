@@ -29,6 +29,8 @@ systemconfig() {
 }
 
 
+alias loadzgenom="source $DOTFILES/zgen/zgenom.zsh"
+
 
 # *************************************************************
 # climode
@@ -77,7 +79,7 @@ vimode
 # env
 # *************************************************************
 
-
+#export ZGEN_PREZTO_LOAD_DEFAULT=0
 
 # Make vim the default editor.
 if [[ -z $EDITOR ]]; then
