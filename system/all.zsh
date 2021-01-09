@@ -1,5 +1,6 @@
 # #!/usr/bin/env zsh
 
+
 # *************************************************************
 # common-aliases
 # *************************************************************
@@ -402,4 +403,10 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 alias tmuxconfig="edit $HOME/.tmux.conf"
 alias tmuxkill="tmux kill-session -t"
+
+# *************************************************************
+# starship
+# *************************************************************
+
+_evalcache starship init zsh
 

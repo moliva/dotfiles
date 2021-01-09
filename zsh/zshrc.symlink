@@ -13,7 +13,11 @@ new_paths=($DOTFILES/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
-ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${HOME}/.localrc)
+ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${HOME}/.localrc $DOTFILES/system/all.zsh)
+
+autoload -Uz compinit
+compinit
+setopt auto_cd
 
 # load zgen
 source $DOTFILES/zgen/zgenom.zsh
@@ -28,7 +32,7 @@ if ! zgenom saved; then
     zgenom compile $DOTFILES/system/all.zsh
     #for fname ($DOTFILES/system/functions/*) zgenom compile $fname
 
-    zgenom ohmyzsh
+    #zgenom ohmyzsh
 
     # common plugins
     zgenom ohmyzsh plugins/sudo
@@ -36,14 +40,14 @@ if ! zgenom saved; then
     # zgen load zsh-users/zsh-completions src/_ps
     # zgen load zsh-users/zsh-completions src/_watch
 
-    zgenom load zsh-users/zsh-syntax-highlighting
-    zgenom load mroth/evalcache
-
     # build tool plugins 
     zgenom ohmyzsh plugins/git
 
+    zgenom load zsh-users/zsh-syntax-highlighting
+    zgenom load mroth/evalcache
+
     # theme
-    zgenom ohmyzsh themes/robbyrussell
+    #zgenom ohmyzsh themes/robbyrussell
 
     # save all to init script
     zgenom save
