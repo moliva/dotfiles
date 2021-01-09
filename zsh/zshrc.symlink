@@ -13,17 +13,19 @@ new_paths=($DOTFILES/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
+ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${HOME}/.localrc)
+
+# load zgen
+source $DOTFILES/zgen/zgenom.zsh
+
 # check if there's no init script
-if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without sourcing all zgen :)
-#if ! zgenom saved; then
+#if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without sourcing all zgen :)
+if ! zgenom saved; then
     echo "Creating a zgenom save"
 
-    # load zgen
-    source $DOTFILES/zgen/zgenom.zsh
-
-    #zgenom compile ~/.zshrc
-    #zgenom compile $DOTFILES/system/all.zsh
-    #[ -f $HOME/.localrc ] && zgenom compile ~/.localrc
+    zgenom compile ~/.zshrc
+    [ -f $HOME/.localrc ] && zgenom compile ~/.localrc
+    zgenom compile $DOTFILES/system/all.zsh
     #for fname ($DOTFILES/system/functions/*) zgenom compile $fname
 
     zgenom ohmyzsh
@@ -33,6 +35,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     zgenom ohmyzsh plugins/command-not-found
     # zgen load zsh-users/zsh-completions src/_ps
     # zgen load zsh-users/zsh-completions src/_watch
+
     zgenom load zsh-users/zsh-syntax-highlighting
     zgenom load mroth/evalcache
 
@@ -45,6 +48,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     # save all to init script
     zgenom save
 fi
+
 
 # Base16 Shell
 if [ -z "$THEME" ]; then
@@ -69,7 +73,7 @@ fi
 # load all sh system config files
 #for config ($DOTFILES/system/**/*.sh) { echo $config 1>&2; time (source $config) } > loggy.log
 #for config ($DOTFILES/system/**/*.sh) source $config
-for config ($DOTFILES/system/all.sh) source $config
+for config ($DOTFILES/system/all.zsh) source $config
 
 # source localrc
 [ -f $HOME/.localrc ] && source $HOME/.localrc
