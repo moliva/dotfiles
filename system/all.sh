@@ -29,10 +29,7 @@ systemconfig() {
 	edit $DOTFILES/system
 }
 
-
 alias loadzgenom="source $DOTFILES/zgen/zgenom.zsh"
-
-
 
 alias ls=exa
 alias cat='bat --paging=never'
@@ -68,33 +65,30 @@ vistatus() {
 	zle -N zle-keymap-select
 }
 
-vimode() {
-	# set -o vi
-	bindkey -v
+# set -o vi
+bindkey -v
 
-	export KEYTIMEOUT=1
+export KEYTIMEOUT=1
 
-	bindkey -M vicmd "^R" history-incremental-search-backward
-	bindkey -M viins "^R" history-incremental-search-backward
+bindkey -M vicmd "^R" history-incremental-search-backward
+bindkey -M viins "^R" history-incremental-search-backward
 
-	bindkey -M vicmd "/" history-incremental-search-backward
-	bindkey -M vicmd "?" history-incremental-search-forward
-	# bindkey -M vicmd "/" vi-history-search-backward
-	# bindkey -M vicmd "?" vi-history-search-forward
-	bindkey -M vicmd "n" vi-repeat-search
-	bindkey -M vicmd "N" vi-rev-repeat-search
+bindkey -M vicmd "/" history-incremental-search-backward
+bindkey -M vicmd "?" history-incremental-search-forward
+# bindkey -M vicmd "/" vi-history-search-backward
+# bindkey -M vicmd "?" vi-history-search-forward
+bindkey -M vicmd "n" vi-repeat-search
+bindkey -M vicmd "N" vi-rev-repeat-search
 
-	bindkey -M vicmd "^P" history-beginning-search-backward
-	bindkey -M vicmd "^N" history-beginning-search-forward
+bindkey -M vicmd "^P" history-beginning-search-backward
+bindkey -M vicmd "^N" history-beginning-search-forward
 
-	# trying if this fixes the issue when backspacing chars after normal mode
-	bindkey "^?" backward-delete-char
+# trying if this fixes the issue when backspacing chars after normal mode
+bindkey "^?" backward-delete-char
 
-	# this overrides bindings above
-	[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-}
+# this overrides bindings above
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-vimode
 
 
 
@@ -108,9 +102,6 @@ vimode
 if [[ -z $EDITOR ]]; then
 	export EDITOR='nvim'
 fi
-
-# Set env for workspace
-export WS_HOME=$HOME/repos
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
 export HISTSIZE='32768'
@@ -156,6 +147,8 @@ alias e="a -e"
 # functions
 # *************************************************************
 
+# fpath=($DOTFILES/system/functions $fpath)
+# for function_file ($DOTFILES/system/functions/*) autoload $(basename $function_file)
 
 b64s() {
 	echo -n $1 | base64 | ccopy
@@ -170,9 +163,10 @@ mvp() {
 
 # From https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789
 # Open man page as PDF
-function manpdf() {
-	man -t "${1}" | open -f -a /Applications/Preview.app/
-}
+#function manpdf() {
+	#man -t "${1}" | open -f -a /Applications/Preview.app/
+#}
+
 # Extra many types of compressed packages
 # Credit: http://nparikh.org/notes/zshrc.txt
 function extract() {
@@ -198,9 +192,9 @@ function extract() {
 	fi
 }
 
-function findfileswith() {
-	find . -name $1 -print | xargs grep $2
-}
+#function findfileswith() {
+#	find . -name $1 -print | xargs grep $2
+#}
 
 # autoload function for help
 autoload run-help
@@ -229,10 +223,6 @@ function cpmod() {
 
 function systemreload() {
 	for config ($DOTFILES/system/**/*.sh) source $config
-}
-
-function wacho() {
-	watch "`echo $@`"
 }
 
 
@@ -267,13 +257,14 @@ gtoprepo() {
   cd `git rev-parse --show-toplevel`
 }
 
+
+# grbranch () {
+#   git status -sb | sed -en 's/^## [a-za-z1-9\-_]+\.\.\.([a-za-z1-9\-_]+\/[a-za-z1-9\-_]+).*$/\1/p'
+# } 
+
 info () {
   printf "\033[00;34m$1\033[0m\n"
 }
-
-grbranch () {
-  git status -sb | sed -en 's/^## [a-za-z1-9\-_]+\.\.\.([a-za-z1-9\-_]+\/[a-za-z1-9\-_]+).*$/\1/p'
-} 
 
 grlog () {
   git fetch

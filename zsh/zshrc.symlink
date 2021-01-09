@@ -26,6 +26,7 @@ if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without s
     zgenom compile ~/.zshrc
     zgenom compile $DOTFILES/system/all.sh
     [ -f $HOME/.localrc ] && zgenom compile ~/.localrc
+    #for fname ($DOTFILES/system/functions/*) zgenom compile $fname
 
     zgenom ohmyzsh
 
