@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-
 # *************************************************************
 # common-aliases
 # *************************************************************
@@ -47,12 +46,9 @@ alias timeh=hyperfine
 #alias http-server=miniserve
 #alias license=licensor
 
-
-
 # *************************************************************
 # climode
 # *************************************************************
-
 
 function zle-line-init zle-keymap-select {
 	VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]%  %{$reset_color%}"
@@ -136,12 +132,9 @@ new_paths=
 # fasd
 # *************************************************************
 
-#eval "$(fasd --init auto)"
 _evalcache fasd --init auto
 alias v="a -e edit" 
 alias e="a -e"
-
-
 
 # *************************************************************
 # functions
@@ -159,13 +152,6 @@ mvp() {
 	mkdir -p "$last"
 	mv "$@"
 }
-
-
-# From https://medium.com/@webprolific/getting-started-with-dotfiles-43c3602fd789
-# Open man page as PDF
-#function manpdf() {
-	#man -t "${1}" | open -f -a /Applications/Preview.app/
-#}
 
 # Extra many types of compressed packages
 # Credit: http://nparikh.org/notes/zshrc.txt
@@ -191,10 +177,6 @@ function extract() {
 		echo "'$1' is not a valid file to extract"
 	fi
 }
-
-#function findfileswith() {
-#	find . -name $1 -print | xargs grep $2
-#}
 
 # autoload function for help
 autoload run-help
@@ -224,8 +206,6 @@ function cpmod() {
 function systemreload() {
 	for config ($DOTFILES/system/**/*.sh) source $config
 }
-
-
 
 # *************************************************************
 # git
@@ -257,29 +237,28 @@ gtoprepo() {
   cd `git rev-parse --show-toplevel`
 }
 
-
 # grbranch () {
 #   git status -sb | sed -en 's/^## [a-za-z1-9\-_]+\.\.\.([a-za-z1-9\-_]+\/[a-za-z1-9\-_]+).*$/\1/p'
 # } 
 
-info () {
-  printf "\033[00;34m$1\033[0m\n"
-}
+# info () {
+#   printf "\033[00;34m$1\033[0m\n"
+# }
 
-grlog () {
-  git fetch
-
-  local remote_current_branch=`grbranch`
-
-  info "*** incoming commits"
-  info "***********************************************"
- 
-  git log ..$remote_current_branch | cat 
-
-  info "*** outgoing commits"
-  info "***********************************************"
-  git log $remote_current_branch.. | cat
-}
+# grlog () {
+#   git fetch
+# 
+#   local remote_current_branch=`grbranch`
+# 
+#   info "*** incoming commits"
+#   info "***********************************************"
+#  
+#   git log ..$remote_current_branch | cat 
+# 
+#   info "*** outgoing commits"
+#   info "***********************************************"
+#   git log $remote_current_branch.. | cat
+# }
 
 alias gmlog="git log --author=`git config user.name`"
 
@@ -310,20 +289,19 @@ alias gcontainscommit="git branch -r --contains"
 
 alias gsubpull="git submodule foreach git pull origin head"
 
-gsetremotebranch() {
-	local_branch=$(git branch | grep \* | cut -d ' ' -f2)
-	git branch --set-upstream-to="origin/$local_branch" "$local_branch"
-}
-
-ggetremotebranch() {
-	git branch -vv | grep \*
-}
-
+# gsetremotebranch() {
+# 	local_branch=$(git branch | grep \* | cut -d ' ' -f2)
+# 	git branch --set-upstream-to="origin/$local_branch" "$local_branch"
+# }
+# 
+# ggetremotebranch() {
+# 	git branch -vv | grep \*
+# }
+# 
 
 # *************************************************************
 # go
 # *************************************************************
-
 
 # go lang related
 export GOPATH=$HOME/go
@@ -333,8 +311,6 @@ export GOPATH=$HOME/go
 #export PATH=$PATH:$GO_INSTALLATION/libexec/bin:$GOPATH/bin
 #export PATH=$PATH:`brew --prefix go`/libexec/bin:$GOPATH/bin
 export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
-
-
 
 # *************************************************************
 # groovy
@@ -346,30 +322,18 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 #export GROOVY_HOME=`brew --prefix groovy`/libexec
 export GROOVY_HOME=/usr/local/Cellar/groovy/3.0.7/libexec
 
-
-
 # *************************************************************
 # java
 # *************************************************************
 
 # java home related
 #export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-function setjavahome() {
-	export JAVA_HOME=`/usr/libexec/java_home -v $1`
-}
+#function setjavahome() {
+	# export JAVA_HOME=`/usr/libexec/java_home -v $1`
+#}
 
-alias java7="setjavahome 1.7"
-alias java8="setjavahome 1.8"
-
-
-
-# *************************************************************
-# node
-# *************************************************************
-
-alias wpc='./node_modules/.bin/webpack-cli'
-
-
+#alias java7="setjavahome 1.7"
+#alias java8="setjavahome 1.8"
 
 # *************************************************************
 # nvm
@@ -378,21 +342,29 @@ alias wpc='./node_modules/.bin/webpack-cli'
 # nvm aliases
 export NVM_DIR=$HOME/.nvm
 
-# Add every binary that requires nvm, npm or node to run to an array of node globals
-NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
-NODE_GLOBALS+=("node")
-NODE_GLOBALS+=("nvm")
-
 # Lazy-loading nvm + npm on node globals call
 function load_nvm () {
   [ -s "usr/local/opt/nvm/nvm.sh" ] && source "usr/local/opt/nvm/nvm.sh"
   #[ -s "$(brew --prefix nvm)/nvm.sh" ] && source "$(brew --prefix nvm)/nvm.sh"
 }
 
-# Making node global trigger the lazy loading
-for cmd in "${NODE_GLOBALS[@]}"; do
-  eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-done
+enable_smart_load_nvm() {
+	NODE_GLOBALS_CACHED=$HOME/.node_globals_cache
+	
+	if [ ! -f "$NODE_GLOBALS_CACHED" ]; then
+		find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq > "$NODE_GLOBALS_CACHED"
+	fi
+	
+	# Add every binary that requires nvm, npm or node to run to an array of node globals
+	NODE_GLOBALS=(`cat "$NODE_GLOBALS_CACHED"`)
+	NODE_GLOBALS+=("node")
+	NODE_GLOBALS+=("nvm")
+	
+	# Making node global trigger the lazy loading
+	for cmd in "${NODE_GLOBALS[@]}"; do
+	  eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+	done
+}
 
 
 # *************************************************************
@@ -418,9 +390,9 @@ done
 # rust
 # *************************************************************
 
+# source $HOME/.cargo/env
+# ˆ inlining above mentioned source
 export PATH="$HOME/.cargo/bin:$PATH"
-
-source $HOME/.cargo/env
 
 # *************************************************************
 # tmux
@@ -431,10 +403,3 @@ source $HOME/.cargo/env
 alias tmuxconfig="edit $HOME/.tmux.conf"
 alias tmuxkill="tmux kill-session -t"
 
-
-# *************************************************************
-# travis
-# *************************************************************
-
-# added by travis gem
-#[ -f $HOME/.travis/travis.sh ] && source $HOME/.travis/travis.sh
