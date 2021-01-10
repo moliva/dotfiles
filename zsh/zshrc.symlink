@@ -34,6 +34,9 @@ if ! zgenom saved; then
 
     #zgenom ohmyzsh
 
+    # theme
+    #zgenom ohmyzsh themes/robbyrussell
+
     # common plugins
     zgenom ohmyzsh plugins/sudo
     zgenom ohmyzsh plugins/command-not-found
@@ -46,9 +49,6 @@ if ! zgenom saved; then
     zgenom load zsh-users/zsh-syntax-highlighting
     zgenom load zsh-users/zsh-autosuggestions
     zgenom load mroth/evalcache
-
-    # theme
-    #zgenom ohmyzsh themes/robbyrussell
 
     # save all to init script
     zgenom save
