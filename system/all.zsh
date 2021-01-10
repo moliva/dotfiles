@@ -86,7 +86,7 @@ bindkey "^?" backward-delete-char
 # this overrides bindings above
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-
+bindkey '^j' autosuggest-accept
 
 
 # *************************************************************

@@ -44,6 +44,7 @@ if ! zgenom saved; then
     zgenom ohmyzsh plugins/git
 
     zgenom load zsh-users/zsh-syntax-highlighting
+    zgenom load zsh-users/zsh-autosuggestions
     zgenom load mroth/evalcache
 
     # theme
