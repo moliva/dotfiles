@@ -13,17 +13,43 @@ new_paths=($DOTFILES/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
+# recreate zgenom files on edit
 ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${HOME}/.localrc $DOTFILES/system/all.zsh)
 
+# load compinit (previously done by ohmyzsh)
 autoload -Uz compinit
 compinit
+
+# defaults in ohmyzsh + misc.zsh
 setopt auto_cd
+autoload -Uz is-at-least
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
+setopt long_list_jobs
+export PAGER=less
+export LESS=-R
+alias _='sudo '
+setopt interactivecomments
+## History file configuration
+[ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
+[ "$HISTSIZE" -lt 50000 ] && HISTSIZE=50000
+[ "$SAVEHIST" -lt 10000 ] && SAVEHIST=10000
+
+## History command configuration
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data
+
 
 # load zgen
 source $DOTFILES/zgen/zgenom.zsh
 
 # check if there's no init script
-#if ! source "$HOME/.zgen/init.zsh"; then # load zgen init if it exists without sourcing all zgen :)
 if ! zgenom saved; then
     echo "Creating a zgenom save"
 
@@ -32,10 +58,10 @@ if ! zgenom saved; then
     zgenom compile $DOTFILES/system/all.zsh
     #for fname ($DOTFILES/system/functions/*) zgenom compile $fname
 
-    #zgenom ohmyzsh
+    #zgenom ohmyzsh # opting out (!)
 
     # theme
-    #zgenom ohmyzsh themes/robbyrussell
+    #zgenom ohmyzsh themes/robbyrussell # nees ohmyzsh to work
 
     # common plugins
     zgenom ohmyzsh plugins/sudo
@@ -54,7 +80,6 @@ if ! zgenom saved; then
     zgenom save
 fi
 
-
 # Base16 Shell
 if [ -z "$THEME" ]; then
 	export THEME="base16-harmonic"
@@ -68,10 +93,9 @@ if [ -z "$BASE16_SHELL" ]; then # if base16 is already working, don't source it 
 	[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 fi
 
+# only load base16 on interactive shell and if not in tmux env (already loaded)
 if [ -n "$PS1" ] && [ -z "$TMUX" ]; then # if statement guards adding these helpers for non-interative shells
-	# avoid re evaluating base16 if we are already inside tmux
 	BASE16_SHELL_SET_BACKGROUND=false
-	#eval "$($DOTFILES/themes/base16-shell/profile_helper.sh)"
 	_evalcache $DOTFILES/themes/base16-shell/profile_helper.sh
 fi
 

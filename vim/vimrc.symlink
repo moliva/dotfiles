@@ -838,3 +838,17 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 hi Normal ctermbg=none
 hi NonText ctermbg=none
 
+nmap <nowait> <C-w> :w<CR>
+nmap <nowait> <C-x> :x<CR>
+nmap <nowait>  <C-q> :q<CR>
+nmap <nowait> <C-q><C-q> :qa!<CR>
+
+vmap <nowait> <C-w> <Esc>:w<CR>
+vmap <nowait> <C-x> <Esc>:x<CR>
+vmap <nowait> <C-q> <Esc>:q<CR>
+vmap <nowait> <C-q><C-q> <Esc>:qa!<CR>
+
+imap <nowait> <C-w> <Esc>:w<CR>
+imap <nowait> <C-x> <Esc>:x<CR>
+imap <nowait> <C-q> <Esc>:q<CR>
+imap <nowait> <C-q><C-q> <Esc>:qa!<CR>

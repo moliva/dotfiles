@@ -17,7 +17,11 @@ alias vimconfig="edit ~/.vimrc"
 alias l='ls -l -a -h'
 
 # copies the input to clipboard, best used as pipeline in cmd shell
-alias ccopy="tr -d '\n' | pbcopy"
+#alias -g ccopy="tr -d '\n' | pbcopy"
+function ccopy() {
+	tr -d '\n' | pbcopy
+}
+
 alias lgrep="l | grep $1"
 alias cpwd="pwd | ccopy"
 
@@ -35,7 +39,9 @@ alias ls=exa
 alias cat='bat --paging=never'
 alias batp='bat --paging==always'
 
-#alias ps=procs alias cat=bat alias less=bat alias grep=ripgrep
+#alias ps=procs
+#alias cat=bat
+#alias less=bat
 #alias nano=kibi
 #alias find=fd
 alias duh=dust
@@ -46,6 +52,9 @@ alias timeh=hyperfine
 #alias objdump=bringrep
 #alias http-server=miniserve
 #alias license=licensor
+alias -g grep=rg
+
+alias grepo=/usr/bin/grep
 
 # *************************************************************
 # climode
@@ -65,7 +74,8 @@ vistatus() {
 # set -o vi
 bindkey -v
 
-export KEYTIMEOUT=1
+#export KEYTIMEOUT=1
+export KEYTIMEOUT=40 # needed to change this value to sth greater than before
 
 bindkey -M vicmd "^R" history-incremental-search-backward
 bindkey -M viins "^R" history-incremental-search-backward
@@ -408,4 +418,31 @@ alias tmuxkill="tmux kill-session -t"
 # *************************************************************
 
 _evalcache starship init zsh
+
+# zsh-autocompletions
+
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS="vi-change vi-delete $ZSH_AUTOSUGGEST_IGNORE_WIDGETS"
+
+
+# enable vim-surround mode in zsh
+bindkey -v
+autoload -U select-quoted select-bracketed surround
+zle -N select-quoted
+zle -N select-bracketed
+zle -N delete-surround surround
+zle -N add-surround surround
+zle -N change-surround surround
+
+for m in visual viopp; do
+    for c in {a,i}{\',\",\`}; do
+        bindkey -M $m $c select-quoted
+    done
+    for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+        bindkey -M $m $c select-bracketed
+    done
+done
+bindkey -a cs change-surround
+bindkey -a ds delete-surround
+bindkey -a ys add-surround
+bindkey -M visual S add-surround
 
