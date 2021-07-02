@@ -307,7 +307,9 @@ alias gsubpull="git submodule foreach git pull origin head"
 # ggetremotebranch() {
 # 	git branch -vv | grep \*
 # }
-# 
+
+alias gr='git review'
+alias gru='git review -u'
 
 # *************************************************************
 # go
@@ -381,6 +383,7 @@ enable_smart_load_nvm() {
 # python
 # *************************************************************
 export PATH=$PATH:$HOME/Library/Python/3.7/bin
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 loadpyenv() {
 	#eval "$(pyenv init -)"
@@ -445,4 +448,15 @@ bindkey -a cs change-surround
 bindkey -a ds delete-surround
 bindkey -a ys add-surround
 bindkey -M visual S add-surround
+
+# *************************************************************
+# *********** WASMIME *************
+# *************************************************************
+
+
+
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:$PATH"
 

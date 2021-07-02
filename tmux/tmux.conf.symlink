@@ -17,7 +17,11 @@ bind a send-prefix
 # Activity Monitoring
 setw -g monitor-activity on
 set -g visual-activity off
-set-window-option -g window-status-activity-style fg=default,bold
+#set-window-option -g window-status-activity-style fg=default,bold
+#set-window-option -g window-status-activity-style fg=colour130
+#set-window-option -g window-status-activity-style fg=colour179
+set-window-option -g window-status-activity-style fg=colour222
+#set-window-option -g window-status-activity-style fg=colour214,dim
 # set-window-option -gw window-status-activity-fg default
 # set-option -gw window-status-activity-bg purple
 
