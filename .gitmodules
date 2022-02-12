@@ -1,6 +1,6 @@
 [submodule "zgen"]
 	path = zgen
-	url = git@github.com:tarjoilija/zgen.git
+	url = git@github.com:jandamm/zgenom.git
 [submodule "system/studio"]
 	path = system/studio
 	url = https://github.com/moliva/studio-utils.git

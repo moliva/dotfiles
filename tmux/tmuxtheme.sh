@@ -25,6 +25,7 @@ set-option -g status-style default,bg=default,fg=$tm_color_active
 
 # default window title colors
 set-window-option -g window-status-style fg=$tm_color_inactive,bg=default
+set -g status-bg default
 #set-window-option -g window-status-bg default
 set -g window-status-format "#I‣#W"
 

@@ -2,6 +2,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set autoread " auto read files when changed
 
+" see https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
 " let Vundle manage Vundle, required
 Plug 'VundleVim/Vundle.vim'

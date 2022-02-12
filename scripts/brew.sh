@@ -5,6 +5,10 @@ brew tap caskroom/cask
 brew install brew-cask
 brew tap caskroom/versions
 
+
+# starship cli
+brew install starship
+
 # gem
 brew install brew-gem
 
