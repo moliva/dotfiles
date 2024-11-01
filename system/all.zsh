@@ -1,5 +1,74 @@
 # #!/usr/bin/env zsh
 
+# this is for nvim lualine plugin to use the correct theme
+export BASE16_THEME=tomorrow-night
+
+# adding path directory for custom scripts
+new_paths=(/usr/local/bin $HOME/.git-utils/bin /usr/local/opt/openjdk/bin)
+path=($path ${new_paths:|path})
+new_paths=
+
+export REPOS="$HOME/repos"
+
+# docker
+export DOCKER_BUILDKIT=0
+export COMPOSE_DOCKER_CLI_BUILD=0
+
+alias guppush='git push moliva HEAD'
+function gupcreateremote() {
+  local repo_name=$(basename `git rev-parse --show-toplevel`)
+  git remote add moliva "https://github.com/moliva/$repo_name"
+}
+
+export NVIM_PLUGIN_HOME='/Users/moliva/.local/share/nvim/site/pack/packer/start'
+
+export DOCKER_HOME_REGISTRY=raspberrypi.manatee-royal.ts.net:5000
+
+
+# clean and re install node modules
+alias npmrefresh="rm -fr node_modules && npm i"
+
+
+function ya() {
+  tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+  yazi --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
+
+alias resetgpg="killall gpg-agent && gpg-agent --daemon --use-standard-socket --pinentry-program /usr/local/bin/pinentry-mac &"
+
+# In order for gpg to find gpg-agent, gpg-agent must be running, and there must be an env
+# variable pointing GPG to the gpg-agent socket. This little script, which must be sourced
+# in your shell's init script (ie, .bash_profile, .zshrc, whatever), will either start
+# gpg-agent or set up the GPG_AGENT_INFO variable if it's already running.
+
+# Add the following to your shell init to set up gpg-agent automatically for every shell
+if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+    source ~/.gnupg/.gpg-agent-info
+    export GPG_AGENT_INFO
+else
+    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info 2> /dev/null)
+fi
+
+. "$HOME/.cargo/env"
+
+# pnpm
+export PNPM_HOME="/Users/moliva/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+export RUSTC_WRAPPER=sccache
+
+ulimit -n 2048
+
+
 
 # *************************************************************
 # common-aliases
@@ -36,12 +105,13 @@ systemconfig() {
 alias loadzgenom="source $DOTFILES/zgen/zgenom.zsh"
 
 alias ls=exa
-alias cat='bat --paging=never'
+alias ll='exa -alh'
+alias tree='exa --tree'
+# alias cat='bat --paging=never'
+alias cat='bat -p'
 alias batp='bat --paging==always'
 
 #alias ps=procs
-#alias cat=bat
-#alias less=bat
 #alias nano=kibi
 #alias find=fd
 alias duh=dust
@@ -52,7 +122,7 @@ alias timeh=hyperfine
 #alias objdump=bringrep
 #alias http-server=miniserve
 #alias license=licensor
-alias -g grep=rg
+#alias -g grep=rg
 
 alias grepo=/usr/bin/grep
 
@@ -95,6 +165,7 @@ bindkey "^?" backward-delete-char
 
 # this overrides bindings above
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 
 bindkey '^j' autosuggest-accept
 
@@ -145,6 +216,8 @@ new_paths=
 _evalcache fasd --init auto
 alias v="a -e edit" 
 alias e="a -e"
+alias c="a -e code"
+alias o="a -e open"
 
 # *************************************************************
 # functions
@@ -243,6 +316,10 @@ gprune() {
   git fetch --prune
 }
 
+groot() {
+  cd `git rev-parse --show-toplevel`
+}
+
 gtoprepo() {
   cd `git rev-parse --show-toplevel`
 }
@@ -273,11 +350,11 @@ gtoprepo() {
 alias gmlog="git log --author=`git config user.name`"
 
 gcommit () {
-	git commit -m "`echo $@`"
+	git commit -S -m "`echo $@`"
 }
 
 gncommit () {
-	git commit -n -m "`echo $@`"
+	git commit -S -n -m "`echo $@`"
 }
 
 alias gaddall="git add --all"
@@ -290,6 +367,8 @@ alias gan="git add -n"
 alias gustash="git stash save --include-untracked"
 alias glstash="git stash list | cat"
 # alias gpstash="git stash pop"
+
+alias gopen="git browse -- ."
 
 alias glasthash='git log -n 1 --pretty=format:"%h" | ccopy &&  echo `git log -n 1 --pretty=format:"%an - %s - %h"`'
 alias glastdiff="git diff head~1 head"
@@ -307,6 +386,8 @@ alias gsubpull="git submodule foreach git pull origin head"
 # ggetremotebranch() {
 # 	git branch -vv | grep \*
 # }
+
+alias gdiffstash=git diff stash@{0}
 
 alias gr='git review'
 alias gru='git review -u'
@@ -356,9 +437,12 @@ export NVM_DIR=$HOME/.nvm
 
 # Lazy-loading nvm + npm on node globals call
 function load_nvm () {
-  [ -s "usr/local/opt/nvm/nvm.sh" ] && source "usr/local/opt/nvm/nvm.sh"
+  #[ -s "usr/local/opt/nvm/nvm.sh" ] && source "usr/local/opt/nvm/nvm.sh"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   #[ -s "$(brew --prefix nvm)/nvm.sh" ] && source "$(brew --prefix nvm)/nvm.sh"
 }
+
+  #[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 enable_smart_load_nvm() {
 	NODE_GLOBALS_CACHED=$HOME/.node_globals_cache
@@ -371,12 +455,22 @@ enable_smart_load_nvm() {
 	NODE_GLOBALS=(`cat "$NODE_GLOBALS_CACHED"`)
 	NODE_GLOBALS+=("node")
 	NODE_GLOBALS+=("nvm")
+	# NODE_GLOBALS+=("vim")
 	
 	# Making node global trigger the lazy loading
 	for cmd in "${NODE_GLOBALS[@]}"; do
 	  eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
 	done
 }
+
+# enable_smart_load_nvm
+
+
+
+# *************************************************************
+# fnm
+# *************************************************************
+eval "$(fnm env)"
 
 
 # *************************************************************

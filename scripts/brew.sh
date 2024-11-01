@@ -10,7 +10,7 @@ brew tap caskroom/versions
 brew install starship
 
 # gem
-brew install brew-gem
+# brew install brew-gem
 
 # cli tools
 brew install ack
@@ -18,13 +18,13 @@ brew install gawk # for better tmux copycat support
 brew install tree
 brew install wget
 brew install pstree
-brew install ctags
+# brew install ctags
 brew cask install ngrok
 brew cask install alacritty
 
 # development server setup
 brew install docker
-brew install boot2docker
+# brew install boot2docker
 # brew install nginx
 # brew install dnsmasq
 
@@ -35,7 +35,7 @@ brew install hub
 brew install vim --override-system-vim
 brew install reattach-to-user-namespace
 brew install tmux
-brew gem install tmuxinator
+# brew gem install tmuxinator
 brew install zsh
 brew install highlight
 # brew install z
@@ -47,18 +47,18 @@ brew install jq # filter/accessor for command line for json and other formats
 brew install entr
 
 # misc
-brew install fortune
-brew install cowsay
+# brew install fortune
+# brew install cowsay
 
 # filters for enhancd
 brew tap jhawthorn/fzy
 brew install fzy ccat
 
 # building tools
-brew install nvm
+# brew install nvm # use fnm
 # brew install npm # use nvm to install node to avoid errors
 # brew install ant
-brew install maven
+# brew install maven
 # brew install gradle
 # brew install leiningen
 # brew install ghc
@@ -100,7 +100,7 @@ brew cask install quicklook-json
 brew cask install keycastr
 brew cask install licecap
 brew cask install utorrent
-brew cask install skype
+# brew cask install skype
 brew cask install calibre
 brew cask install adobe-reader
 brew cask install unrarx
@@ -113,11 +113,11 @@ brew cask install tuxera-ntfs
 brew cask install android-file-transfer
 
 # browsers
-brew cask install firefox
+# brew cask install firefox
 brew cask install google-chrome
 
 # editors
-brew cask install atom
+# brew cask install atom
 # brew cask install sublime-text3
 # brew cask install lighttable
 

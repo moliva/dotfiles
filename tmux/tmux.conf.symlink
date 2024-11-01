@@ -83,8 +83,10 @@ bind -r K resize-pane -U 10
 bind -r L resize-pane -R 10
 
 # move window left or right
-bind -r C-j swap-window -t -1
-bind -r C-k swap-window -t +1
+bind -r C-j run "tmux swap-window -t -1 && tmux select-window -t $(expr '#I' - 1)"
+bind -r C-k run "tmux swap-window -t +1 && tmux select-window -t $(expr '#I' + 1)"
+# bind -r C-j swap-window -t -1
+# bind -r C-k swap-window -t +1
 
 # enable mouse support for switching panes/windows
 # NOTE: This breaks selecting/copying text on OSX
@@ -123,6 +125,27 @@ bind -Tcopy-mode-vi y send -X copy-selection
 bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
 bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
 
+# fuzzy finds a window in the current session
+bind C-f display-popup -h '70%' -w '70%' -E "tmux select-window -t $(tmux list-windows | grep -v '(active)' | awk '{print($1, $2, $3, $4) }' | fzf --bind 'ctrl-u:preview-half-page-up' --bind 'ctrl-d:preview-half-page-down' --reverse --header 'Select window' --header-first --preview 'echo {} | awk \"{ print(\\\"'$(tmux display-message -p '#S')':\\\"substr(\\$1, 1, length(\\$1) -1)) }\" | xargs tmux capture-pane -pt ' --preview-window '70%' | awk '{ print substr($1, 1, length($1) - 1)}')"
+
+# fuzzy finds a session
+bind \' display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
+bind C-q switch-client -l
+
+# makes a 3 pane split for editor, server and console in the current window
+bind M run "tmux split-window -v -p 30 -c '#{pane_current_path}' && tmux split-window -h -p 50 -c '#{pane_current_path}' && tmux select-pane -t 1"
+
+# bind o command-prompt -p "New Status: " "set -g status-left '%1'"
+
+# create new session prompting for a name
+bind o command-prompt -p "New session: " "new-session -s '%1'"
+
+# select-pane -t 1
+bind f1 run "tmux select-pane -t 1"
+bind f2 run "tmux select-pane -t 2"
+bind f3 run "tmux select-pane -t 3"
+bind f4 run "tmux select-pane -t 4"
+
 ##############################
 ### Plugin management ###
 ##############################
@@ -132,6 +155,12 @@ set -g @resurrect-strategy-vim 'session'
 set -g @resurrect-strategy-nvim 'session'
 
 set -g @continuum-restore 'on'
+set -g @continuum-boot-options 'alacritty'
+
+
+# tmux-jump
+set -g @jump-key 'c'
+
 
 ##############################
 ### Color & Style Settings ###
@@ -139,6 +168,15 @@ set -g @continuum-restore 'on'
 
 source $DOTFILES/tmux/tmuxtheme.sh
 #source $DOTFILES/tmux/tmuxtheme_nounicode.sh
+
+##############################
+### yazi config for images ###
+##############################
+
+# set -g allow-passthrough on
+
+set -ga update-environment TERM
+set -ga update-environment TERM_PROGRAM
 
 ##############################
 ### Tmux plugins ###
@@ -160,6 +198,8 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-resurrect' # needs tpope/obsession.vim
 set -g @plugin 'tmux-plugins/tmux-continuum'
+
+set -g @plugin 'schasse/tmux-jump'
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'

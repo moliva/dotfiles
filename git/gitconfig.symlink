@@ -7,7 +7,7 @@
 [include]
 	path = ~/.gitconfig.local
 [hub]
-        protocol = git
+	protocol = ssh
 [alias]
         show-files = diff-tree --no-commit-id --name-only -r
 	perri-chyck = cherry-pick
@@ -20,3 +20,9 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = true
+[init]
+	defaultBranch = main

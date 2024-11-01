@@ -110,3 +110,4 @@ for config ($DOTFILES/system/all.zsh) source $config
 # Turns on profiling of zsh startup, uncomment first line as well as this
 #zprof
 #zmodload -u zsh/zprof
+
