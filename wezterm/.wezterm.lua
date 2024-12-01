@@ -70,10 +70,10 @@ local get_random_entry = function(tbl)
 end
 
 local get_color_scheme = function()
+	-- return is_dark() and "Tomorrow (dark) (terminal.sexy)" or "Tomorrow (light) (terminal.sexy)"
 	return is_dark() and "Harmonic16 Dark (base16)" or "Harmonic16 Light (base16)"
 end
 
---- M.get_background
 -- @param dark (int) Represents the darkness level of the background.
 -- @param light (int) Represents the lightness level of the background.
 -- @return The computed background color.
@@ -83,10 +83,7 @@ local get_background = function(dark, light)
 
 	return {
 		source = {
-			Gradient = {
-				colors = { is_dark() and "#0b1c2c" or "#f4e9e0" },
-				-- colors = { is_dark() and "#000000" or "#ffffff" },
-			},
+			Color = is_dark() and "#0b1c2c" or "#f4e9e0",
 		},
 
 		width = "100%",
@@ -95,6 +92,39 @@ local get_background = function(dark, light)
 		opacity = is_dark() and dark or light,
 	}
 end
+
+local function change_opacity(window, amount)
+	local overrides = window:effective_config()
+	local backgrounds = overrides.background or {}
+	local background = backgrounds[0] or {}
+	local current_opacity = background.opacity or window:effective_config().background[1].opacity
+
+	local effective_background = window:effective_config().background[1]
+
+	local new_opacity = current_opacity + amount > 1 and 1
+		or (current_opacity + amount < 0 and 0 or current_opacity + amount)
+
+	local new_overrides = {
+		background = {
+			{
+				source = effective_background.source,
+				width = effective_background.width,
+				height = effective_background.height,
+				opacity = new_opacity,
+			},
+		},
+	}
+
+	window:set_config_overrides(new_overrides)
+end
+
+wezterm.on("less-opacity", function(window, _)
+	change_opacity(window, -0.05)
+end)
+
+wezterm.on("more-opacity", function(window, _)
+	change_opacity(window, 0.05)
+end)
 
 ---@type Config
 ---@diagnostic disable: missing-fields
@@ -143,7 +173,7 @@ local config = {
 	},
 
 	set_environment_variables = {
-		BAT_THEME = is_dark() and "Catppuccin-mocha" or "Catppuccin-latte",
+		BAT_THEME = get_color_scheme(),
 		LC_ALL = "en_US.UTF-8",
 		-- TODO: audit what other variables are needed
 	},
@@ -259,6 +289,17 @@ local config = {
 			action = act.Multiple({
 				multiple_actions("tmux a || tmux\r"),
 			}),
+		},
+
+		{
+			mods = "CMD|CTRL",
+			key = "-",
+			action = wezterm.action.EmitEvent("less-opacity"),
+		},
+		{
+			mods = "CMD|CTRL",
+			key = "=",
+			action = wezterm.action.EmitEvent("more-opacity"),
 		},
 
 		-- open yazi here
