@@ -80,28 +80,7 @@ if ! zgenom saved; then
     zgenom save
 fi
 
-# Base16 Shell
-if [ -z "$THEME" ]; then
-	export THEME="base16-harmonic"
-fi
-if [ -z "$BACKGROUND" ]; then
-	export BACKGROUND="dark"
-fi
-
-if [ -z "$BASE16_SHELL" ]; then # if base16 is already working, don't source it again
-	BASE16_SHELL="$DOTFILES/themes/base16-shell/scripts/$THEME-$BACKGROUND.sh"
-	[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
-fi
-
-# only load base16 on interactive shell and if not in tmux env (already loaded)
-if [ -n "$PS1" ] && [ -z "$TMUX" ]; then # if statement guards adding these helpers for non-interative shells
-	BASE16_SHELL_SET_BACKGROUND=false
-	_evalcache $DOTFILES/themes/base16-shell/profile_helper.sh
-fi
-
 # load all sh system config files
-#for config ($DOTFILES/system/**/*.sh) { echo $config 1>&2; time (source $config) } > loggy.log
-#for config ($DOTFILES/system/**/*.sh) source $config
 for config ($DOTFILES/system/all.zsh) source $config
 
 # source localrc

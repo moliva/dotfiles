@@ -4,7 +4,7 @@
 export BASE16_THEME=tomorrow-night
 
 # adding path directory for custom scripts
-new_paths=(/usr/local/bin $HOME/.git-utils/bin /usr/local/opt/openjdk/bin)
+new_paths=(/opt/homebrew/bin $HOME/.git-utils/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
@@ -39,7 +39,7 @@ function ya() {
 }
 
 
-alias resetgpg="killall gpg-agent && gpg-agent --daemon --use-standard-socket --pinentry-program /usr/local/bin/pinentry-mac &"
+alias resetgpg="killall gpg-agent && gpg-agent --daemon --use-standard-socket --pinentry-program /opt/homebrew/bin/pinentry-mac &"
 
 # In order for gpg to find gpg-agent, gpg-agent must be running, and there must be an env
 # variable pointing GPG to the gpg-agent socket. This little script, which must be sourced
@@ -204,7 +204,7 @@ export HELPDIR=/usr/local/share/zsh/help
 
 # adding basic bin directories to PATH
 # TODO: is this necessary?
-new_paths=(/usr/local/bin /usr/bin /bin /usr/sbin /sbin $HOME/bin)
+new_paths=(/usr/bin /bin /usr/sbin /sbin $HOME/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
@@ -213,11 +213,11 @@ new_paths=
 # fasd
 # *************************************************************
 
-_evalcache fasd --init auto
-alias v="a -e edit" 
-alias e="a -e"
-alias c="a -e code"
-alias o="a -e open"
+# _evalcache fasd --init auto
+# alias v="a -e edit" 
+# alias e="a -e"
+# alias c="a -e code"
+# alias o="a -e open"
 
 # *************************************************************
 # functions
@@ -295,7 +295,7 @@ function systemreload() {
 # *************************************************************
 
 # git aliases
-alias git=hub
+# alias git=hub
 
 alias gpush="git push -u origin head"
 
@@ -413,7 +413,7 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 #GROOVY_INSTALLATION={ _evalcache brew --prefix groovy }
 #export GROOVY_HOME=$GROOVY_INSTALLATION/libexec
 #export GROOVY_HOME=`brew --prefix groovy`/libexec
-export GROOVY_HOME=/usr/local/Cellar/groovy/3.0.7/libexec
+# export GROOVY_HOME=/usr/local/Cellar/groovy/3.0.7/libexec
 
 # *************************************************************
 # java
@@ -429,48 +429,12 @@ export GROOVY_HOME=/usr/local/Cellar/groovy/3.0.7/libexec
 #alias java8="setjavahome 1.8"
 
 # *************************************************************
-# nvm
-# *************************************************************
-
-# nvm aliases
-export NVM_DIR=$HOME/.nvm
-
-# Lazy-loading nvm + npm on node globals call
-function load_nvm () {
-  #[ -s "usr/local/opt/nvm/nvm.sh" ] && source "usr/local/opt/nvm/nvm.sh"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  #[ -s "$(brew --prefix nvm)/nvm.sh" ] && source "$(brew --prefix nvm)/nvm.sh"
-}
-
-  #[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-enable_smart_load_nvm() {
-	NODE_GLOBALS_CACHED=$HOME/.node_globals_cache
-	
-	if [ ! -f "$NODE_GLOBALS_CACHED" ]; then
-		find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq > "$NODE_GLOBALS_CACHED"
-	fi
-	
-	# Add every binary that requires nvm, npm or node to run to an array of node globals
-	NODE_GLOBALS=(`cat "$NODE_GLOBALS_CACHED"`)
-	NODE_GLOBALS+=("node")
-	NODE_GLOBALS+=("nvm")
-	# NODE_GLOBALS+=("vim")
-	
-	# Making node global trigger the lazy loading
-	for cmd in "${NODE_GLOBALS[@]}"; do
-	  eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-	done
-}
-
-# enable_smart_load_nvm
-
-
-
-# *************************************************************
 # fnm
 # *************************************************************
-eval "$(fnm env)"
+# eval "$(fnm env)"
+eval "$(fnm env --use-on-cd --shell zsh --corepack-enabled --resolve-engines)"
+
+
 
 
 # *************************************************************
