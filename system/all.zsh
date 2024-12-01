@@ -39,7 +39,7 @@ function ya() {
 }
 
 
-alias resetgpg="killall gpg-agent && gpg-agent --daemon --use-standard-socket --pinentry-program /opt/homebrew/bin/pinentry-mac &"
+alias resetgpg="killall gpg-agent || gpg-agent --daemon --use-standard-socket --pinentry-program /opt/homebrew/bin/pinentry-mac &"
 
 # In order for gpg to find gpg-agent, gpg-agent must be running, and there must be an env
 # variable pointing GPG to the gpg-agent socket. This little script, which must be sourced
