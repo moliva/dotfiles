@@ -90,3 +90,4 @@ for config ($DOTFILES/system/all.zsh) source $config
 #zprof
 #zmodload -u zsh/zprof
 
+fpath+=${ZDOTDIR:-~}/.zsh_functions

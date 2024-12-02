@@ -4,7 +4,7 @@
 export BASE16_THEME=tomorrow-night
 
 # adding path directory for custom scripts
-new_paths=(/opt/homebrew/bin $HOME/.git-utils/bin)
+new_paths=(/opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
@@ -64,7 +64,7 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-export RUSTC_WRAPPER=sccache
+# export RUSTC_WRAPPER=sccache
 
 ulimit -n 2048
 
@@ -96,7 +96,8 @@ alias cpwd="pwd | ccopy"
 
 # force miguel to use nvim instead of vim
 alias vimo=/usr/bin/vim
-alias vim=nvim
+alias vim=$HOME/nvim-macos-arm64/bin/nvim
+# alias nvim=$HOME/nvim-macos-arm64/bin/nvim
 
 systemconfig() {
 	edit $DOTFILES/system
@@ -164,10 +165,13 @@ bindkey -M vicmd "^N" history-beginning-search-forward
 bindkey "^?" backward-delete-char
 
 # this overrides bindings above
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# TODO(miguel): the above didn't work in the new mac (mantis), using the below - 2024/11/04
+source <(fzf --zsh)
 
-
+# complete with suggestion
 bindkey '^j' autosuggest-accept
+
 
 # *************************************************************
 # env
@@ -202,22 +206,9 @@ export GREP_OPTIONS='--color=auto'
 # Setting help dir to the new zsh
 export HELPDIR=/usr/local/share/zsh/help
 
-# adding basic bin directories to PATH
-# TODO: is this necessary?
-new_paths=(/usr/bin /bin /usr/sbin /sbin $HOME/bin)
-path=($path ${new_paths:|path})
-new_paths=
 
 
-# *************************************************************
-# fasd
-# *************************************************************
 
-# _evalcache fasd --init auto
-# alias v="a -e edit" 
-# alias e="a -e"
-# alias c="a -e code"
-# alias o="a -e open"
 
 # *************************************************************
 # functions
@@ -368,7 +359,9 @@ alias gustash="git stash save --include-untracked"
 alias glstash="git stash list | cat"
 # alias gpstash="git stash pop"
 
-alias gopen="git browse -- ."
+# NOTE(miguel): not using `hub` anymore - 2024/11/05
+# alias gopen="git browse -- ."
+alias gopen="gh browse"
 
 alias glasthash='git log -n 1 --pretty=format:"%h" | ccopy &&  echo `git log -n 1 --pretty=format:"%an - %s - %h"`'
 alias glastdiff="git diff head~1 head"
@@ -403,7 +396,7 @@ export GOPATH=$HOME/go
 #GO_INSTALLATION=_evalcache brew --prefix go
 #export PATH=$PATH:$GO_INSTALLATION/libexec/bin:$GOPATH/bin
 #export PATH=$PATH:`brew --prefix go`/libexec/bin:$GOPATH/bin
-export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
+# export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 
 # *************************************************************
 # groovy
@@ -429,13 +422,16 @@ export PATH=$PATH:/usr/local/opt/go/libexec/bin:$GOPATH/bin
 #alias java8="setjavahome 1.8"
 
 # *************************************************************
+# zoxide
+# *************************************************************
+
+eval "$(zoxide init zsh)"
+
+# *************************************************************
 # fnm
 # *************************************************************
-# eval "$(fnm env)"
+
 eval "$(fnm env --use-on-cd --shell zsh --corepack-enabled --resolve-engines)"
-
-
-
 
 # *************************************************************
 # python
@@ -463,7 +459,7 @@ done
 
 # source $HOME/.cargo/env
 # ˆ inlining above mentioned source
-export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
 
 # *************************************************************
 # tmux
@@ -516,5 +512,6 @@ bindkey -M visual S add-surround
 
 export WASMTIME_HOME="$HOME/.wasmtime"
 
-export PATH="$WASMTIME_HOME/bin:$PATH"
+# export PATH="$WASMTIME_HOME/bin:$PATH"
+
 
