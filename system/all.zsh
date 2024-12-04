@@ -1,7 +1,7 @@
 # #!/usr/bin/env zsh
 
 # this is for nvim lualine plugin to use the correct theme
-export BASE16_THEME=tomorrow-night
+# export BASE16_THEME=tomorrow-night
 
 # adding path directory for custom scripts
 new_paths=(/opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin)
