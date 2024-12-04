@@ -1,7 +1,4 @@
-# #!/usr/bin/env zsh
-
-# this is for nvim lualine plugin to use the correct theme
-# export BASE16_THEME=tomorrow-night
+#!/usr/bin/env zsh
 
 # adding path directory for custom scripts
 new_paths=(/opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin)
@@ -20,14 +17,10 @@ function gupcreateremote() {
   git remote add moliva "https://github.com/moliva/$repo_name"
 }
 
-export NVIM_PLUGIN_HOME='/Users/moliva/.local/share/nvim/site/pack/packer/start'
-
 export DOCKER_HOME_REGISTRY=raspberrypi.manatee-royal.ts.net:5000
-
 
 # clean and re install node modules
 alias npmrefresh="rm -fr node_modules && npm i"
-
 
 function ya() {
   tmp="$(mktemp -t "yazi-cwd.XXXXX")"
@@ -37,7 +30,6 @@ function ya() {
   fi
   rm -f -- "$tmp"
 }
-
 
 alias resetgpg="killall gpg-agent || gpg-agent --daemon --use-standard-socket --pinentry-program /opt/homebrew/bin/pinentry-mac &"
 
@@ -54,7 +46,6 @@ else
     eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info 2> /dev/null)
 fi
 
-. "$HOME/.cargo/env"
 
 # pnpm
 export PNPM_HOME="/Users/moliva/Library/pnpm"
@@ -64,7 +55,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# export RUSTC_WRAPPER=sccache
 
 ulimit -n 2048
 
@@ -96,7 +86,8 @@ alias cpwd="pwd | ccopy"
 
 # force miguel to use nvim instead of vim
 alias vimo=/usr/bin/vim
-alias vim=$HOME/nvim-macos-arm64/bin/nvim
+alias vim=nvim
+# alias vim=$HOME/nvim-macos-arm64/bin/nvim
 # alias nvim=$HOME/nvim-macos-arm64/bin/nvim
 
 systemconfig() {
@@ -425,13 +416,13 @@ export GOPATH=$HOME/go
 # zoxide
 # *************************************************************
 
-eval "$(zoxide init zsh)"
+_evalcache zoxide init zsh
 
 # *************************************************************
 # fnm
 # *************************************************************
 
-eval "$(fnm env --use-on-cd --shell zsh --corepack-enabled --resolve-engines)"
+_evalcache  fnm env --use-on-cd --shell zsh --corepack-enabled --resolve-engines
 
 # *************************************************************
 # python
@@ -453,6 +444,7 @@ for cmd in "${PYENV_COMMANDS[@]}"; do
   eval "${cmd}(){ unset -f ${PYENV_COMMANDS}; loadpyenv; ${cmd} \$@ }"
 done
 
+
 # *************************************************************
 # rust
 # *************************************************************
@@ -460,6 +452,9 @@ done
 # source $HOME/.cargo/env
 # ˆ inlining above mentioned source
 # export PATH="$HOME/.cargo/bin:$PATH"
+
+# export RUSTC_WRAPPER=sccache
+. "$HOME/.cargo/env"
 
 # *************************************************************
 # tmux
@@ -504,11 +499,8 @@ bindkey -a ys add-surround
 bindkey -M visual S add-surround
 
 # *************************************************************
-# *********** WASMIME *************
+# *********** WASMTIME *************
 # *************************************************************
-
-
-
 
 export WASMTIME_HOME="$HOME/.wasmtime"
 
