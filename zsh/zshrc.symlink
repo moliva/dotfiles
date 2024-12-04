@@ -45,6 +45,18 @@ setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
 setopt share_history          # share command history data
 
+setopt appendhistory
+setopt hist_save_no_dups
+setopt hist_find_no_dups
+
+# completion styling
+# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)}LS_COLORS"
+# zstyle ':completion:*' menu no
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+# zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 # load zgen
 source $DOTFILES/zgen/zgenom.zsh
@@ -89,5 +101,3 @@ for config ($DOTFILES/system/all.zsh) source $config
 # Turns on profiling of zsh startup, uncomment first line as well as this
 #zprof
 #zmodload -u zsh/zprof
-
-fpath+=${ZDOTDIR:-~}/.zsh_functions
