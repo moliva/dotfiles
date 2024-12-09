@@ -2,6 +2,8 @@ set -g default-command "reattach-to-user-namespace -l zsh"
 # tmux display things in 256 colors
 set -g default-terminal "screen-256color"
 
+set-option -sa terminal-overrides ",xterm*:Tc"
+
 set -g history-limit 20000
 
 # automatically renumber tmux windows
@@ -155,7 +157,11 @@ set -g @resurrect-strategy-vim 'session'
 set -g @resurrect-strategy-nvim 'session'
 
 set -g @continuum-restore 'on'
-set -g @continuum-boot-options 'alacritty'
+
+# set -g @continuum-boot 'on'
+# TODO(miguel): wezterm not supported yet, wait for pr to be merged  - 2024/12/07
+# https://github.com/tmux-plugins/tmux-continuum/pull/142/files
+# set -g @continuum-boot-options 'alacritty'
 
 
 # tmux-jump
@@ -189,6 +195,10 @@ if "test ! -d ~/.tmux/plugins/tpm" \
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 # set -g @plugin 'tmux-plugins/tmux-sensible'
+
+# possible plugins to add
+# https://github.com/catppuccin/tmux
+# https://github.com/christoomey/vim-tmux-navigator
 
 # for better mouse management
 set -g @plugin 'nhdaly/tmux-scroll-copy-mode'
