@@ -36,9 +36,9 @@ end
 
 local tmux_prefixed = function(action)
 	return act.Multiple({
-			tmux_prefix(),
-			action,
-		})
+		tmux_prefix(),
+		action,
+	})
 end
 
 local tmux_prefixed_key = function(key_t)
@@ -74,38 +74,38 @@ local get_background = function(dark, light)
 	return {
 		source = {
 			Color = is_dark() and "#0b1c2c" or "#f4e9e0",
-  --     Gradient =  {
-  --         orientation = 'Vertical',
-  -- -- orientation = { Linear = { angle = -45.0 } },
-  -- --   orientation = {
-  -- --     Radial = {
-  -- --      -- Specifies the x coordinate of the center of the circle,
-  -- --      -- in the range 0.0 through 1.0.  The default is 0.5 which
-  -- --      -- is centered in the X dimension.
-  -- --      cx = 0.75,
-  -- --
-  -- --      -- Specifies the y coordinate of the center of the circle,
-  -- --      -- in the range 0.0 through 1.0.  The default is 0.5 which
-  -- --      -- is centered in the Y dimension.
-  -- --      cy = 0.75,
-  -- --
-  -- --      -- Specifies the radius of the notional circle.
-  -- --      -- The default is 0.5, which combined with the default cx
-  -- --      -- and cy values places the circle in the center of the
-  -- --      -- window, with the edges touching the window edges.
-  -- --      -- Values larger than 1 are possible.
-  -- --      radius = 1.25,
-  -- --   },
-  -- -- },
-  -- colors = {
-  --   '#0b1c2c',
-  --   -- '#24243e',
-  -- },
-  -- interpolation = 'Linear',
-  --
-  --   blend = 'Rgb',
-  --
-  --     }
+			--     Gradient =  {
+			--         orientation = 'Vertical',
+			-- -- orientation = { Linear = { angle = -45.0 } },
+			-- --   orientation = {
+			-- --     Radial = {
+			-- --      -- Specifies the x coordinate of the center of the circle,
+			-- --      -- in the range 0.0 through 1.0.  The default is 0.5 which
+			-- --      -- is centered in the X dimension.
+			-- --      cx = 0.75,
+			-- --
+			-- --      -- Specifies the y coordinate of the center of the circle,
+			-- --      -- in the range 0.0 through 1.0.  The default is 0.5 which
+			-- --      -- is centered in the Y dimension.
+			-- --      cy = 0.75,
+			-- --
+			-- --      -- Specifies the radius of the notional circle.
+			-- --      -- The default is 0.5, which combined with the default cx
+			-- --      -- and cy values places the circle in the center of the
+			-- --      -- window, with the edges touching the window edges.
+			-- --      -- Values larger than 1 are possible.
+			-- --      radius = 1.25,
+			-- --   },
+			-- -- },
+			-- colors = {
+			--   '#0b1c2c',
+			--   -- '#24243e',
+			-- },
+			-- interpolation = 'Linear',
+			--
+			--   blend = 'Rgb',
+			--
+			--     }
 		},
 
 		width = "100%",
@@ -127,7 +127,7 @@ local function change_opacity(window, amount)
 		or (current_opacity + amount < 0 and 0 or current_opacity + amount)
 
 	local new_overrides = {
-    background = {
+		background = {
 			{
 				source = effective_background.source,
 				width = effective_background.width,
@@ -175,7 +175,7 @@ local config = {
 		-- "Monaspace Xenon",
 		{
 			family = "MesloLGMDZ Nerd Font",
-			weight = "Medium",
+			weight = "DemiBold",
 			-- stretch = "UltraExpanded",
 			-- style = "Oblique",
 			-- harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
@@ -297,7 +297,7 @@ local config = {
 		-- 	}),
 		-- },
 
-    -- go to window #
+		-- go to window #
 		cmd_to_tmux_prefix("1", "1"),
 		cmd_to_tmux_prefix("2", "2"),
 		cmd_to_tmux_prefix("3", "3"),
@@ -363,7 +363,7 @@ local config = {
 		{
 			mods = "CMD|ALT|CTRL",
 			key = "t",
-      action = act.ToggleAlwaysOnTop,
+			action = act.ToggleAlwaysOnTop,
 		},
 
 		-- open yazi here
@@ -384,7 +384,7 @@ local config = {
 		{
 			mods = "CMD",
 			key = "a",
-			action = tmux_prefixed_key({ key = "a" }),
+			action = tmux_prefixed_key({ mods = "CTRL", key = "a" }),
 		},
 		-- find tmux window (fuzzy find)
 		{
@@ -405,7 +405,7 @@ local config = {
 		},
 
 		-- TODO(miguel): wtf is this - 2024/12/01
-    -- moving right or left a pane?
+		-- moving right or left a pane?
 		-- [[keyboard.bindings]]
 		-- chars = "\u0001\u000B"
 		-- key = "Period"
@@ -414,7 +414,7 @@ local config = {
 		-- 	mods = "CMD|SHIFT",
 		-- 	key = ".",
 		-- 	action = act.Multiple({
-  --       tmux_prefix(),
+		--       tmux_prefix(),
 		-- 		act.SendKey({  key = "\u{000B}" }),
 		-- 	}),
 		-- },
@@ -430,50 +430,42 @@ local config = {
 		{
 			mods = "CMD|ALT",
 			key = "1",
-			action = tmux_prefixed(
-        multiple_actions("\u{001B}OP")
-			),
-		  },
+			action = tmux_prefixed(multiple_actions("\u{001B}OP")),
+		},
 		{
 			mods = "CMD|ALT",
 			key = "2",
-			action = tmux_prefixed(
-        multiple_actions("\u{001B}OQ")
-			),
+			action = tmux_prefixed(multiple_actions("\u{001B}OQ")),
 		},
 		{
 			mods = "CMD|ALT",
 			key = "3",
-			action = tmux_prefixed(
-        multiple_actions("\u{001B}OR")
-			),
+			action = tmux_prefixed(multiple_actions("\u{001B}OR")),
 		},
 		{
 			mods = "CMD|ALT",
 			key = "4",
-			action = tmux_prefixed(
-        multiple_actions("\u{001B}OS")
-			),
+			action = tmux_prefixed(multiple_actions("\u{001B}OS")),
 		},
 
 		-- fuzzy find tmux sessions
 		{
 			mods = "CMD",
 			key = "j",
-		  action = tmux_prefixed_key({ key = "'" }),
+			action = tmux_prefixed_key({ key = "'" }),
 		},
 		-- alternate tmux session
 		{
 			mods = "CMD",
 			key = "o",
-		  action = tmux_prefixed_key({ mods = "CTRL", key = "q" }),
+			action = tmux_prefixed_key({ mods = "CTRL", key = "q" }),
 		},
 
 		-- new tmux window (tab)
 		{
 			mods = "CMD",
 			key = "t",
-		  action = tmux_prefixed_key({ mods = "SHIFT", key = "n" }),
+			action = tmux_prefixed_key({ mods = "SHIFT", key = "n" }),
 		},
 	},
 }
