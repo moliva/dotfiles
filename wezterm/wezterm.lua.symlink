@@ -162,7 +162,8 @@ local config = {
 
 	font_size = 12,
 
-	line_height = 1.0,
+	-- line_height = 1.0,
+	line_height = 0.95,
 	font = wezterm.font_with_fallback({
 		-- "CommitMono",
 		-- "DengXian",
@@ -174,16 +175,17 @@ local config = {
 		-- "Monaspace Radon",
 		-- "Monaspace Xenon",
 		{
-			family = "MesloLGMDZ Nerd Font",
+			-- family = "MesloLGSDZ Nerd Font Propo",
+			-- family = "Monaspace Neon",
+			family = "JetBrainsMono Nerd Font Propo",
+			-- family = "MartianMono Nerd Font Propo",
 			weight = "DemiBold",
 			-- stretch = "UltraExpanded",
 			-- style = "Oblique",
-			-- harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
-			-- scale = 1.5
+			-- harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
+			-- scale = 1.0,
 		},
 
-		-- NOTE: fallback font for Nerd Font icons
-		-- { family = "MesloLGMDZ Nerd Font" },
 		{
 			family = "Symbols Nerd Font Mono",
 		},
