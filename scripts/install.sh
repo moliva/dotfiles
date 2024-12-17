@@ -24,9 +24,9 @@ REPO_LOCATION=https://github.com/moliva/dotfiles.git
 DOTFILES=$HOME/dotfiles
 
 info "cloning dotfiles into home"
-cd $HOME
-git clone $REPO_LOCATION $DOTFILES
-cd $DOTFILES
+cd "$HOME" || return
+git clone "$REPO_LOCATION" "$DOTFILES"
+cd "$DOTFILES" || return
 
 info "installing dotfiles"
 
@@ -36,40 +36,45 @@ git submodule update --init --recursive
 if [ "$(uname)" == "Darwin" ]; then
   info "running on macOS"
 
-  # creating tmp dir for installation
-  # TODO - create actual tmp dir - moliva - 2024/12/16
-  # TMP_DIR="~/.tmpdotfilesinstallation"
-  # mkdir -p TMP_DIR
+  info "creating tmp dir for installation"
+  TMP_DIR=$(mktemp -d)
+  cd "$TMP_DIR" || return
+  success tmp dir created at "$TMP_DIR"
 
-  # TODO - install nerd font instead
-  #info "installing powerline fonts"
-  #git clone https://github.com/powerline/fonts.git $TMP_DIR/powerlinefonts
-  #sh $TMP_DIR/powerlinefonts/install.sh
-  #success "powerline fonts installed"
+  info "installing font"
+  curl -o font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip
+  unzip font.zip -d ./font
+  cp ./font/* "$HOME/Library/Fonts"
+  success "font installed"
 
   # TODO - check if homebrew not installed first - moliva - 2024/12/16
-  # info "installing homebrew"
-  # ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  # success "homebrew installed"
+  info "checking homebrew"
+  if ! which brew >/dev/null; then
+    info "homebrew not found, installing"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    success "homebrew installed"
+  else
+    success "homebrew already installed, skipping step"
+  fi
 
-  # info "brewing all the things"
-  # source scripts/brew.sh
-  # success "hombrew deps installed"
+  info "brewing all the things"
+  source ./scripts/brew.sh
+  success "hombrew deps installed"
 
-  info "updating OSX settings"
+  info "updating macOS settings"
   source scripts/osx.sh
-  success "OSX settings set"
+  success "macOS settings set"
 
   # TODO - use fnm - moliva - 2024/12/16
-  # info "installing node + npm (from nvm)"
-  # nvm install stable
-  # nvm alias default stable
-  # success "node + npm installed"
+  NODE_VERSION=22
+  info "installing node v$NODE_VERSION through fnm"
+  fnm install "$NODE_VERSION"
+  fnm default "$NODE_VERSION"
+  success "node v$NODE_VERSION installed"
 
-  # info "installing node tools (from npm)"
-  # source scripts/npm.sh
-  # success "NPM tools installed"
+  info "installing node tools (from npm)"
+  source scripts/npm.sh
+  success "node tools installed"
 
   source scripts/symlink.sh
 
@@ -78,9 +83,9 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 
 info "configuring zsh as default shell"
-chsh -s $(which zsh)
+chsh -s "$(which zsh)"
 
 success "installed dotfiles"
 
-cd $ORIGINAL_DIR
+cd "$ORIGINAL_DIR" || return
 env zsh
