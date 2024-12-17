@@ -1,475 +1,441 @@
 local wezterm = require("wezterm")
+
 local act = wezterm.action
-local appearance = wezterm.gui.get_appearance()
+
+-- add files in dotfiles to path to use them
+local utils_path = os.getenv("HOME") .. "/dotfiles/wezterm/lua/?.lua"
+package.path = package.path .. ";" .. utils_path
+
+local actions = require("actions")
+local keys = require("keys")
 
 local dark_opacity = 0.95
 local light_opacity = 0.9
 
-local key = act.SendKey
-
-local function tmux_prefix()
-	return key({ mods = "CTRL", key = "a" })
+local function is_dark()
+  return wezterm.gui.get_appearance():find("Dark")
 end
 
-local multiple_actions = function(keys)
-	local actions = {}
-
-	for k in keys:gmatch(".") do
-		table.insert(actions, key({ key = k }))
-	end
-	table.insert(actions, key({ key = "\n" }))
-
-	return act.Multiple(actions)
-end
-
-local key_table = function(mods, k, action)
-	return {
-		mods = mods,
-		key = k,
-		action = action,
-	}
-end
-
-local cmd_key = function(k, action)
-	return key_table("CMD", k, action)
-end
-
-local tmux_prefixed = function(action)
-	return act.Multiple({
-		tmux_prefix(),
-		action,
-	})
-end
-
-local tmux_prefixed_key = function(key_t)
-	return tmux_prefixed(key(key_t))
-end
-
-local cmd_to_tmux_prefix = function(k, tmux_key)
-	return cmd_key(
-		k,
-		act.Multiple({
-			tmux_prefix(),
-			key({ key = tmux_key }),
-		})
-	)
-end
-
-local is_dark = function()
-	return appearance:find("Dark")
-end
-
-local get_color_scheme = function()
-	-- return is_dark() and "Tomorrow (dark) (terminal.sexy)" or "Tomorrow (light) (terminal.sexy)"
-	return is_dark() and "Harmonic16 Dark (base16)" or "Harmonic16 Light (base16)"
+local function get_color_scheme()
+  return is_dark() and "Harmonic16 Dark (base16)" or "Harmonic16 Light (base16)"
 end
 
 -- @param dark (int) Represents the darkness level of the background.
 -- @param light (int) Represents the lightness level of the background.
 -- @return The computed background color.
-local get_background = function(dark, light)
-	dark = dark or 0.95
-	light = light or 0.8
+local function get_background(dark, light)
+  return {
+    source = {
+      Color = is_dark() and "#0b1c2c" or "#f4e9e0",
+    },
 
-	return {
-		source = {
-			Color = is_dark() and "#0b1c2c" or "#f4e9e0",
-			--     Gradient =  {
-			--         orientation = 'Vertical',
-			-- -- orientation = { Linear = { angle = -45.0 } },
-			-- --   orientation = {
-			-- --     Radial = {
-			-- --      -- Specifies the x coordinate of the center of the circle,
-			-- --      -- in the range 0.0 through 1.0.  The default is 0.5 which
-			-- --      -- is centered in the X dimension.
-			-- --      cx = 0.75,
-			-- --
-			-- --      -- Specifies the y coordinate of the center of the circle,
-			-- --      -- in the range 0.0 through 1.0.  The default is 0.5 which
-			-- --      -- is centered in the Y dimension.
-			-- --      cy = 0.75,
-			-- --
-			-- --      -- Specifies the radius of the notional circle.
-			-- --      -- The default is 0.5, which combined with the default cx
-			-- --      -- and cy values places the circle in the center of the
-			-- --      -- window, with the edges touching the window edges.
-			-- --      -- Values larger than 1 are possible.
-			-- --      radius = 1.25,
-			-- --   },
-			-- -- },
-			-- colors = {
-			--   '#0b1c2c',
-			--   -- '#24243e',
-			-- },
-			-- interpolation = 'Linear',
-			--
-			--   blend = 'Rgb',
-			--
-			--     }
-		},
+    width = "100%",
+    height = "100%",
 
-		width = "100%",
-		height = "100%",
-
-		opacity = is_dark() and dark or light,
-	}
-end
-
-local function change_opacity(window, amount)
-	local overrides = window:effective_config()
-	local backgrounds = overrides.background or {}
-	local background = backgrounds[0] or {}
-	local current_opacity = background.opacity or window:effective_config().background[1].opacity
-
-	local effective_background = window:effective_config().background[1]
-
-	local new_opacity = current_opacity + amount > 1 and 1
-		or (current_opacity + amount < 0 and 0 or current_opacity + amount)
-
-	local new_overrides = {
-		background = {
-			{
-				source = effective_background.source,
-				width = effective_background.width,
-				height = effective_background.height,
-				opacity = new_opacity,
-			},
-		},
-	}
-
-	window:set_config_overrides(new_overrides)
+    opacity = is_dark() and dark or light,
+  }
 end
 
 wezterm.on("less-opacity", function(window, _)
-	change_opacity(window, -0.05)
+  actions.change_opacity(window, -0.05)
 end)
 
 wezterm.on("more-opacity", function(window, _)
-	change_opacity(window, 0.05)
+  actions.change_opacity(window, 0.05)
 end)
 
--- wezterm.on("toggle-on-top", function(window, _)
--- 	toggle_on_top(window, 0.05)
--- end)
+wezterm.on("reset-opacity", function(window, _)
+  local current = actions.get_current_opacity(window)
+  local target = is_dark() and dark_opacity or light_opacity
+
+  local amount = target - current
+
+  actions.change_opacity(window, amount)
+end)
 
 ---@type Config
 ---@diagnostic disable: missing-fields
 local config = {
-	background = {
-		-- w.get_wallpaper(wallpapers_glob),
-		get_background(dark_opacity, light_opacity),
-	},
+  background = {
+    -- w.get_wallpaper(wallpapers_glob),
+    get_background(dark_opacity, light_opacity),
+  },
 
-	font_size = 12,
+  font_size = 12,
+  line_height = 0.95,
 
-	-- line_height = 1.0,
-	line_height = 0.95,
-	font = wezterm.font_with_fallback({
-		-- "CommitMono",
-		-- "DengXian",
-		-- "Departure Mono",
-		-- "GohuFont uni14 Nerd Font Mono",
-		-- "Monaspace Argon",
-		-- "Monaspace Krypton",
-		-- "Monaspace Neon",
-		-- "Monaspace Radon",
-		-- "Monaspace Xenon",
-		{
-			-- family = "MesloLGSDZ Nerd Font Propo",
-			-- family = "Monaspace Neon",
-			family = "JetBrainsMono Nerd Font Propo",
-			-- family = "MartianMono Nerd Font Propo",
-			weight = "DemiBold",
-			-- stretch = "UltraExpanded",
-			-- style = "Oblique",
-			-- harfbuzz_features = { "calt=1", "clig=1", "liga=1" },
-			-- scale = 1.0,
-		},
+  -- ===
 
-		{
-			family = "Symbols Nerd Font Mono",
-		},
-	}),
+  font = wezterm.font_with_fallback({
+    -- {
+    --   -- 8
+    --   -- liga
+    --   family = "GeistMono Nerd Font Mono",
+    --   weight = "DemiBold",
+    -- },
+    {
+      family = "JetBrainsMono Nerd Font Propo",
+      weight = "DemiBold",
+    },
+    {
+      -- no ligatures
+      family = "MesloLGSDZ Nerd Font Propo",
+      weight = "Medium",
+    },
+    {
+      -- no liga
+      family = "0xProto Nerd Font Mono",
+      weight = "Medium",
+    },
+    {
+      -- no liga
+      family = "CommitMono Nerd Font Propo",
+      weight = "Medium",
+    },
+    {
+      -- no liga
+      family = "CodeNewRoman Nerd Font Propo",
+      weight = "Medium",
+    },
+    {
+      -- no liga
+      family = "DroidSansM Nerd Font Mono",
+      weight = "Medium",
+    },
+    -- no ligatures
+    {
+      family = "MonaspiceAr Nerd Font Mono",
+      weight = "Regular",
+    },
+    {
+      family = "FiraCode Nerd Font Propo",
+      weight = "Regular",
+    },
+    {
+      -- 6 - muy petisa
+      -- no liguatres
+      family = "SauceCodePro Nerd Font Propo",
+      weight = "Medium",
+    },
+    {
+      -- 7.5
+      -- no ligatures
+      family = "NotoSansM Nerd Font Propo",
+      -- family = "NotoMono Nerd Font Propo",
+      weight = "Regular",
+    },
+    {
+      -- 7.5
+      -- no ligatures
+      family = "RobotoMono Nerd Font Propo",
+      weight = "Regular",
+    },
+    {
+      -- 2 - muy petisa
+      -- no ligatures
+      -- bold, demibold, all equal
+      family = "SpaceMono Nerd Font Propo",
+      weight = "Medium",
+    },
 
-	color_scheme = get_color_scheme(),
+    -- family = "Monaspace Neon",
+    -- family = "MartianMono Nerd Font Propo",
+    -- {
+    --   family = "FiraCode Nerd Font",
+    --   weight = "Medium",
+    --   scale = 1.0,
+    -- },
+    -- {
+    --   family = "FantasqueSansM Nerd Font",
+    --   weight = "DemiBold",
+    --   scale = 1.1,
+    -- },
+  }),
 
-	window_padding = {
-		left = 10,
-		right = 10,
-		top = 10,
-		bottom = 0,
-	},
+  color_scheme = get_color_scheme(),
 
-	set_environment_variables = {
-		BAT_THEME = get_color_scheme(),
-		LC_ALL = "en_US.UTF-8",
-	},
+  window_padding = {
+    left = 10,
+    right = 10,
+    top = 10,
+    bottom = 0,
+  },
 
-	-- general options
-	adjust_window_size_when_changing_font_size = false,
-	debug_key_events = false,
-	enable_tab_bar = false,
-	native_macos_fullscreen_mode = false,
-	window_close_confirmation = "NeverPrompt",
-	window_decorations = "RESIZE",
+  set_environment_variables = {
+    -- BAT_THEME = get_color_scheme(),
+    -- LC_ALL = "en_US.UTF-8",
+  },
 
-	-- keys
-	keys = {
-		-- cmd_key(".", multiple_actions(":ZenMode")),
-		-- cmd_key("[", act.SendKey({ mods = "CTRL", key = "o" })),
-		-- cmd_key("]", act.SendKey({ mods = "CTRL", key = "i" })),
-		-- cmd_key("f", multiple_actions(":Grep")),
-		-- k.cmd_key("H", act.SendKey({ mods = "CTRL", key = "h" })),
-		-- cmd_key("i", multiple_actions(":SmartGoTo")),
-		-- k.cmd_key("J", act.SendKey({ mods = "CTRL", key = "j" })),
-		-- k.cmd_key("K", act.SendKey({ mods = "CTRL", key = "k" })),
-		-- k.cmd_key("K", act.SendKey({ mods = "CTRL", key = "k" })),
-		-- k.cmd_key("L", act.SendKey({ mods = "CTRL", key = "l" })),
-		-- cmd_key("O", multiple_actions(":GoToSymbol")),
-		-- cmd_key("P", multiple_actions(":GoToCommand")),
-		-- cmd_key("p", multiple_actions(":GoToFile")),
+  -- general options
+  adjust_window_size_when_changing_font_size = false,
+  debug_key_events = false,
+  enable_tab_bar = false,
+  native_macos_fullscreen_mode = false,
+  window_close_confirmation = "NeverPrompt",
+  window_decorations = "RESIZE",
 
-		-- cmd_key("q", multiple_actions(":q")),
-		-- cmd_key("q", multiple_actions(":qa!")),
+  -- keys
+  keys = {
+    -- cmd_key(".", multiple_actions(":ZenMode")),
+    -- cmd_key("[", act.SendKey({ mods = "CTRL", key = "o" })),
+    -- cmd_key("]", act.SendKey({ mods = "CTRL", key = "i" })),
+    -- cmd_key("f", multiple_actions(":Grep")),
+    -- k.cmd_key("H", act.SendKey({ mods = "CTRL", key = "h" })),
+    -- cmd_key("i", multiple_actions(":SmartGoTo")),
+    -- k.cmd_key("J", act.SendKey({ mods = "CTRL", key = "j" })),
+    -- k.cmd_key("K", act.SendKey({ mods = "CTRL", key = "k" })),
+    -- k.cmd_key("K", act.SendKey({ mods = "CTRL", key = "k" })),
+    -- k.cmd_key("L", act.SendKey({ mods = "CTRL", key = "l" })),
+    -- cmd_key("O", multiple_actions(":GoToSymbol")),
+    -- cmd_key("P", multiple_actions(":GoToCommand")),
+    -- cmd_key("p", multiple_actions(":GoToFile")),
 
-		-- cmd_to_tmux_prefix("`", "n"),
-		-- cmd_to_tmux_prefix("b", "b"),
-		-- cmd_to_tmux_prefix("C", "C"),
-		-- cmd_to_tmux_prefix("d", "D"),
-		-- cmd_to_tmux_prefix("G", "G"),
-		-- cmd_to_tmux_prefix("g", "g"),
-		-- cmd_to_tmux_prefix("j", "J"),
-		-- cmd_to_tmux_prefix("K", "R"),
-		-- cmd_to_tmux_prefix("k", "K"),
-		-- cmd_to_tmux_prefix("l", "L"),
-		-- cmd_to_tmux_prefix("n", "%"),
-		-- cmd_to_tmux_prefix("N", '"'),
-		-- cmd_to_tmux_prefix("o", "u"),
-		-- cmd_to_tmux_prefix("T", "B"),
-		-- cmd_to_tmux_prefix("Y", "Y"),
-		-- cmd_to_tmux_prefix("t", "c"),
-		-- cmd_to_tmux_prefix("w", "x"),
-		-- cmd_to_tmux_prefix("z", "z"),
-		-- cmd_to_tmux_prefix("Z", "Z"),
-		-- cmd_to_tmux_prefix("9", "9"),
-		-- cmd_ctrl_to_tmux_prefix("t", "J"),
+    -- cmd_key("q", multiple_actions(":q")),
+    -- cmd_key("q", multiple_actions(":qa!")),
 
-		-- cmd_key(
-		-- 	"R",
-		-- 	act.Multiple({
-		-- 		act.SendKey({ key = "\x1b" }), -- escape
-		-- 		multiple_actions(":source %"),
-		-- 	})
-		-- ),
+    -- cmd_to_tmux_prefix("`", "n"),
+    -- cmd_to_tmux_prefix("b", "b"),
+    -- cmd_to_tmux_prefix("C", "C"),
+    -- cmd_to_tmux_prefix("d", "D"),
+    -- cmd_to_tmux_prefix("G", "G"),
+    -- cmd_to_tmux_prefix("g", "g"),
+    -- cmd_to_tmux_prefix("j", "J"),
+    -- cmd_to_tmux_prefix("K", "R"),
+    -- cmd_to_tmux_prefix("k", "K"),
+    -- cmd_to_tmux_prefix("l", "L"),
+    -- cmd_to_tmux_prefix("n", "%"),
+    -- cmd_to_tmux_prefix("N", '"'),
+    -- cmd_to_tmux_prefix("o", "u"),
+    -- cmd_to_tmux_prefix("T", "B"),
+    -- cmd_to_tmux_prefix("Y", "Y"),
+    -- cmd_to_tmux_prefix("t", "c"),
+    -- cmd_to_tmux_prefix("w", "x"),
+    -- cmd_to_tmux_prefix("z", "z"),
+    -- cmd_to_tmux_prefix("Z", "Z"),
+    -- cmd_to_tmux_prefix("9", "9"),
+    -- cmd_ctrl_to_tmux_prefix("t", "J"),
 
-		-- {
-		-- 	mods = "CTRL",
-		-- 	key = "Tab",
-		-- 	action = act.Multiple({
-		-- 		act.SendKey({ mods = "CTRL", key = "b" }),
-		-- 		act.SendKey({ key = "n" }),
-		-- 	}),
-		-- },
-		--
-		-- {
-		-- 	mods = "CTRL|SHIFT",
-		-- 	key = "Tab",
-		-- 	action = act.Multiple({
-		-- 		act.SendKey({ mods = "CTRL", key = "b" }),
-		-- 		act.SendKey({ key = "n" }),
-		-- 	}),
-		-- },
+    -- cmd_key(
+    -- 	"R",
+    -- 	act.Multiple({
+    -- 		act.SendKey({ key = "\x1b" }), -- escape
+    -- 		multiple_actions(":source %"),
+    -- 	})
+    -- ),
 
-		-- FIX: disable binding
-		-- {
-		-- 	mods = "CMD",
-		-- 	key = "`",
-		-- 	action = act.Multiple({
-		-- 		act.SendKey({ mods = "CTRL", key = "b" }),
-		-- 		act.SendKey({ key = "n" }),
-		-- 	}),
-		-- },
+    -- {
+    -- 	mods = "CTRL",
+    -- 	key = "Tab",
+    -- 	action = act.Multiple({
+    -- 		act.SendKey({ mods = "CTRL", key = "b" }),
+    -- 		act.SendKey({ key = "n" }),
+    -- 	}),
+    -- },
+    --
+    -- {
+    -- 	mods = "CTRL|SHIFT",
+    -- 	key = "Tab",
+    -- 	action = act.Multiple({
+    -- 		act.SendKey({ mods = "CTRL", key = "b" }),
+    -- 		act.SendKey({ key = "n" }),
+    -- 	}),
+    -- },
 
-		-- {
-		-- 	mods = "CMD",
-		-- 	key = "~",
-		-- 	action = act.Multiple({
-		-- 		act.SendKey({ mods = "CTRL", key = "b" }),
-		-- 		act.SendKey({ key = "p" }),
-		-- 	}),
-		-- },
+    -- FIX: disable binding
+    -- {
+    -- 	mods = "CMD",
+    -- 	key = "`",
+    -- 	action = act.Multiple({
+    -- 		act.SendKey({ mods = "CTRL", key = "b" }),
+    -- 		act.SendKey({ key = "n" }),
+    -- 	}),
+    -- },
 
-		-- go to window #
-		cmd_to_tmux_prefix("1", "1"),
-		cmd_to_tmux_prefix("2", "2"),
-		cmd_to_tmux_prefix("3", "3"),
-		cmd_to_tmux_prefix("4", "4"),
-		cmd_to_tmux_prefix("5", "5"),
-		cmd_to_tmux_prefix("6", "6"),
-		cmd_to_tmux_prefix("7", "7"),
-		cmd_to_tmux_prefix("8", "8"),
+    -- {
+    -- 	mods = "CMD",
+    -- 	key = "~",
+    -- 	action = act.Multiple({
+    -- 		act.SendKey({ mods = "CTRL", key = "b" }),
+    -- 		act.SendKey({ key = "p" }),
+    -- 	}),
+    -- },
 
-		-- go to last window
-		cmd_to_tmux_prefix("9", "9"),
+    -- go to window #
+    keys.cmd_to_tmux_prefix("1", "1"),
+    keys.cmd_to_tmux_prefix("2", "2"),
+    keys.cmd_to_tmux_prefix("3", "3"),
+    keys.cmd_to_tmux_prefix("4", "4"),
+    keys.cmd_to_tmux_prefix("5", "5"),
+    keys.cmd_to_tmux_prefix("6", "6"),
+    keys.cmd_to_tmux_prefix("7", "7"),
+    keys.cmd_to_tmux_prefix("8", "8"),
 
-		-- save
-		cmd_key(
-			"s",
-			act.Multiple({
-				key({ key = "\x1b" }), -- escape
-				multiple_actions(":w"),
-			})
-		),
+    -- go to last window
+    keys.cmd_to_tmux_prefix("9", "9"),
 
-		-- find
-		-- TODO(miguel): review this - 2024/12/01
-		{
-			mods = "CMD|SHIFT",
-			key = "f",
-			action = act.Multiple({
-				key({ mods = "CMD", key = "f" }),
-				-- act.SendKey({ key = "n" }),
-			}),
-		},
+    -- save
+    keys.cmd_key(
+      "s",
+      act.Multiple({
+        keys.key({ key = "\x1b" }), -- escape
+        keys.multiple_actions(":w"),
+      })
+    ),
 
-		-- zoom / full screen
-		{
-			mods = "CMD",
-			key = "z",
-			action = tmux_prefixed_key({ key = "z" }),
-		},
+    -- find
+    -- TODO(miguel): review this - 2024/12/01
+    {
+      mods = "CMD|SHIFT",
+      key = "f",
+      action = act.Multiple({
+        keys.key({ mods = "CMD", key = "f" }),
+        -- act.SendKey({ key = "n" }),
+      }),
+    },
 
-		-- tmux deattach and reattach
-		{
-			mods = "CMD",
-			key = "d",
-			action = tmux_prefixed_key({ key = "d" }),
-		},
-		{
-			mods = "CMD|SHIFT",
-			key = "d",
-			action = multiple_actions("tmux a || tmux\r"),
-		},
+    -- zoom / full screen
+    {
+      mods = "CMD",
+      key = "z",
+      action = keys.tmux_prefixed_key({ key = "z" }),
+    },
 
-		{
-			mods = "CMD|CTRL",
-			key = "-",
-			action = act.EmitEvent("less-opacity"),
-		},
-		{
-			mods = "CMD|CTRL",
-			key = "=",
-			action = act.EmitEvent("more-opacity"),
-		},
+    -- tmux deattach and reattach
+    {
+      mods = "CMD",
+      key = "d",
+      action = keys.tmux_prefixed_key({ key = "d" }),
+    },
+    {
+      mods = "CMD|SHIFT",
+      key = "d",
+      action = keys.multiple_actions("tmux a || tmux\r"),
+    },
 
-		{
-			mods = "CMD|ALT|CTRL",
-			key = "t",
-			action = act.ToggleAlwaysOnTop,
-		},
+    {
+      mods = "CMD|CTRL",
+      key = "-",
+      action = act.EmitEvent("less-opacity"),
+    },
+    {
+      mods = "CMD|CTRL",
+      key = "0",
+      action = act.EmitEvent("reset-opacity"),
+    },
+    {
+      mods = "CMD|CTRL",
+      key = "=",
+      action = act.EmitEvent("more-opacity"),
+    },
 
-		-- open yazi here
-		{
-			mods = "CMD",
-			key = "e",
-			action = multiple_actions("yazi\r"),
-		},
+    {
+      mods = "CMD|ALT|CTRL",
+      key = "t",
+      action = act.ToggleAlwaysOnTop,
+    },
 
-		-- open vim here
-		{
-			mods = "CMD",
-			key = "i",
-			action = multiple_actions("vim .\r"),
-		},
+    -- open yazi here
+    {
+      mods = "CMD",
+      key = "e",
+      action = keys.multiple_actions("yazi\r"),
+    },
 
-		-- alternate window tmux
-		{
-			mods = "CMD",
-			key = "a",
-			action = tmux_prefixed_key({ mods = "CTRL", key = "a" }),
-		},
-		-- find tmux window (fuzzy find)
-		{
-			mods = "CMD",
-			key = "f",
-			action = tmux_prefixed_key({ mods = "CTRL", key = "f" }),
-		},
-		-- move left/right through tmux windows
-		{
-			mods = "CMD|SHIFT",
-			key = "j",
-			action = tmux_prefixed_key({ mods = "CTRL", key = "h" }),
-		},
-		{
-			mods = "CMD|SHIFT",
-			key = "k",
-			action = tmux_prefixed_key({ mods = "CTRL", key = "l" }),
-		},
+    -- open vim here
+    {
+      mods = "CMD",
+      key = "i",
+      action = keys.multiple_actions("vim .\r"),
+    },
 
-		-- TODO(miguel): wtf is this - 2024/12/01
-		-- moving right or left a pane?
-		-- [[keyboard.bindings]]
-		-- chars = "\u0001\u000B"
-		-- key = "Period"
-		-- mods = "Command|Shift"
-		-- {
-		-- 	mods = "CMD|SHIFT",
-		-- 	key = ".",
-		-- 	action = act.Multiple({
-		--       tmux_prefix(),
-		-- 		act.SendKey({  key = "\u{000B}" }),
-		-- 	}),
-		-- },
-		-- TODO(miguel): wtf is this - 2024/12/01
-		-- [[keyboard.bindings]]
-		-- chars = """
-		-- \u0001
-		-- """
-		-- key = "Comma"
-		-- mods = "Command|Shift"
+    -- alternate window tmux
+    {
+      mods = "CMD",
+      key = "a",
+      action = keys.tmux_prefixed_key({ mods = "CTRL", key = "a" }),
+    },
+    -- find tmux window (fuzzy find)
+    {
+      mods = "CMD",
+      key = "f",
+      action = keys.tmux_prefixed_key({ mods = "CTRL", key = "f" }),
+    },
+    -- move left/right through tmux windows
+    {
+      mods = "CMD|SHIFT",
+      key = "j",
+      action = keys.tmux_prefixed_key({ mods = "CTRL", key = "h" }),
+    },
+    {
+      mods = "CMD|SHIFT",
+      key = "k",
+      action = keys.tmux_prefixed_key({ mods = "CTRL", key = "l" }),
+    },
 
-		-- changing panes with keyboard
-		{
-			mods = "CMD|ALT",
-			key = "1",
-			action = tmux_prefixed(multiple_actions("\u{001B}OP")),
-		},
-		{
-			mods = "CMD|ALT",
-			key = "2",
-			action = tmux_prefixed(multiple_actions("\u{001B}OQ")),
-		},
-		{
-			mods = "CMD|ALT",
-			key = "3",
-			action = tmux_prefixed(multiple_actions("\u{001B}OR")),
-		},
-		{
-			mods = "CMD|ALT",
-			key = "4",
-			action = tmux_prefixed(multiple_actions("\u{001B}OS")),
-		},
+    -- TODO(miguel): wtf is this - 2024/12/01
+    -- moving right or left a pane?
+    -- [[keyboard.bindings]]
+    -- chars = "\u0001\u000B"
+    -- key = "Period"
+    -- mods = "Command|Shift"
+    -- {
+    -- 	mods = "CMD|SHIFT",
+    -- 	key = ".",
+    -- 	action = act.Multiple({
+    --       tmux_prefix(),
+    -- 		act.SendKey({  key = "\u{000B}" }),
+    -- 	}),
+    -- },
+    -- TODO(miguel): wtf is this - 2024/12/01
+    -- [[keyboard.bindings]]
+    -- chars = """
+    -- \u0001
+    -- """
+    -- key = "Comma"
+    -- mods = "Command|Shift"
 
-		-- fuzzy find tmux sessions
-		{
-			mods = "CMD",
-			key = "j",
-			action = tmux_prefixed_key({ key = "'" }),
-		},
-		-- alternate tmux session
-		{
-			mods = "CMD",
-			key = "o",
-			action = tmux_prefixed_key({ mods = "CTRL", key = "q" }),
-		},
+    -- changing panes with keyboard
+    {
+      mods = "CMD|ALT",
+      key = "1",
+      action = keys.tmux_prefixed(keys.multiple_actions("\u{001B}OP")),
+    },
+    {
+      mods = "CMD|ALT",
+      key = "2",
+      action = keys.tmux_prefixed(keys.multiple_actions("\u{001B}OQ")),
+    },
+    {
+      mods = "CMD|ALT",
+      key = "3",
+      action = keys.tmux_prefixed(keys.multiple_actions("\u{001B}OR")),
+    },
+    {
+      mods = "CMD|ALT",
+      key = "4",
+      action = keys.tmux_prefixed(keys.multiple_actions("\u{001B}OS")),
+    },
 
-		-- new tmux window (tab)
-		{
-			mods = "CMD",
-			key = "t",
-			action = tmux_prefixed_key({ mods = "SHIFT", key = "n" }),
-		},
-	},
+    -- fuzzy find tmux sessions
+    {
+      mods = "CMD",
+      key = "j",
+      action = keys.tmux_prefixed_key({ key = "'" }),
+    },
+    -- alternate tmux session
+    {
+      mods = "CMD",
+      key = "o",
+      action = keys.tmux_prefixed_key({ mods = "CTRL", key = "q" }),
+    },
+
+    -- new tmux window (tab)
+    {
+      mods = "CMD",
+      key = "t",
+      action = keys.tmux_prefixed_key({ mods = "SHIFT", key = "n" }),
+    },
+  },
 }
 
 -- and finally, return the configuration to wezterm
