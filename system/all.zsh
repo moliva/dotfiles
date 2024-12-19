@@ -276,23 +276,8 @@ function systemreload() {
 # git
 # *************************************************************
 
-# git aliases
-# alias git=hub
-
 alias gpush="git push -u origin head"
-
-gpull() {
-  git diff --exit-code --quiet 1> /dev/null
-  any_diff="$?"
-  if [ "$any_diff" -ne "0" ]; then
-    git stash
-  fi
-  git pull --rebase
-  if [ "$any_diff" -ne "0" ]; then
-    git stash pop
-  fi
-  gprune
-}
+alias gpull="git spull"
 
 gprune() {
   git fetch --prune

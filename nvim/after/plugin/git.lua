@@ -4,7 +4,11 @@ wk.add({
   { "<leader>g", group = "Git" },
 })
 
-vim.keymap.set("n", "<leader>gu", "<cmd>!gpull<cr>", { desc = "Git pull" })
+vim.keymap.set("n", "<leader>gu", function()
+  vim.notify("Pulling last changes...")
+  local r = vim.fn.system("git spull")
+  vim.notify(r)
+end, { desc = "Git pull" })
 
 vim.keymap.set("n", "<leader>gk", function()
   local branch = vim.fn.input("Branch > ")

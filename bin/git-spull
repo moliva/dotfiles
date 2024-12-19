@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+gpull() {
+  git diff --exit-code --quiet 1>/dev/null
+  any_diff="$?"
+  if [ "$any_diff" -ne "0" ]; then
+    git stash
+  fi
+  git pull --rebase
+  if [ "$any_diff" -ne "0" ]; then
+    git stash pop
+  fi
+  # gprune
+  git fetch --prune
+}
+
+gpull
