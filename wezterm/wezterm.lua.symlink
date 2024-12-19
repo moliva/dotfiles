@@ -78,6 +78,11 @@ local config = {
       weight = "DemiBold",
     },
     {
+      -- no liga
+      family = "CaskaydiaMono Nerd Font Propo",
+      weight = "Medium",
+    },
+    {
       -- no ligatures
       family = "MesloLGSDZ Nerd Font Propo",
       weight = "Medium",

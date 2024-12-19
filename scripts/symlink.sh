@@ -141,3 +141,6 @@ create_symlinks () {
 
 setup_gitconfig
 create_symlinks
+
+# symlink nvim config dir
+link_file "$DOTFILES/nvim" "$HOME/.config/nvim"
