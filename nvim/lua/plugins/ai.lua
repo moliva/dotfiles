@@ -31,126 +31,126 @@ return {
     end,
   },
 
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "main",
-    cmd = "CopilotChat",
-    opts = function()
-      local user = vim.env.USER or "User"
-      user = user:sub(1, 1):upper() .. user:sub(2)
-      return {
-        auto_insert_mode = true,
-        question_header = "  " .. user .. " ",
-        answer_header = "  Copilot ",
-        window = {
-          width = 0.4,
-        },
-      }
-    end,
-    keys = {
-      { "<c-s>", "<CR>", ft = "copilot-chat", desc = "Submit Prompt", remap = true },
-      { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
-      {
-        "<leader>aA",
-        -- "<leader>aa",
-        function()
-          return require("CopilotChat").toggle()
-        end,
-        desc = "Toggle (CopilotChat)",
-        mode = { "n", "v" },
-      },
-      {
-        "<leader>ax",
-        function()
-          return require("CopilotChat").reset()
-        end,
-        desc = "Clear (CopilotChat)",
-        mode = { "n", "v" },
-      },
-      {
-        "<leader>aq",
-        function()
-          local input = vim.fn.input("Quick Chat: ")
-          if input ~= "" then
-            require("CopilotChat").ask(input)
-          end
-        end,
-        desc = "Quick Chat (CopilotChat)",
-        mode = { "n", "v" },
-      },
-      -- Show prompts actions with telescope
-      {
-        "<leader>ap",
-        function()
-          local actions = require("CopilotChat.actions")
-          return actions.pick(actions.prompt_actions({
-            selection = require("CopilotChat.select").visual,
-          }))
-        end,
-        desc = "Prompt Actions (CopilotChat)",
-        mode = { "n", "v" },
-      },
-      -- Quick actions
-      {
-        "<leader>ae",
-        function()
-          require("CopilotChat").ask(
-            "Explain how this code works",
-            { selection = require("CopilotChat.select").visual }
-          )
-        end,
-        desc = "Explain Code",
-        mode = { "n", "v" },
-      },
-      {
-        "<leader>ar",
-        function()
-          require("CopilotChat").ask(
-            "Review this code and suggest improvements",
-            { selection = require("CopilotChat.select").visual }
-          )
-        end,
-        desc = "Review Code",
-        mode = { "n", "v" },
-      },
-      {
-        "<leader>at",
-        function()
-          require("CopilotChat").ask(
-            "Generate unit tests for this code",
-            { selection = require("CopilotChat.select").visual }
-          )
-        end,
-        desc = "Generate Tests",
-        mode = { "n", "v" },
-      },
-      {
-        "<leader>ad",
-        function()
-          require("CopilotChat").ask(
-            "Generate documentation for this code",
-            { selection = require("CopilotChat.select").visual }
-          )
-        end,
-        desc = "Generate Docs",
-        mode = { "n", "v" },
-      },
-    },
-    config = function(_, opts)
-      -- local chat = require("copilot.chat")
-      local chat = require("CopilotChat")
-
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = "copilot-chat",
-        callback = function()
-          vim.opt_local.relativenumber = false
-          vim.opt_local.number = false
-        end,
-      })
-
-      chat.setup(opts)
-    end,
-  },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   branch = "main",
+  --   cmd = "CopilotChat",
+  --   opts = function()
+  --     local user = vim.env.USER or "User"
+  --     user = user:sub(1, 1):upper() .. user:sub(2)
+  --     return {
+  --       auto_insert_mode = true,
+  --       question_header = "  " .. user .. " ",
+  --       answer_header = "  Copilot ",
+  --       window = {
+  --         width = 0.4,
+  --       },
+  --     }
+  --   end,
+  --   keys = {
+  --     { "<c-s>", "<CR>", ft = "copilot-chat", desc = "Submit Prompt", remap = true },
+  --     { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
+  --     {
+  --       "<leader>aA",
+  --       -- "<leader>aa",
+  --       function()
+  --         return require("CopilotChat").toggle()
+  --       end,
+  --       desc = "Toggle (CopilotChat)",
+  --       mode = { "n", "v" },
+  --     },
+  --     {
+  --       "<leader>ax",
+  --       function()
+  --         return require("CopilotChat").reset()
+  --       end,
+  --       desc = "Clear (CopilotChat)",
+  --       mode = { "n", "v" },
+  --     },
+  --     {
+  --       "<leader>aq",
+  --       function()
+  --         local input = vim.fn.input("Quick Chat: ")
+  --         if input ~= "" then
+  --           require("CopilotChat").ask(input)
+  --         end
+  --       end,
+  --       desc = "Quick Chat (CopilotChat)",
+  --       mode = { "n", "v" },
+  --     },
+  --     -- Show prompts actions with telescope
+  --     {
+  --       "<leader>ap",
+  --       function()
+  --         local actions = require("CopilotChat.actions")
+  --         return actions.pick(actions.prompt_actions({
+  --           selection = require("CopilotChat.select").visual,
+  --         }))
+  --       end,
+  --       desc = "Prompt Actions (CopilotChat)",
+  --       mode = { "n", "v" },
+  --     },
+  --     -- Quick actions
+  --     {
+  --       "<leader>ae",
+  --       function()
+  --         require("CopilotChat").ask(
+  --           "Explain how this code works",
+  --           { selection = require("CopilotChat.select").visual }
+  --         )
+  --       end,
+  --       desc = "Explain Code",
+  --       mode = { "n", "v" },
+  --     },
+  --     {
+  --       "<leader>ar",
+  --       function()
+  --         require("CopilotChat").ask(
+  --           "Review this code and suggest improvements",
+  --           { selection = require("CopilotChat.select").visual }
+  --         )
+  --       end,
+  --       desc = "Review Code",
+  --       mode = { "n", "v" },
+  --     },
+  --     {
+  --       "<leader>at",
+  --       function()
+  --         require("CopilotChat").ask(
+  --           "Generate unit tests for this code",
+  --           { selection = require("CopilotChat.select").visual }
+  --         )
+  --       end,
+  --       desc = "Generate Tests",
+  --       mode = { "n", "v" },
+  --     },
+  --     {
+  --       "<leader>ad",
+  --       function()
+  --         require("CopilotChat").ask(
+  --           "Generate documentation for this code",
+  --           { selection = require("CopilotChat.select").visual }
+  --         )
+  --       end,
+  --       desc = "Generate Docs",
+  --       mode = { "n", "v" },
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     -- local chat = require("copilot.chat")
+  --     local chat = require("CopilotChat")
+  --
+  --     vim.api.nvim_create_autocmd("BufEnter", {
+  --       pattern = "copilot-chat",
+  --       callback = function()
+  --         vim.opt_local.relativenumber = false
+  --         vim.opt_local.number = false
+  --       end,
+  --     })
+  --
+  --     chat.setup(opts)
+  --   end,
+  -- },
 
   {
     "yetone/avante.nvim",

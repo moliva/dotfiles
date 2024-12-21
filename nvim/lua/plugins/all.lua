@@ -1,4 +1,21 @@
 return {
+  -- maximize windows
+  {
+    "declancm/maximize.nvim",
+    keys = {
+      {
+        "<leader>z",
+        function()
+          require("maximize").toggle()
+        end,
+        desc = "Maximize buffer",
+      },
+    },
+    config = function()
+      require("maximize").setup()
+    end,
+  },
+
   -- tree dir
   {
     "nvim-tree/nvim-tree.lua",
@@ -169,23 +186,6 @@ return {
           return { "-i", "2" }
         end,
       }
-    end,
-  },
-
-  -- maximize windows
-  {
-    "declancm/maximize.nvim",
-    keys = {
-      {
-        "<leader>z",
-        function()
-          require("maximize").toggle()
-        end,
-        desc = "Maximize buffer",
-      },
-    },
-    config = function()
-      require("maximize").setup()
     end,
   },
 
