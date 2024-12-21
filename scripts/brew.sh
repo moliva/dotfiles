@@ -10,8 +10,10 @@ brew install tree
 brew install wget
 brew install pstree
 
-brew cask install ngrok
-brew cask install wezterm
+brew install 1password-cli
+
+brew install --cask ngrok
+brew install --cask wezterm
 
 # development server setup
 brew install docker
