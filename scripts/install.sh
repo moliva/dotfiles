@@ -54,13 +54,12 @@ SCPT
     success "Meslo font already installed, skipping installation"
   else
     info "installing Meslo font"
-    curl -oL font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Meslo.zip
+    curl -L -o font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Meslo.zip
     unzip font.zip -d ./font
     cp ./font/* "$HOME/Library/Fonts"
     success "Meslo font installed"
   fi
 
-  # TODO - check if homebrew not installed first - moliva - 2024/12/16
   info "checking homebrew"
   if ! which brew >/dev/null; then
     info "homebrew not found, installing"
@@ -78,7 +77,6 @@ SCPT
   source scripts/osx.sh
   success "macOS settings set"
 
-  # TODO - use fnm - moliva - 2024/12/16
   NODE_VERSION=22
   info "installing node v$NODE_VERSION through fnm"
   fnm install "$NODE_VERSION"
