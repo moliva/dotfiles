@@ -9,30 +9,39 @@ package.path = package.path .. ";" .. utils_path
 local actions = require("actions")
 local keys = require("keys")
 
-local dark_opacity = 0.95
-local light_opacity = 0.9
-
 local function is_dark()
   return wezterm.gui.get_appearance():find("Dark")
 end
 
-local function get_color_scheme()
-  return is_dark() and "Harmonic16 Dark (base16)" or "Harmonic16 Light (base16)"
-end
+local theme = is_dark()
+    and {
+      color_scheme = "Harmonic16 Dark (base16)",
+      background = {
+        color = "#0b1c2c",
+        opacity = 0.95,
+      },
+    }
+  or {
+    color_scheme = "Harmonic16 Light (base16)",
+    background = {
+      color = "#92bfe8",
+      opacity = 0.9,
+    },
+  }
 
 -- @param dark (int) Represents the darkness level of the background.
 -- @param light (int) Represents the lightness level of the background.
 -- @return The computed background color.
-local function get_background(dark, light)
+local function get_background()
   return {
     source = {
-      Color = is_dark() and "#0b1c2c" or "#f4e9e0",
+      Color = theme.background.color,
     },
 
     width = "100%",
     height = "100%",
 
-    opacity = is_dark() and dark or light,
+    opacity = theme.background.opacity,
   }
 end
 
@@ -46,7 +55,7 @@ end)
 
 wezterm.on("reset-opacity", function(window, _)
   local current = actions.get_current_opacity(window)
-  local target = is_dark() and dark_opacity or light_opacity
+  local target = theme.background.opacity
 
   local amount = target - current
 
@@ -57,107 +66,33 @@ end)
 ---@diagnostic disable: missing-fields
 local config = {
   background = {
-    -- w.get_wallpaper(wallpapers_glob),
-    get_background(dark_opacity, light_opacity),
+    get_background(),
   },
 
   font_size = 12,
-  line_height = 0.95,
-
-  -- ===
+  line_height = 1,
 
   font = wezterm.font_with_fallback({
-    -- {
-    --   -- 8
-    --   -- liga
-    --   family = "GeistMono Nerd Font Mono",
-    --   weight = "DemiBold",
-    -- },
+    {
+      family = "MesloLGSDZ Nerd Font Propo",
+      weight = "Medium",
+    },
+
     {
       family = "JetBrainsMono Nerd Font Propo",
       weight = "DemiBold",
     },
     {
-      -- no liga
-      family = "CaskaydiaMono Nerd Font Propo",
+      family = "GeistMono Nerd Font Mono",
+      weight = "DemiBold",
+    },
+    {
+      family = "Cascadia Code NF",
       weight = "Medium",
     },
-    {
-      -- no ligatures
-      family = "MesloLGSDZ Nerd Font Propo",
-      weight = "Medium",
-    },
-    {
-      -- no liga
-      family = "0xProto Nerd Font Mono",
-      weight = "Medium",
-    },
-    {
-      -- no liga
-      family = "CommitMono Nerd Font Propo",
-      weight = "Medium",
-    },
-    {
-      -- no liga
-      family = "CodeNewRoman Nerd Font Propo",
-      weight = "Medium",
-    },
-    {
-      -- no liga
-      family = "DroidSansM Nerd Font Mono",
-      weight = "Medium",
-    },
-    -- no ligatures
-    {
-      family = "MonaspiceAr Nerd Font Mono",
-      weight = "Regular",
-    },
-    {
-      family = "FiraCode Nerd Font Propo",
-      weight = "Regular",
-    },
-    {
-      -- 6 - muy petisa
-      -- no liguatres
-      family = "SauceCodePro Nerd Font Propo",
-      weight = "Medium",
-    },
-    {
-      -- 7.5
-      -- no ligatures
-      family = "NotoSansM Nerd Font Propo",
-      -- family = "NotoMono Nerd Font Propo",
-      weight = "Regular",
-    },
-    {
-      -- 7.5
-      -- no ligatures
-      family = "RobotoMono Nerd Font Propo",
-      weight = "Regular",
-    },
-    {
-      -- 2 - muy petisa
-      -- no ligatures
-      -- bold, demibold, all equal
-      family = "SpaceMono Nerd Font Propo",
-      weight = "Medium",
-    },
-
-    -- family = "Monaspace Neon",
-    -- family = "MartianMono Nerd Font Propo",
-    -- {
-    --   family = "FiraCode Nerd Font",
-    --   weight = "Medium",
-    --   scale = 1.0,
-    -- },
-    -- {
-    --   family = "FantasqueSansM Nerd Font",
-    --   weight = "DemiBold",
-    --   scale = 1.1,
-    -- },
   }),
 
-  color_scheme = get_color_scheme(),
+  color_scheme = theme.color_scheme,
 
   window_padding = {
     left = 10,

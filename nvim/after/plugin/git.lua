@@ -1,8 +1,8 @@
-local wk = require("which-key")
-
-wk.add({
-  { "<leader>g", group = "Git" },
-})
+-- local wk = require("which-key")
+--
+-- wk.add({
+--   { "<leader>g", group = "Git" },
+-- })
 
 vim.keymap.set("n", "<leader>gu", function()
   vim.notify("Pulling last changes...")

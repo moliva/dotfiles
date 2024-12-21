@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# From github.com/moliva/dotfiles
+# Pull from origin HEAD while stashing and rebasing changes
+
 gpull() {
   git diff --exit-code --quiet 1>/dev/null
   any_diff="$?"

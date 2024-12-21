@@ -11,6 +11,19 @@ return {
     end,
   },
 
+  -- secure notes (1password)
+  { "mrjones2014/op.nvim", cmd = { "OpOpen", "OpSignin", "OpNote", "OpView", "OpEdit" }, build = "make install" },
+
+  -- markdown
+  {
+    -- Make sure to set this up properly if you have lazy=true
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {
+      file_types = { "markdown", "Avante" },
+    },
+    ft = { "markdown", "Avante" },
+  },
+
   -- edit
   {
     "tpope/vim-surround",
@@ -28,17 +41,9 @@ return {
   {
     "mg979/vim-visual-multi",
     branch = "master",
-    lazy = false,
-    config = function()
-      vim.api.nvim_exec(
-        [[
-let g:VM_maps = {}
-let g:VM_maps["Add Cursor Down"]             = '<C-j>'
-let g:VM_maps["Add Cursor Up"]               = '<C-k>'
-]],
-        false
-      )
-    end,
+    keys = {
+      { "<c-n>", nil, desc = "Vim visual multi (next occurrence)" },
+    },
   },
 
   -- code folding

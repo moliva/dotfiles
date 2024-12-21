@@ -48,32 +48,73 @@ local state = {
     buf = -1,
     chan = -1,
   },
+  docked = {
+    win = -1,
+  },
 }
 
 local function toggle_terminal()
-  -- if job_id ~= 0 then
-  --   vim.fn.chanclose(job_id)
-  -- end
+  if vim.api.nvim_win_is_valid(state.docked.win) then
+    -- If terminal is docked, convert it to floating
+    local buf = state.floating.buf
+    vim.api.nvim_win_close(state.docked.win, false)
+    state.docked.win = -1
 
-  -- vim.cmd.vnew()
-  -- vim.cmd.term()
-  -- vim.cmd.wincmd("J")
-  -- vim.api.nvim_win_set_height(0, 10)
-  --
-
-  if not vim.api.nvim_win_is_valid(state.floating.win) then
+    state.floating = create_floating_window({ buf = buf })
+  elseif not vim.api.nvim_win_is_valid(state.floating.win) then
+    -- If no terminal window exists, create floating
     state.floating = create_floating_window({ buf = state.floating.buf })
     if vim.bo[state.floating.buf].buftype ~= "terminal" then
       vim.cmd.terminal()
-
       state.floating.chan = vim.bo.channel
     end
   else
+    -- Hide floating window
     vim.api.nvim_win_hide(state.floating.win)
   end
 end
 
-vim.keymap.set("n", "<leader>tt", toggle_terminal, { desc = "Open terminal" })
+local function dock_terminal_right()
+  if vim.api.nvim_win_is_valid(state.floating.win) then
+    -- If floating window exists, convert it to a normal window
+    local buf = state.floating.buf
+    vim.api.nvim_win_close(state.floating.win, false)
+
+    -- Create new vertical split and move it right
+    vim.cmd("vsplit")
+    vim.cmd("wincmd L")
+
+    -- Set the buffer in the new window
+    vim.api.nvim_win_set_buf(0, buf)
+
+    -- Update state
+    state.floating.win = -1
+    state.docked.win = vim.api.nvim_get_current_win()
+  else
+    -- Create a new vertical split
+    vim.cmd("vsplit")
+    vim.cmd("wincmd L")
+
+    -- If we already have a terminal buffer, use it
+    if vim.api.nvim_buf_is_valid(state.floating.buf) and vim.bo[state.floating.buf].buftype == "terminal" then
+      vim.api.nvim_win_set_buf(0, state.floating.buf)
+    else
+      vim.cmd.terminal()
+      state.floating.buf = vim.api.nvim_get_current_buf()
+      state.floating.chan = vim.bo.channel
+    end
+
+    -- Update state
+    state.docked.win = vim.api.nvim_get_current_win()
+  end
+
+  -- Set the width to 1/3 of the screen
+  local width = math.floor(vim.o.columns * 0.3)
+  vim.api.nvim_win_set_width(0, width)
+end
+
+vim.keymap.set("n", "<leader>tt", toggle_terminal, { desc = "Toggle floating terminal" })
+vim.keymap.set("n", "<leader>tr", dock_terminal_right, { desc = "Dock terminal right" })
 vim.keymap.set("n", "<leader>tj", function()
   if state.floating.chan ~= -1 then
     -- vim.fn.chansend(state.floating.chan, "yarn test:watch\r")

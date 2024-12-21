@@ -41,10 +41,21 @@ vim.keymap.set("n", "<leader>Y", '"+Y')
 -- TODO - go to the function declaration (when inside that function) - moliva - 2024/03/05
 -- TODO - delete between parenthesis or , and parenthesis (function call) - moliva - 2024/03/08
 -- TODO - cmd+shift+s => save all buffers - moliva - 2024/03/09
--- TODO - close all other buffers (not in a visible window) - moliva - 2024/03/13
--- TODO - move window to focus in the high end for meetings - moliva - 2024/03/16
 
--- TODO - wrap in dbg! - moliva - 2024/12/15
+-- Close all buffers except visible ones
+vim.keymap.set("n", "<leader>bo", function()
+  local visible_buffers = {}
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    visible_buffers[vim.api.nvim_win_get_buf(win)] = true
+  end
+
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) and not visible_buffers[buf] then
+      vim.api.nvim_buf_delete(buf, { force = false })
+    end
+  end
+  vim.notify("Closed all non-visible buffers")
+end, { desc = "Close all non-visible buffers" })
 
 -- window movement
 -- vim.keymap.set("n", "<c-j>", "<c-w>j")
@@ -181,3 +192,59 @@ vim.keymap.set(
 
 -- escape terminal mode
 vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>")
+
+-- Buffer navigation
+vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+
+-- Better indenting
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
+-- Move to window using the <ctrl> hjkl keys
+-- vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
+-- vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
+-- vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
+-- vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
+
+-- Resize window using <ctrl> arrow keys
+-- vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+-- vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+-- vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+-- vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+
+-- Move Lines
+-- vim.keymap.set("n", "<A-Down>", ":m .+1<cr>==", { desc = "Move line down" })
+-- vim.keymap.set("n", "<A-Up>", ":m .-2<cr>==", { desc = "Move line up" })
+-- vim.keymap.set("i", "<A-Down>", "<esc>:m .+1<cr>==gi", { desc = "Move line down" })
+-- vim.keymap.set("i", "<A-Up>", "<esc>:m .-2<cr>==gi", { desc = "Move line up" })
+-- vim.keymap.set("v", "<A-Down>", ":m '>+1<cr>gv=gv", { desc = "Move line down" })
+-- vim.keymap.set("v", "<A-Up>", ":m '<-2<cr>gv=gv", { desc = "Move line up" })
+
+-- Clear search with <esc>
+-- vim.keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
+
+-- Save file
+-- vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+
+-- Better up/down
+vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+
+-- Duplicate lines
+vim.keymap.set("n", "<A-S-j>", "yyp", { desc = "Duplicate line down" })
+vim.keymap.set("n", "<A-S-k>", "yyP", { desc = "Duplicate line up" })
+
+-- Center screen after various movements
+vim.keymap.set("n", "{", "{zz")
+vim.keymap.set("n", "}", "}zz")
+vim.keymap.set("n", "G", "Gzz")
+vim.keymap.set("n", "gg", "ggzz")
+vim.keymap.set("n", "%", "%zz")
+vim.keymap.set("n", "*", "*zz")
+vim.keymap.set("n", "#", "#zz")
+
+-- Add undo break-points
+vim.keymap.set("i", ",", ",<c-g>u")
+vim.keymap.set("i", ".", ".<c-g>u")
+vim.keymap.set("i", ";", ";<c-g>u")
