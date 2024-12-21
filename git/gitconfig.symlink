@@ -6,10 +6,8 @@
 	untracked = cyan
 [include]
 	path = ~/.gitconfig.local
-[hub]
-	protocol = ssh
 [alias]
-        show-files = diff-tree --no-commit-id --name-only -r
+	show-files = diff-tree --no-commit-id --name-only -r
 	perri-chyck = cherry-pick
 	perri-quest = pull-request
 [core]
@@ -23,6 +21,6 @@
 [gpg]
 	program = gpg
 [commit]
-	gpgsign = true
+	gpgSign = true
 [init]
 	defaultBranch = main
