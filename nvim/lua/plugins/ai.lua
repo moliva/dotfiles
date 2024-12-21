@@ -157,7 +157,7 @@ return {
     keys = {
       {
         "<leader>aa",
-        "AvanteAsk",
+        "<cmd>AvanteAsk<cr>",
         desc = "Avante ask",
         mode = { "n", "v" },
       },
