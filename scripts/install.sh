@@ -41,11 +41,24 @@ if [ "$(uname)" == "Darwin" ]; then
   cd "$TMP_DIR" || return
   success tmp dir created at "$TMP_DIR"
 
-  info "installing font"
-  curl -o font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip
-  unzip font.zip -d ./font
-  cp ./font/* "$HOME/Library/Fonts"
-  success "font installed"
+  info "checking Meslo font installation"
+  fontFamilyNames=$(
+    osascript <<SCPT
+      use framework "AppKit"
+      set fontFamilyNames to (current application's NSFontManager's sharedFontManager's availableFontFamilies) as list
+      return fontFamilyNames
+SCPT
+  )
+
+  if echo "$fontFamilyNames" | grep -q "MesloLGSDZ Nerd Font Propo"; then
+    success "Meslo font already installed, skipping installation"
+  else
+    info "installing Meslo font"
+    curl -oL font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Meslo.zip
+    unzip font.zip -d ./font
+    cp ./font/* "$HOME/Library/Fonts"
+    success "Meslo font installed"
+  fi
 
   # TODO - check if homebrew not installed first - moliva - 2024/12/16
   info "checking homebrew"
