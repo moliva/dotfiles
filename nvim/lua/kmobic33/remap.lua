@@ -35,6 +35,10 @@ vim.keymap.set({ "n", "v" }, "<leader>c", '"_c', { desc = "Change into an anonym
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
 
+for i = 1, 9 do
+  vim.keymap.set("n", "<leader>" .. i, i .. "<C-W>w", { desc = "Move to window " .. i })
+end
+
 -- TODO - delete/select/yank until _ - moliva - 2024/03/05
 -- TODO - delete/select/yank until next capitalized letter - moliva - 2024/03/05
 

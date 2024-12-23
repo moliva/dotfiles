@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
 
+# sql formatter
+brew install pgformatter
+
+# rust
+# linker
+brew install michaeleisel/zld/zld
+
 # starship cli
 brew install starship
 

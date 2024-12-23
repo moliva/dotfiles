@@ -18,7 +18,8 @@ return {
       local capabilities = require("kmobic33.lsp").get_capabilities()
       local server = require("kmobic33.rust_analyzer").config(capabilities)
       server.on_attach = function(client, bufnr)
-        require("kmobic33.lsp").on_attach(client, bufnr)
+        require("kmobic33.lsp.on_attach").on_attach(client, bufnr)
+
         -- Hover actions
         vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr, desc = "Hover actions" })
         -- Code action groups

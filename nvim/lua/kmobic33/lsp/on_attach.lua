@@ -53,20 +53,6 @@ function M.on_attach(_client, bufnr)
     -- lsp workspace
     k({ "<leader>w", group = "LSP workspaces" }),
 
-    -- format
-    -- TODO - table extend below for the opts + { desc } - moliva - 2024/02/06
-    -- vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = "Format" })
-    -- vim.keymap.set("n", "<leader>f", function()
-    --   vim.lsp.buf.format({ async = true })
-    -- end, opts)
-    k({
-      "<leader>f",
-      function()
-        require("conform").format()
-      end,
-      desc = "Format file",
-    }),
-
     -- visual selection
     k({ "vc", u.visual_select_context, desc = "Visually select the current context" }),
 

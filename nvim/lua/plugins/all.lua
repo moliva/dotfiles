@@ -135,6 +135,15 @@ return {
   {
     "stevearc/conform.nvim",
     lazy = true,
+    keys = {
+      {
+        "<leader>f",
+        function()
+          require("conform").format()
+        end,
+        desc = "Format file",
+      },
+    },
     config = function()
       local conform = require("conform")
       conform.setup({
