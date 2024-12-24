@@ -339,7 +339,7 @@ alias glstash="git stash list | cat"
 # alias gopen="git browse -- ."
 alias gopen="gh browse"
 
-alias glasthash='git log -n 1 --pretty=format:"%h" | ccopy &&  echo `git log -n 1 --pretty=format:"%an - %s - %h"`'
+alias glasthash="git last-hash"
 alias glastdiff="git diff head~1 head"
 alias glean="git checkout -- . && git clean -f -d"
 alias gtagls="git tag | gsort -v"
