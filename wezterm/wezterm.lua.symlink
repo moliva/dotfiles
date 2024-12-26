@@ -184,17 +184,28 @@ local config = {
     -- },
 
     -- go to window #
-    keys.cmd_to_tmux_prefix("1", "1"),
-    keys.cmd_to_tmux_prefix("2", "2"),
-    keys.cmd_to_tmux_prefix("3", "3"),
-    keys.cmd_to_tmux_prefix("4", "4"),
-    keys.cmd_to_tmux_prefix("5", "5"),
-    keys.cmd_to_tmux_prefix("6", "6"),
-    keys.cmd_to_tmux_prefix("7", "7"),
-    keys.cmd_to_tmux_prefix("8", "8"),
+    { mods = "CMD|CTRL", key = "1", action = keys.tmux_prefixed_key({ key = "1" }) },
+    { mods = "CMD|CTRL", key = "2", action = keys.tmux_prefixed_key({ key = "2" }) },
+    { mods = "CMD|CTRL", key = "3", action = keys.tmux_prefixed_key({ key = "3" }) },
+    { mods = "CMD|CTRL", key = "4", action = keys.tmux_prefixed_key({ key = "4" }) },
+    { mods = "CMD|CTRL", key = "5", action = keys.tmux_prefixed_key({ key = "5" }) },
+    { mods = "CMD|CTRL", key = "6", action = keys.tmux_prefixed_key({ key = "6" }) },
+    { mods = "CMD|CTRL", key = "7", action = keys.tmux_prefixed_key({ key = "7" }) },
+    { mods = "CMD|CTRL", key = "8", action = keys.tmux_prefixed_key({ key = "8" }) },
 
     -- go to last window
-    keys.cmd_to_tmux_prefix("9", "9"),
+    { mods = "CMD|CTRL", key = "9", action = keys.tmux_prefixed_key({ key = "9" }) },
+
+    -- switch pane
+    { mods = "CMD", key = "1", action = keys.tmux_prefixed_key({ key = "F1" }) },
+    { mods = "CMD", key = "2", action = keys.tmux_prefixed_key({ key = "F2" }) },
+    { mods = "CMD", key = "3", action = keys.tmux_prefixed_key({ key = "F3" }) },
+    { mods = "CMD", key = "4", action = keys.tmux_prefixed_key({ key = "F4" }) },
+    { mods = "CMD", key = "5", action = keys.tmux_prefixed_key({ key = "F5" }) },
+    { mods = "CMD", key = "6", action = keys.tmux_prefixed_key({ key = "F6" }) },
+    { mods = "CMD", key = "7", action = keys.tmux_prefixed_key({ key = "F7" }) },
+    { mods = "CMD", key = "8", action = keys.tmux_prefixed_key({ key = "F8" }) },
+    { mods = "CMD", key = "9", action = keys.tmux_prefixed_key({ key = "F9" }) },
 
     -- save
     keys.cmd_key(

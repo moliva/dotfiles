@@ -143,10 +143,15 @@ bind M run "tmux split-window -v -p 30 -c '#{pane_current_path}' && tmux split-w
 bind o command-prompt -p "New session: " "new-session -s '%1'"
 
 # select-pane -t 1
-bind f1 run "tmux select-pane -t 1"
-bind f2 run "tmux select-pane -t 2"
-bind f3 run "tmux select-pane -t 3"
-bind f4 run "tmux select-pane -t 4"
+bind f1 run "tmux select-pane -t 1 || tmux display-message  'no window 1'"
+bind f2 run "tmux select-pane -t 2 || tmux display-message  'no window 2'"
+bind f3 run "tmux select-pane -t 3 || tmux display-message  'no window 3'"
+bind f4 run "tmux select-pane -t 4 || tmux display-message  'no window 4'"
+bind f5 run "tmux select-pane -t 5 || tmux display-message  'no window 5'"
+bind f6 run "tmux select-pane -t 6 || tmux display-message  'no window 6'"
+bind f7 run "tmux select-pane -t 7 || tmux display-message  'no window 7'"
+bind f8 run "tmux select-pane -t 8 || tmux display-message  'no window 8'"
+bind f9 run "tmux select-pane -t 9 || tmux display-message  'no window 9'"
 
 ##############################
 ### Plugin management ###
