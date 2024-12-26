@@ -23,16 +23,22 @@ vim.keymap.set("n", "<A-w>", "<cmd>%bd|e#<cr>", { desc = "Close all buffers but 
 -- vim.keymap.set("n", "<A-Q>", "<cmd>bufdo bwipeout<cr>", { desc = "Close all buffers"})
 vim.keymap.set("n", "<A-Q>", "<cmd>1,$bd!<cr>", { desc = "Close all buffers" })
 
--- allows you to visual highlight text and paste over without replacing the buffer
 vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste over without replacing the buffer" })
 
 vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete into an anonymous buffer" })
+vim.keymap.set({ "n", "v" }, "<leader><leader>d", '"+d', { desc = "Delete to system clipboard" })
+
 vim.keymap.set("n", "<leader>D", '"_D', { desc = "Delete into an anonymous buffer" })
+vim.keymap.set("n", "<leader><leader>D", '"+D', { desc = "Delete to system clipboard" })
 
 vim.keymap.set({ "n", "v" }, "<leader>c", '"_c', { desc = "Change into an anonymous buffer" })
+vim.keymap.set({ "n", "v" }, "<leader><leader>c", '"+c', { desc = "Change to system clipboard" })
 
--- yank to the system clipboard!
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
+vim.keymap.set("n", "<leader><leader>y", function()
+  vim.fn.setreg("+", vim.fn.getreg(""))
+end, { desc = "Copy unnamed register to clipboard" })
+
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
 vim.keymap.set("n", "<leader>Y", '"+Y')
 
 for i = 1, 9 do
@@ -198,8 +204,8 @@ vim.keymap.set(
 vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>")
 
 -- Buffer navigation
-vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+-- vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+-- vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
 
 -- Better indenting
 vim.keymap.set("v", "<", "<gv")

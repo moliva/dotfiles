@@ -7,8 +7,10 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   keys = {
     -- Move to previous/next
-    { "<A-J>", "<Cmd>BufferPrevious<CR>", opts },
-    { "<A-K>", "<Cmd>BufferNext<CR>", opts },
+    { "<s-h>", "<Cmd>BufferPrevious<CR>", opts },
+    { "<s-l>", "<Cmd>BufferNext<CR>", opts },
+    -- { "<A-J>", "<Cmd>BufferPrevious<CR>", opts },
+    -- { "<A-K>", "<Cmd>BufferNext<CR>", opts },
     -- Re-order to previous/next
     { "<A-<>", "<Cmd>BufferMovePrevious<CR>", opts },
     { "<A->>", "<Cmd>BufferMoveNext<CR>", opts },
@@ -38,8 +40,8 @@ return {
     local map = vim.api.nvim_set_keymap
 
     -- Move to previous/next
-    map("n", "<A-j>", "<Cmd>BufferPrevious<CR>", opts)
-    map("n", "<A-k>", "<Cmd>BufferNext<CR>", opts)
+    -- map("n", "<A-j>", "<Cmd>BufferPrevious<CR>", opts)
+    -- map("n", "<A-k>", "<Cmd>BufferNext<CR>", opts)
     -- map('n', '∆', '<Cmd>BufferPrevious<CR>', opts)
     -- map('n', '˚', '<Cmd>BufferNext<CR>', opts)
 
