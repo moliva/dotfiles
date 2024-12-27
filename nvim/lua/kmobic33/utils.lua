@@ -81,7 +81,7 @@ end
 
 ---Edit the project description file in the current file's directory or upwards (until cwd) if one exists
 function M.edit_project_description_file_from_current_file()
-  local initial_file_path = vim.fn.expand("%")
+  local initial_file_path = vim.fn.expand("%:p")
 
   local base_path = parent_dir(initial_file_path)
   if not string.match(base_path, "^.?/") then
