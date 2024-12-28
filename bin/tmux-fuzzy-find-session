@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# current session name
+session=$(tmux display-message -p '#S')
+
+tmux list-sessions |
+  sed -E 's/:.*$//' |                                                                       # trim sessions names only
+  grep -v \"^"$session"\$\" |                                                               # remove active session
+  fzf --reverse --bind 'ctrl-o:execute(tmux new-session -s {q} -d)+accept-or-print-query' | # create session on ctrl-o
+  xargs tmux switch-client -t                                                               # switch to session

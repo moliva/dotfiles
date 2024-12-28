@@ -128,10 +128,11 @@ bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
 bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
 
 # fuzzy finds a window in the current session
-bind C-f display-popup -h '70%' -w '70%' -E "tmux select-window -t $(tmux list-windows | grep -v '(active)' | awk '{print($1, $2, $3, $4) }' | fzf --bind 'ctrl-u:preview-half-page-up' --bind 'ctrl-d:preview-half-page-down' --reverse --header 'Select window' --header-first --preview 'echo {} | awk \"{ print(\\\"'$(tmux display-message -p '#S')':\\\"substr(\\$1, 1, length(\\$1) -1)) }\" | xargs tmux capture-pane -pt ' --preview-window '70%' | awk '{ print substr($1, 1, length($1) - 1)}')"
+bind C-f display-popup -h '70%' -w '70%' -E "tmux-fuzzy-find-window"
 
 # fuzzy finds a session
-bind \' display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse --bind 'ctrl-o:execute(tmux new-session -s {q} -d)+accept-or-print-query' | xargs tmux switch-client -t"
+bind \' display-popup -E "tmux-fuzzy-find-session"
+
 bind C-q switch-client -l
 
 # makes a 3 pane split for editor, server and console in the current window
