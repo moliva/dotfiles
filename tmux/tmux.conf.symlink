@@ -197,6 +197,8 @@ set -g @plugin 'tmux-plugins/tpm'
 # possible plugins to add
 # https://github.com/catppuccin/tmux
 # https://github.com/christoomey/vim-tmux-navigator
+# https://github.com/sainnhe/tmux-fzf
+# https://github.com/junegunn/tmux-fzf-url
 
 # for better mouse management
 set -g @plugin 'nhdaly/tmux-scroll-copy-mode'

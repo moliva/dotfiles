@@ -10,6 +10,8 @@ tmux list-sessions |
   grep -v \"^"$session"\$\" | # remove active session
   fzf \
     --reverse \
+    --header 'Select session' \
+    --header-first \
     --tmux center,40%,40% \
     --bind "ctrl-o:$create_new_session" | # create session on ctrl-o
   xargs tmux switch-client -t             # switch to session
