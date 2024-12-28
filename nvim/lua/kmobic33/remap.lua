@@ -41,6 +41,7 @@ end, { desc = "Copy unnamed register to clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
 vim.keymap.set("n", "<leader>Y", '"+Y')
 
+-- select nvim pane with <leader>1-9
 for i = 1, 9 do
   vim.keymap.set("n", "<leader>" .. i, i .. "<C-W>w", { desc = "Move to window " .. i })
 end
