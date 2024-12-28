@@ -1,4 +1,5 @@
 set -g default-command "reattach-to-user-namespace -l zsh"
+
 # tmux display things in 256 colors
 set -g default-terminal "screen-256color"
 
@@ -118,6 +119,7 @@ unbind [
 bind Escape copy-mode
 unbind p
 bind p paste-buffer
+
 #bind -t vi-copy 'v' begin-selection
 bind -Tcopy-mode-vi v send -X begin-selection
 #bind -t vi-copy 'y' copy-selection
@@ -133,26 +135,17 @@ bind C-f display-popup -h '70%' -w '70%' -E "tmux-fuzzy-find-window"
 # fuzzy finds a session
 bind \' display-popup -E "tmux-fuzzy-find-session"
 
-bind C-q switch-client -l
-
 # makes a 3 pane split for editor, server and console in the current window
 bind M run "tmux split-window -v -p 30 -c '#{pane_current_path}' && tmux split-window -h -p 50 -c '#{pane_current_path}' && tmux select-pane -t 1"
 
-# bind o command-prompt -p "New Status: " "set -g status-left '%1'"
+# alternate session
+bind C-q switch-client -l
 
 # create new session prompting for a name
 bind o command-prompt -p "New session: " "new-session -s '%1'"
 
-# select-pane -t 1
-bind f1 run "tmux select-pane -t 1 || tmux display-message  'no window 1'"
-bind f2 run "tmux select-pane -t 2 || tmux display-message  'no window 2'"
-bind f3 run "tmux select-pane -t 3 || tmux display-message  'no window 3'"
-bind f4 run "tmux select-pane -t 4 || tmux display-message  'no window 4'"
-bind f5 run "tmux select-pane -t 5 || tmux display-message  'no window 5'"
-bind f6 run "tmux select-pane -t 6 || tmux display-message  'no window 6'"
-bind f7 run "tmux select-pane -t 7 || tmux display-message  'no window 7'"
-bind f8 run "tmux select-pane -t 8 || tmux display-message  'no window 8'"
-bind f9 run "tmux select-pane -t 9 || tmux display-message  'no window 9'"
+# select-pane with number
+run-shell 'for i in {1..9}; do tmux bind-key F$i run "tmux select-pane -t $i || tmux display-message \"no window $i\""; done'
 
 ##############################
 ### Plugin management ###
