@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
-# current session name
-session=$(tmux display-message -p '#S')
-
-# preview command to show the window 1st pane content
-# window name > concat session name > capture first pane content
-preview_command='echo {} \
-  | awk "{ print(\"'$session':\"substr(\$1, 1, length(\$1) -1)) }" \
-  | xargs tmux capture-pane -e -pt'
+# preview command to show the window pane content
+preview_1="change-preview(preview_command {} 1)"
+preview_2="change-preview(preview_command {} 2)"
+preview_3="change-preview(preview_command {} 3)"
 
 preview_half_page_up='preview-half-page-up'
 preview_half_page_down='preview-half-page-down'
@@ -20,9 +16,12 @@ window=$(tmux list-windows |
     --reverse \
     --header 'Select window' \
     --header-first \
-    --preview "$preview_command" \
+    --preview "preview_command {} \$session 1" \
     --preview-window 80% \
     --tmux center,80%,70% \
+    --bind "ctrl-i:$preview_1" \
+    --bind "ctrl-o:$preview_2" \
+    --bind "ctrl-p:$preview_3" \
     --bind "ctrl-u:$preview_half_page_up" \
     --bind "ctrl-d:$preview_half_page_down" |
   awk '{ print substr($1, 1, length($1) - 1)}')

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# current session name
+session=$(tmux display-message -p '#S')
+
+echo "$1" |
+  awk "{ print(\"'$session':\"substr(\$1, 1, length(\$1) -1)\".'$2'\") }" |
+  xargs tmux capture-pane -e -pt
