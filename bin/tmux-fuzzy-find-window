@@ -7,19 +7,24 @@ session=$(tmux display-message -p '#S')
 # window name > concat session name > capture first pane content
 preview_command='echo {} \
   | awk "{ print(\"'$session':\"substr(\$1, 1, length(\$1) -1)) }" \
-  | xargs tmux capture-pane -pt'
+  | xargs tmux capture-pane -e -pt'
+
+preview_half_page_up='preview-half-page-up'
+preview_half_page_down='preview-half-page-down'
 
 # # choose window from list of existing windows in session
 window=$(tmux list-windows |
   grep -v '(active)' |
   awk '{print($1, $2, $3, $4) }' |
-  fzf --bind 'ctrl-u:preview-half-page-up' \
-    --bind 'ctrl-d:preview-half-page-down' \
+  fzf \
     --reverse \
     --header 'Select window' \
     --header-first \
     --preview "$preview_command" \
-    --preview-window '70%' |
+    --preview-window 80% \
+    --tmux center,80%,70% \
+    --bind "ctrl-u:$preview_half_page_up" \
+    --bind "ctrl-d:$preview_half_page_down" |
   awk '{ print substr($1, 1, length($1) - 1)}')
 
 # select window

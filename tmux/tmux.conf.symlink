@@ -130,10 +130,10 @@ bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
 bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
 
 # fuzzy finds a window in the current session
-bind C-f display-popup -h '70%' -w '70%' -E "tmux-fuzzy-find-window"
+bind C-f run "tmux-fuzzy-find-window"
 
 # fuzzy finds a session
-bind \' display-popup -E "tmux-fuzzy-find-session"
+bind \' run "tmux-fuzzy-find-session"
 
 # makes a 3 pane split for editor, server and console in the current window
 bind M run "tmux split-window -v -p 30 -c '#{pane_current_path}' && tmux split-window -h -p 50 -c '#{pane_current_path}' && tmux select-pane -t 1"
