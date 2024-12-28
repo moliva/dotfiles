@@ -172,7 +172,6 @@ set -g @jump-key 'c'
 ##############################
 
 source $DOTFILES/tmux/tmuxtheme.sh
-#source $DOTFILES/tmux/tmuxtheme_nounicode.sh
 
 ##############################
 ### yazi config for images ###
