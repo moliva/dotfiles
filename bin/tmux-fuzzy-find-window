@@ -37,6 +37,7 @@ window=$(tmux list-windows |
     --preview "preview_command {} \$session 1" \
     --preview-window 80% \
     --tmux center,80%,70% \
+    --cycle \
     --bind "ctrl-h:$help" \
     --bind "ctrl-i:$preview_1" \
     --bind "ctrl-o:$preview_2" \

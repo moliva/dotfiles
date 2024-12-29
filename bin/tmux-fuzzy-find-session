@@ -29,6 +29,7 @@ tmux list-sessions | sed -E "s/:.*$//" | grep -v \"^"$session"\$\" | fzf \
   --prompt 'Session > ' \
   --header 'Press `ctrl-h` for help!' \
   --tmux center,40%,40% \
+  --cycle \
   --bind "start:$list_sessions" \
   --bind "ctrl-h:$help" \
   --bind "ctrl-o:$create_new_session" \
