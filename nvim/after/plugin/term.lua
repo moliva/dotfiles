@@ -23,6 +23,9 @@ local function create_floating_window(opts)
     buf = opts.buf
   else
     buf = vim.api.nvim_create_buf(false, true)
+    -- Make the buffer hidden from buffer lists and other UI elements
+    vim.bo[buf].buflisted = false
+    vim.bo[buf].bufhidden = 'hide'
   end
 
   -- Define window configuration
