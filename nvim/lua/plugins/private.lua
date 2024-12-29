@@ -3,6 +3,7 @@ return {
     "moliva/private.nvim",
     -- dir = "/Users/moliva/repos/private.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    event = { "BufReadPost", "BufWritePost" },
     keys = {
       { "<leader>i", nil, desc = "Private" },
 
