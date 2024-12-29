@@ -3,8 +3,8 @@
 # current session name
 session=$(tmux display-message -p '#S')
 
-# list tmux sessions, trim names and remove active session names
-list_sessions='reload:tmux list-sessions | sed -E "s/:.*$//" | grep -v \"^"$session"\$\"'
+# list tmux sessions, remove active session names and trim names
+list_sessions='reload:tmux list-sessions | grep -v "(attached)" | sed -E "s/:.*$//"'
 
 create_new_session='execute(tmux new-session -s {q} -d)+accept-or-print-query'
 kill_session="execute(tmux kill-session -t {})+clear-query+$list_sessions"
