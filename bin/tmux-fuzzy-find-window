@@ -8,17 +8,36 @@ preview_3="change-preview(preview_command {} 3)"
 preview_half_page_up='preview-half-page-up'
 preview_half_page_down='preview-half-page-down'
 
+help='execute(bat --style plain --language md --paging always << EOF
+
+
+                        HELP
+
+        ctrl-h
+          This help message
+
+        ctrl-i
+        ctrl-o
+        ctrl-p
+          To change preview for panes 1, 2 or 3
+
+        ctrl-u
+        ctrl-d
+          Preview half page up or down
+EOF)'
+
 # # choose window from list of existing windows in session
 window=$(tmux list-windows |
   grep -v '(active)' |
   awk '{print($1, $2, $3, $4) }' |
   fzf \
     --reverse \
-    --header 'Select window' \
-    --header-first \
+    --prompt 'Window > ' \
+    --header 'Press `ctrl-h` for help!' \
     --preview "preview_command {} \$session 1" \
     --preview-window 80% \
     --tmux center,80%,70% \
+    --bind "ctrl-h:$help" \
     --bind "ctrl-i:$preview_1" \
     --bind "ctrl-o:$preview_2" \
     --bind "ctrl-p:$preview_3" \
