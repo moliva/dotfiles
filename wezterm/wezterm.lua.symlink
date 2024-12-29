@@ -350,6 +350,13 @@ local config = {
       action = keys.tmux_prefixed(keys.multiple_actions("\u{001B}OS")),
     },
 
+    -- alternate tmux pane
+    {
+      mods = "CMD",
+      key = "p",
+      action = keys.tmux_prefixed_key({ mods = "CTRL", key = ";" }),
+    },
+
     -- fuzzy find tmux sessions
     {
       mods = "CMD",
