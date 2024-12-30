@@ -4,17 +4,21 @@
 session=$(tmux display-message -p '#S')
 
 # initialize counter and helper functions
-tmux set-environment -g PANE_COUNTER 1
-get_val='tmux show-environment -g PANE_COUNTER | cut -d '=' -f2'
-get_pane_count="tmux list-panes -t \"$session:\$(echo {1} | awk '{ print(substr(\$1, 1, length(\$1) - 1)) }')\" | wc -l"
+get_pane_list="tmux list-panes -t \"$session:\$(echo {1} | awk '{ print(substr(\$1, 1, length(\$1) - 1)) }')\""
+
+active_pane="$get_pane_list | grep -e '(active)' | awk '{ print(substr(\$1, 1, length(\$1) - 1)) }'"
+get_pane_count="$get_pane_list | wc -l"
+
+# setter and getter for tmux env var
+set_active_pane="tmux set-environment -g PANE_COUNTER \$($active_pane)"
+selected_pane='tmux show-environment -g PANE_COUNTER | cut -d '=' -f2'
 
 # increase/decrease with bounds checking
-increase="panes=\$($get_pane_count); current=\$($get_val); if ((current < panes)); then tmux set-environment -g PANE_COUNTER \$((current + 1)); fi"
-decrease="current=\$($get_val); if ((current > 1)); then tmux set-environment -g PANE_COUNTER \$((current - 1)); fi"
+increase="panes=\$($get_pane_count); current=\$($selected_pane); if ((current < panes)); then tmux set-environment -g PANE_COUNTER \$((current + 1)); fi"
+decrease="current=\$($selected_pane); if ((current > 1)); then tmux set-environment -g PANE_COUNTER \$((current - 1)); fi"
 
 # preview command to show the window pane content
-preview_active_pane="preview_command '$session' {}"
-preview_indexed_pane="preview_command '$session' {} \$($get_val)"
+preview_indexed_pane="preview_command '$session' {} \$($selected_pane)"
 
 # other actions
 preview_half_page_up='preview-half-page-up'
@@ -25,12 +29,12 @@ help='execute(bat --style plain --language md --paging always << EOF
 
                         HELP
 
-        ctrl-h
+        ?
           This help message
 
-        ctrl-i
-        ctrl-o
-          To change preview for panes in decreasing (ctrl-i) or increasing (ctrl-o) order
+        ctrl-h
+        ctrl-l
+          To change preview for panes in decreasing (ctrl-h) or increasing (ctrl-l) order
 
         ctrl-a
           To change preview back to active pane
@@ -51,11 +55,11 @@ window=$(tmux list-windows |
     --preview-window 80% \
     --tmux center,80%,70% \
     --cycle \
-    --preview "$preview_active_pane" \
-    --bind "ctrl-h:$help" \
-    --bind "ctrl-a:preview($preview_active_pane)" \
-    --bind "ctrl-i:execute($decrease)+preview($preview_indexed_pane)" \
-    --bind "ctrl-o:execute($increase)+preview($preview_indexed_pane)" \
+    --bind "?:$help" \
+    --bind "focus:execute($set_active_pane)+preview($preview_indexed_pane)" \
+    --bind "ctrl-a:execute($set_active_pane)+preview($preview_indexed_pane)" \
+    --bind "ctrl-h:execute($decrease)+preview($preview_indexed_pane)" \
+    --bind "ctrl-l:execute($increase)+preview($preview_indexed_pane)" \
     --bind "ctrl-u:$preview_half_page_up" \
     --bind "ctrl-d:$preview_half_page_down" |
   awk '{ print substr($1, 1, length($1) - 1) }')
