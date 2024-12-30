@@ -335,8 +335,6 @@ alias gustash="git stash save --include-untracked"
 alias glstash="git stash list | cat"
 # alias gpstash="git stash pop"
 
-# NOTE(miguel): not using `hub` anymore - 2024/11/05
-# alias gopen="git browse -- ."
 alias gopen="gh browse"
 
 alias glasthash="git last-hash"
