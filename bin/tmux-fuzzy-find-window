@@ -18,18 +18,19 @@ increase="panes=\$($get_pane_count); current=\$($selected_pane); if ((current < 
 decrease="current=\$($selected_pane); if ((current > 1)); then tmux set-environment -g PANE_COUNTER \$((current - 1)); fi"
 
 # preview command to show the window pane content
-preview_indexed_pane="preview_command '$session' {} \$($selected_pane)"
+preview_indexed_pane="echo \"Pane #\$($selected_pane)\n\"; preview_command '$session' {} \$($selected_pane)"
 
 # other actions
 preview_half_page_up='preview-half-page-up'
 preview_half_page_down='preview-half-page-down'
 
-help='execute(bat --style plain --language md --paging always << EOF
+help_sequence='?'
+help="execute(bat --style plain --language md --paging always << EOF
 
 
                         HELP
 
-        ?
+        $help_sequence
           This help message
 
         ctrl-h
@@ -42,7 +43,7 @@ help='execute(bat --style plain --language md --paging always << EOF
         ctrl-u
         ctrl-d
           Preview half page up or down
-EOF)'
+EOF)"
 
 # choose window from list of existing windows in session
 window=$(tmux list-windows |
@@ -51,11 +52,11 @@ window=$(tmux list-windows |
   fzf \
     --reverse \
     --prompt 'Window > ' \
-    --header 'Press `ctrl-h` for help!' \
+    --header "Press \`$help_sequence\` for help!" \
     --preview-window 80% \
     --tmux center,80%,70% \
     --cycle \
-    --bind "?:$help" \
+    --bind "$help_sequence:$help" \
     --bind "focus:execute($set_active_pane)+preview($preview_indexed_pane)" \
     --bind "ctrl-a:execute($set_active_pane)+preview($preview_indexed_pane)" \
     --bind "ctrl-h:execute($decrease)+preview($preview_indexed_pane)" \

@@ -9,12 +9,13 @@ list_sessions='reload:tmux list-sessions | grep -v "(attached)" | sed -E "s/:.*$
 create_new_session='execute(tmux new-session -s {q} -d)+accept-or-print-query'
 kill_session="execute(tmux kill-session -t {})+clear-query+$list_sessions"
 
-help='execute(bat --style plain --language md --paging always << EOF
+help_sequence='?'
+help="execute(bat --style plain --language md --paging always << EOF
 
 
                         HELP
 
-        ctrl-h
+        $help_sequence
           This help message
 
         ctrl-o
@@ -22,16 +23,16 @@ help='execute(bat --style plain --language md --paging always << EOF
 
         ctrl-x
           To kill the currently selected session
-EOF)'
+EOF)"
 
 tmux list-sessions | sed -E "s/:.*$//" | grep -v \"^"$session"\$\" | fzf \
   --reverse \
   --prompt 'Session > ' \
-  --header 'Press `ctrl-h` for help!' \
+  --header "Press \`$help_sequence\` for help!" \
   --tmux center,40%,40% \
   --cycle \
   --bind "start:$list_sessions" \
-  --bind "ctrl-h:$help" \
+  --bind "$help_sequence:$help" \
   --bind "ctrl-o:$create_new_session" \
   --bind "ctrl-x:$kill_session" |
   xargs tmux switch-client -t # switch to session
