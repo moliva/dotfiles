@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
-# current session name
-session=$(tmux display-message -p '#S')
+# preview_command session_name window_number pane_number?
+#   if no pane_number is provided, uses the active pane
 
-echo "$1" |
-  awk "{ print(\"'$session':\"substr(\$1, 1, length(\$1) -1)\".'$2'\") }" |
+# if no pane provided, defaults to active pane
+if [ -z "$3" ]; then
+  pane=""
+else
+  # else use the pane number provided
+  pane=".$3"
+fi
+
+echo "$2" |
+  awk "{ print(\"'$1':\"substr(\$1, 1, length(\$1) - 1)\"'$pane'\") }" |
   xargs tmux capture-pane -e -pt

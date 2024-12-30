@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+# current session name
+session=$(tmux display-message -p '#S')
+
 # preview command to show the window pane content
-preview_1="change-preview(preview_command {} 1)"
-preview_2="change-preview(preview_command {} 2)"
-preview_3="change-preview(preview_command {} 3)"
+preview_active_pane="preview_command '$session' {}"
+preview_1="change-preview(preview_command '$session' {} 1)"
+preview_2="change-preview(preview_command '$session' {} 2)"
+preview_3="change-preview(preview_command '$session' {} 3)"
 
 preview_half_page_up='preview-half-page-up'
 preview_half_page_down='preview-half-page-down'
@@ -29,12 +33,12 @@ EOF)'
 # # choose window from list of existing windows in session
 window=$(tmux list-windows |
   grep -v '(active)' |
-  awk '{print($1, $2, $3, $4) }' |
+  awk '{ print($1, $2, $3, $4) }' |
   fzf \
     --reverse \
     --prompt 'Window > ' \
     --header 'Press `ctrl-h` for help!' \
-    --preview "preview_command {} \$session 1" \
+    --preview "$preview_active_pane" \
     --preview-window 80% \
     --tmux center,80%,70% \
     --cycle \
@@ -44,7 +48,7 @@ window=$(tmux list-windows |
     --bind "ctrl-p:$preview_3" \
     --bind "ctrl-u:$preview_half_page_up" \
     --bind "ctrl-d:$preview_half_page_down" |
-  awk '{ print substr($1, 1, length($1) - 1)}')
+  awk '{ print substr($1, 1, length($1) - 1) }')
 
 # select window
 tmux select-window -t "$window"
