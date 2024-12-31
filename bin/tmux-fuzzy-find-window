@@ -51,8 +51,7 @@ EOF)"
 # choose window from list of existing windows in session
 # NOTE - '--preview cmd' at startup is required for the rest of the transform-preview-label commands to work properly - moliva - 2024/12/31
 window=$(tmux list-windows |
-  grep -v '(active)' |              # filter out active session, might remove this one
-  awk '{ print($1, $2, $3, $4) }' | # leave out sizes, layout data, etc
+  awk '!/\(active\)/ { print($1, $2, $3, $4) }' | # leave out sizes, layout data, etc
   fzf \
     --reverse \
     --prompt 'Window > ' \
