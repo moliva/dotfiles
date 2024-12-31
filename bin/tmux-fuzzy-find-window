@@ -18,7 +18,10 @@ increase="panes=\$($get_pane_count); current=\$($selected_pane); if ((current < 
 decrease="current=\$($selected_pane); if ((current > 1)); then tmux set-environment -g PANE_COUNTER \$((current - 1)); fi"
 
 # preview command to show the window pane content
-preview_indexed_pane="echo \"Pane #\$($selected_pane)\n\"; preview_command '$session' {} \$($selected_pane)"
+preview_indexed_pane="preview_command '$session' {} \$($selected_pane)"
+
+# whenever we change the focus (either a selected window or pane), we need to change the preview label and content
+change_actions="transform-preview-label(echo Pane '#'\$($selected_pane))+preview($preview_indexed_pane)"
 
 # other actions
 preview_half_page_up='preview-half-page-up'
@@ -46,6 +49,7 @@ help="execute(bat --style plain --language md --paging always << EOF
 EOF)"
 
 # choose window from list of existing windows in session
+# # NOTE - '--preview sth' at startup is required for the rest of the transform-preview-label commands to work properly - moliva - 2024/12/31
 window=$(tmux list-windows |
   grep -v '(active)' |
   awk '{ print($1, $2, $3, $4) }' |
@@ -53,14 +57,15 @@ window=$(tmux list-windows |
     --reverse \
     --prompt 'Window > ' \
     --header "Press \`$help_sequence\` for help!" \
+    --preview sth \
     --preview-window 80% \
     --tmux center,80%,70% \
     --cycle \
     --bind "$help_sequence:$help" \
-    --bind "focus:execute($set_active_pane)+preview($preview_indexed_pane)" \
-    --bind "ctrl-a:execute($set_active_pane)+preview($preview_indexed_pane)" \
-    --bind "ctrl-h:execute($decrease)+preview($preview_indexed_pane)" \
-    --bind "ctrl-l:execute($increase)+preview($preview_indexed_pane)" \
+    --bind "focus:execute($set_active_pane)+$change_actions" \
+    --bind "ctrl-a:execute($set_active_pane)+$change_actions" \
+    --bind "ctrl-h:execute($decrease)+$change_actions" \
+    --bind "ctrl-l:execute($increase)+$change_actions" \
     --bind "ctrl-u:$preview_half_page_up" \
     --bind "ctrl-d:$preview_half_page_down" |
   awk '{ print substr($1, 1, length($1) - 1) }')
