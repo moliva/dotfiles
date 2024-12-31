@@ -6,7 +6,7 @@ session=$(tmux display-message -p '#S')
 # initialize counter and helper functions
 get_pane_list="tmux list-panes -t \"$session:\$(echo {1} | cut -d : -f 1)\""
 
-active_pane="$get_pane_list | grep -e (active) | cut -d : -f 1"
+active_pane="$get_pane_list | grep -e '(active)' | cut -d : -f 1"
 get_pane_count="$get_pane_list | wc -l"
 
 # setter and getter for tmux env var
@@ -58,7 +58,7 @@ window=$(tmux list-windows |
     --header "Press \`$help_sequence\` for help!" \
     --cycle \
     --tmux center,80%,70% \
-    --preview "$set_active_pane; $preview_indexed_pane" \
+    --preview "$set_active_pane && $preview_indexed_pane" \
     --preview-window 80% \
     --preview-label-pos=5 \
     --bind "$help_sequence:$help" \
