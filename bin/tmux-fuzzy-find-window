@@ -49,7 +49,7 @@ help="execute(bat --style plain --language md --paging always << EOF
 EOF)"
 
 # choose window from list of existing windows in session
-# # NOTE - '--preview cmd' at startup is required for the rest of the transform-preview-label commands to work properly - moliva - 2024/12/31
+# NOTE - '--preview cmd' at startup is required for the rest of the transform-preview-label commands to work properly - moliva - 2024/12/31
 window=$(tmux list-windows |
   grep -v '(active)' |
   awk '{ print($1, $2, $3, $4) }' |
@@ -57,10 +57,11 @@ window=$(tmux list-windows |
     --reverse \
     --prompt 'Window > ' \
     --header "Press \`$help_sequence\` for help!" \
+    --cycle \
+    --tmux center,80%,70% \
     --preview "$set_active_pane; $preview_indexed_pane" \
     --preview-window 80% \
-    --tmux center,80%,70% \
-    --cycle \
+    --preview-label-pos=5 \
     --bind "$help_sequence:$help" \
     --bind "focus:execute-silent($set_active_pane)+$change_actions" \
     --bind "ctrl-a:execute-silent($set_active_pane)+$change_actions" \
