@@ -4,14 +4,14 @@
 session=$(tmux display-message -p '#S')
 
 # initialize counter and helper functions
-get_pane_list="tmux list-panes -t \"$session:\$(echo {1} | awk '{ print(substr(\$1, 1, length(\$1) - 1)) }')\""
+get_pane_list="tmux list-panes -t \"$session:\$(echo {1} | cut -d : -f 1)\""
 
-active_pane="$get_pane_list | grep -e '(active)' | awk '{ print(substr(\$1, 1, length(\$1) - 1)) }'"
+active_pane="$get_pane_list | grep -e (active) | cut -d : -f 1"
 get_pane_count="$get_pane_list | wc -l"
 
 # setter and getter for tmux env var
 set_active_pane="tmux set-environment -g PANE_COUNTER \$($active_pane)"
-selected_pane='tmux show-environment -g PANE_COUNTER | cut -d '=' -f2'
+selected_pane='tmux show-environment -g PANE_COUNTER | cut -d = -f2'
 
 # increase/decrease with bounds checking
 increase="panes=\$($get_pane_count); current=\$($selected_pane); if ((current < panes)); then tmux set-environment -g PANE_COUNTER \$((current + 1)); fi"
@@ -38,7 +38,7 @@ help="execute(bat --style plain --language md --paging always << EOF
 
         ctrl-h
         ctrl-l
-          To change preview for panes in decreasing (ctrl-h) or increasing (ctrl-l) order
+          To change preview for panes in decreasing/increasing order
 
         ctrl-a
           To change preview back to active pane
@@ -51,8 +51,8 @@ EOF)"
 # choose window from list of existing windows in session
 # NOTE - '--preview cmd' at startup is required for the rest of the transform-preview-label commands to work properly - moliva - 2024/12/31
 window=$(tmux list-windows |
-  grep -v '(active)' |
-  awk '{ print($1, $2, $3, $4) }' |
+  grep -v '(active)' |              # filter out active session, might remove this one
+  awk '{ print($1, $2, $3, $4) }' | # leave out sizes, layout data, etc
   fzf \
     --reverse \
     --prompt 'Window > ' \
@@ -69,7 +69,7 @@ window=$(tmux list-windows |
     --bind "ctrl-l:execute-silent($increase)+$change_actions" \
     --bind "ctrl-u:$preview_half_page_up" \
     --bind "ctrl-d:$preview_half_page_down" |
-  awk '{ print substr($1, 1, length($1) - 1) }')
+  cut -d : -f 1)
 
 # select window
 tmux select-window -t "$window"
