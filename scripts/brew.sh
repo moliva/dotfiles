@@ -16,6 +16,7 @@ brew install gawk # for better tmux copycat support
 brew install tree
 brew install wget
 brew install pstree
+brew install eza
 
 brew install 1password-cli
 

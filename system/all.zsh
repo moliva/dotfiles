@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 # adding path directory for custom scripts
+# TODO - move to a function - moliva - 2025/01/03
 new_paths=(/opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin)
 path=($path ${new_paths:|path})
 new_paths=
@@ -10,12 +11,6 @@ export REPOS="$HOME/repos"
 # docker
 export DOCKER_BUILDKIT=0
 export COMPOSE_DOCKER_CLI_BUILD=0
-
-alias guppush='git push moliva HEAD'
-function gupcreateremote() {
-  local repo_name=$(basename `git rev-parse --show-toplevel`)
-  git remote add moliva "https://github.com/moliva/$repo_name"
-}
 
 export DOCKER_HOME_REGISTRY=raspberrypi.manatee-royal.ts.net:5000
 
@@ -73,7 +68,6 @@ alias localreload='source ~/.localrc'
 
 alias vimconfig="edit ~/.vimrc"
 
-alias l='ls -l -a -h'
 
 # copies the input to clipboard, best used as pipeline in cmd shell
 #alias -g ccopy="tr -d '\n' | pbcopy"
@@ -96,12 +90,14 @@ systemconfig() {
 
 alias loadzgenom="source $DOTFILES/zgen/zgenom.zsh"
 
-alias ls=exa
-alias ll='exa -alh'
-alias tree='exa --tree'
+alias l='ls -l -a -h'
+alias ls='eza --icons=auto'
+alias ll=l
+alias tree='eza --tree'
+alias bat='bat --theme=base16'
 # alias cat='bat --paging=never'
-alias cat='bat -p'
-alias batp='bat --paging==always'
+alias cat='bat -p --theme=base16'
+alias batp='bat --paging=always --theme=base16'
 
 #alias ps=procs
 #alias nano=kibi
@@ -156,8 +152,6 @@ bindkey -M vicmd "^N" history-beginning-search-forward
 bindkey "^?" backward-delete-char
 
 # this overrides bindings above
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# TODO(miguel): the above didn't work in the new mac (mantis), using the below - 2024/11/04
 source <(fzf --zsh)
 
 # complete with suggestion
@@ -197,10 +191,6 @@ export GREP_OPTIONS='--color=auto'
 # Setting help dir to the new zsh
 export HELPDIR=/usr/local/share/zsh/help
 
-
-
-
-
 # *************************************************************
 # functions
 # *************************************************************
@@ -212,6 +202,9 @@ b64s() {
 	echo -n $1 | base64 | ccopy
 }
 
+# Given a variable set of arguments:
+#   mvp file1 file2 ... dir
+# Makes sure the `dir` exists and moves every other file to it
 mvp() {
 	last=$@[$#]
 	mkdir -p "$last"
@@ -248,6 +241,7 @@ autoload run-help
 
 function clastcommand() {
 	local lastcommand=$(fc -ln -1)
+
 	echo "$lastcommand" | ccopy
 	echo "\"$lastcommand\" copied to clipboard!"
 }
@@ -269,7 +263,7 @@ function cpmod() {
 }
 
 function systemreload() {
-	for config ($DOTFILES/system/**/*.sh) source $config
+	for config ($DOTFILES/system/**/*.zsh) source $config
 }
 
 # *************************************************************
@@ -313,6 +307,27 @@ gtoprepo() {
 #   info "***********************************************"
 #   git log $remote_current_branch.. | cat
 # }
+
+alias guppush='git push moliva HEAD'
+function gupcreateremote() {
+  local repo_name=$(basename `git rev-parse --show-toplevel`)
+  git remote add moliva "https://github.com/moliva/$repo_name"
+}
+
+# use fzf-git to checkout an existing branch
+function fco() {
+  branch=$(_fzf_git_branches)
+  if [ -n "$branch" ]; then
+    git checkout $branch
+  fi
+}
+
+# clone a repo in bare mode to work with worktrees into a dir with the corresponding name
+function gwclone() {
+  name=$(basename "$1" | sed 's/\.[^.]*$//')
+
+  git clone --bare "$1" "$name"
+}
 
 alias gmlog="git log --author=`git config user.name`"
 
