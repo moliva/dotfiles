@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# From github.com/moliva/dotfiles
+# Fuzzy find Tmux windows in the current session, previewing each pane's content
+
 # current session name
 session=$(tmux display-message -p '#S')
 

@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 
-# current session name
-session=$(tmux display-message -p '#S')
+# From github.com/moliva/dotfiles
+# Fuzzy find and manage Tmux sessions
 
 # list tmux sessions, remove active session names and trim names
-list_sessions='reload:tmux list-sessions | grep -v "(attached)" | sed -E "s/:.*$//"'
+if [ "$FUZZY_FIND_SESSION_NON_ACTIVE" = 'true' ]; then
+  list_sessions='reload:tmux list-sessions | grep -v "(attached)" | cut -d : -f 1'
+else
+  list_sessions='reload:tmux list-sessions | cut -d : -f 1'
+fi
+
+reload="clear-query+$list_sessions"
 
 create_new_session='execute(tmux new-session -s {q} -d)+accept-or-print-query'
-kill_session="execute(tmux kill-session -t {})+clear-query+$list_sessions"
+kill_session="execute(tmux kill-session -t {})+$reload"
+rename_session="execute(
+    clear
+    printf \"\r\033[0;33mNew name >\033[0m \"
+    read -e new_name
+    tmux rename-session -t {} \"\$new_name\"
+)+$reload"
 
 help_sequence='?'
 help="execute(bat --style plain --language md --paging always << EOF
@@ -21,11 +33,14 @@ help="execute(bat --style plain --language md --paging always << EOF
         ctrl-o
           To create a new session with the query
 
+        ctrl-r
+          To rename the currently selected session
+
         ctrl-x
           To kill the currently selected session
 EOF)"
 
-tmux list-sessions | sed -E "s/:.*$//" | grep -v \"^"$session"\$\" | fzf \
+new_session=$(fzf \
   --reverse \
   --prompt 'Session > ' \
   --header "Press \`$help_sequence\` for help!" \
@@ -34,5 +49,10 @@ tmux list-sessions | sed -E "s/:.*$//" | grep -v \"^"$session"\$\" | fzf \
   --bind "start:$list_sessions" \
   --bind "$help_sequence:$help" \
   --bind "ctrl-o:$create_new_session" \
-  --bind "ctrl-x:$kill_session" |
-  xargs tmux switch-client -t # switch to session
+  --bind "ctrl-r:$rename_session" \
+  --bind "ctrl-x:$kill_session")
+
+# switch to session
+if [ "$?" -eq "0" ]; then
+  tmux switch-client -t "$new_session"
+fi
