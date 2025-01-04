@@ -248,6 +248,7 @@ return {
       })
 
       telescope.load_extension("smart_open")
+      telescope.load_extension("git_worktree")
 
       telescope.load_extension("lsp_handlers")
 

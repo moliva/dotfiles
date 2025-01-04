@@ -1,5 +1,19 @@
 return {
   {
+    "ThePrimeagen/git-worktree.nvim",
+    lazy = false,
+    keys = {
+
+      {
+        "<leader>ws",
+        function()
+          require("telescope").extensions.git_worktree.git_worktrees()
+        end,
+        desc = "Git Init",
+      },
+    },
+  },
+  {
     "tpope/vim-fugitive",
     cmd = "Git",
     keys = {
