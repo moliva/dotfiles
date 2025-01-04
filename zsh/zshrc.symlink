@@ -68,12 +68,6 @@ if ! zgenom saved; then
     zgenom compile ~/.zshrc
     [ -f $HOME/.localrc ] && zgenom compile ~/.localrc
     zgenom compile $DOTFILES/system/all.zsh
-    #for fname ($DOTFILES/system/functions/*) zgenom compile $fname
-
-    #zgenom ohmyzsh # opting out (!)
-
-    # theme
-    #zgenom ohmyzsh themes/robbyrussell # nees ohmyzsh to work
 
     # common plugins
     zgenom ohmyzsh plugins/sudo
@@ -96,6 +90,8 @@ fi
 
 # load all sh system config files
 for config ($DOTFILES/system/all.zsh) source $config
+
+source $DOTFILES/utils/fzf-git/fzf-git.sh
 
 # source localrc
 [ -f $HOME/.localrc ] && source $HOME/.localrc
