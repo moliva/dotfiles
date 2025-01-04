@@ -1,3 +1,6 @@
 [submodule "zgen"]
 	path = zgen
 	url = git@github.com:jandamm/zgenom.git
+[submodule "utils/fzf-git"]
+	path = utils/fzf-git
+	url = https://github.com/junegunn/fzf-git.sh.git

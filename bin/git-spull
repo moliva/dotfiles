@@ -1,20 +1,24 @@
 #!/usr/bin/env bash
 
 # From github.com/moliva/dotfiles
-# Pull from origin HEAD while stashing and rebasing changes
+# Git pull from origin HEAD while stashing and rebasing changes if need be
 
-gpull() {
-  git diff --exit-code --quiet 1>/dev/null
-  any_diff="$?"
-  if [ "$any_diff" -ne "0" ]; then
-    git stash
-  fi
-  git pull --rebase
-  if [ "$any_diff" -ne "0" ]; then
-    git stash pop
-  fi
-  # gprune
-  git fetch --prune
-}
+# check diff
+git diff --exit-code --quiet 1>/dev/null
 
-gpull
+# if we have any changes, stash them
+any_diff="$?"
+if [ "$any_diff" -ne "0" ]; then
+  git stash
+fi
+
+# actual pull
+git pull --rebase
+
+# if we had any changes, pop from stash
+if [ "$any_diff" -ne "0" ]; then
+  git stash pop
+fi
+
+# prune any unused branches in the way
+git fetch --prune
