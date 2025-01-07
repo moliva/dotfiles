@@ -2,7 +2,7 @@ local meeting_mode = false
 
 local function toggle_meeting_mode()
   if meeting_mode then
-    -- # show all widgets in the screen (neovim and tmux)
+    -- show all widgets in the screen (neovim and tmux)
     vim.cmd([[
 " show status bar space
 silent set laststatus=2
@@ -22,7 +22,7 @@ silent set foldcolumn=1
 
     vim.notify("Meeting mode disabled")
   else
-    -- # hide all widgets in the screen (neovim and tmux)
+    -- hide all widgets in the screen (neovim and tmux)
     vim.cmd([[
 " remove space for folding column
 silent set foldcolumn=0
