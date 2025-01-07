@@ -270,7 +270,7 @@ function systemreload() {
 # git
 # *************************************************************
 
-alias gpush="git push -u origin head"
+alias gpush="git spush"
 alias gpull="git spull"
 
 gprune() {
