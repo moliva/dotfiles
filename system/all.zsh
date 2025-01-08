@@ -2,11 +2,14 @@
 
 # adding path directory for custom scripts
 # TODO - move to a function - moliva - 2025/01/03
-new_paths=(/opt/homebrew/bin /usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin)
+new_paths=(/usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
 export REPOS="$HOME/repos"
+
+# brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # docker
 export DOCKER_BUILDKIT=0
