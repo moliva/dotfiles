@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 # push to origin head and set upstream
-git push -u origin head
+git push -u origin head "$@"
