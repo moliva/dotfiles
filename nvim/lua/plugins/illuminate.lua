@@ -1,19 +1,37 @@
 return {
-  'RRethy/vim-illuminate',
-  event = { 'CursorMoved', 'InsertLeave' },
+  "RRethy/vim-illuminate",
+  event = { "CursorMoved", "InsertLeave" },
   keys = {
-    { "<a-i>", function() require('illuminate').textobj_select() end,      desc = "Select current text object" },
-    { "<a-n>", function() require('illuminate').goto_next_reference() end, desc = "Illuminate go to next object reference" },
-    { "<a-p>", function() require('illuminate').goto_prev_reference() end, desc = "Illuminate go to prev object reference" },
+    {
+      "<a-i>",
+      function()
+        require("illuminate").textobj_select()
+      end,
+      desc = "Select current text object",
+    },
+    {
+      "<a-n>",
+      function()
+        require("illuminate").goto_next_reference()
+      end,
+      desc = "Illuminate go to next object reference",
+    },
+    {
+      "<a-p>",
+      function()
+        require("illuminate").goto_prev_reference()
+      end,
+      desc = "Illuminate go to prev object reference",
+    },
   },
   config = function()
     -- default configuration
-    require('illuminate').configure({
+    require("illuminate").configure({
       -- providers: provider used to get references in the buffer, ordered by priority
       providers = {
-        'lsp',
-        'treesitter',
-        'regex',
+        "lsp",
+        "treesitter",
+        "regex",
       },
       -- delay: delay in milliseconds
       delay = 100,
@@ -23,8 +41,8 @@ return {
       filetype_overrides = {},
       -- filetypes_denylist: filetypes to not illuminate, this overrides filetypes_allowlist
       filetypes_denylist = {
-        'dirvish',
-        'fugitive',
+        "dirvish",
+        "fugitive",
       },
       -- filetypes_allowlist: filetypes to illuminate, this is overriden by filetypes_denylist
       filetypes_allowlist = {},
@@ -54,5 +72,13 @@ return {
       -- min_count_to_highlight: minimum number of matches required to perform highlighting
       min_count_to_highlight = 1,
     })
-  end
+
+    -- curently selected identifier or declaration
+    vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { bg = "#785c2a" })
+    -- occurrences of the currently selected identifier
+    vim.api.nvim_set_hl(0, "IlluminatedWordRead", { bg = "#646627" })
+    -- components of the same structure, literals (e.g. for loop in lua (for, in, do, end), a string literal, nil)
+    vim.api.nvim_set_hl(0, "IlluminatedWordText", { bg = "#321c5c" })
+    -- vim.api.nvim_set_hl(0, "IlluminatedWordText", { bold = true })
+  end,
 }
