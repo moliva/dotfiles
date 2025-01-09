@@ -62,14 +62,19 @@ ulimit -n 2048
 # common-aliases
 # *************************************************************
 
-# Example aliases
 alias zshconfig="edit ~/.zshrc"
 alias zshreload='source ~/.zshrc'
 
 alias localconfig="edit ~/.localrc"
 alias localreload='source ~/.localrc'
 
-alias vimconfig="edit ~/.vimrc"
+function systemconfig() {
+	edit $DOTFILES/system
+}
+
+function systemreload() {
+	for config ($DOTFILES/system/**/*.zsh) source $config
+}
 
 
 # copies the input to clipboard, best used as pipeline in cmd shell
@@ -87,9 +92,6 @@ alias vim=nvim
 # alias vim=$HOME/nvim-macos-arm64/bin/nvim
 # alias nvim=$HOME/nvim-macos-arm64/bin/nvim
 
-systemconfig() {
-	edit $DOTFILES/system
-}
 
 alias loadzgenom="source $DOTFILES/zgen/zgenom.zsh"
 
@@ -274,9 +276,6 @@ function cpmod() {
 	chmod `stat -f %A $1` $2
 }
 
-function systemreload() {
-	for config ($DOTFILES/system/**/*.zsh) source $config
-}
 
 # *************************************************************
 # git
