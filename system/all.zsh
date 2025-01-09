@@ -154,11 +154,19 @@ bindkey -M vicmd "^N" history-beginning-search-forward
 # trying if this fixes the issue when backspacing chars after normal mode
 bindkey "^?" backward-delete-char
 
+# complete with suggestion
+bindkey '^j' autosuggest-accept
+
+
+# *************************************************************
+# fzf
+# *************************************************************
+
 # this overrides bindings above
 source <(fzf --zsh)
 
-# complete with suggestion
-bindkey '^j' autosuggest-accept
+export FZF_TMUX_OPTS=" -p90%,70% "
+
 
 
 # *************************************************************
@@ -193,6 +201,7 @@ export GREP_OPTIONS='--color=auto'
 
 # Setting help dir to the new zsh
 export HELPDIR=/usr/local/share/zsh/help
+
 
 # *************************************************************
 # functions
