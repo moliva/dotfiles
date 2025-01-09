@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+
+while [ "$1" != "" ]; do
+  PARAM=$(echo $1 | awk -F= '{print $1}')
+  VALUE=$(echo $1 | awk -F= '{print $2}')
+  case $PARAM in
+  --is-current-dir | -i)
+    QUERY=true
+    ;;
+  *)
+    echo "ERROR: unknown parameter \"$PARAM\""
+    exit 1
+    ;;
+  esac
+  shift
+done
+
+if [[ "$PWD" == "$LAST_PWD" ]]; then
+  if [[ "$QUERY" == "true" ]]; then
+    return $LAST_CURRENT_GIT_REPO_QUERY
+  else
+    echo "$LAST_CURRENT_GIT_REPO_DIR"
+    return 0
+  fi
+else
+  export LAST_PWD="$PWD"
+
+  [ -d .git ] || git rev-parse --git-dir >/dev/null 2>&1
+  export LAST_CURRENT_GIT_REPO_QUERY=$?
+
+  if [ "$LAST_CURRENT_GIT_REPO_QUERY" -eq "0" ]; then
+    REMOTE_REPO_URL=$(git config --get remote.origin.url)
+    if [ "$?" -eq "0" ]; then
+      export LAST_CURRENT_GIT_REPO_DIR=$(basename -s .git $REMOTE_REPO_URL)
+    else
+      export LAST_CURRENT_GIT_REPO_DIR=$(basename -s .git $(pwd))
+    fi
+  else
+    export LAST_CURRENT_GIT_REPO_DIR=""
+  fi
+
+  if [[ "$QUERY" == "true" ]]; then
+    return $LAST_CURRENT_GIT_REPO_QUERY
+  else
+    echo "$LAST_CURRENT_GIT_REPO_DIR"
+    return 0
+  fi
+fi

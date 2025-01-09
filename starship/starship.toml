@@ -1,0 +1,89 @@
+# Don't print a new line at the start of the prompt
+add_newline = false
+scan_timeout = 10
+
+format = """
+$character\
+$kubernetes\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$docker_context\
+$package\
+$java\
+$golang\
+$nodejs\
+$python\
+$rust\
+$nix_shell\
+$memory_usage\
+$env_var\
+$custom\
+$cmd_duration\
+$line_break\
+$jobs\
+$time\
+$status"""
+
+right_format = """${custom.git_repo}"""
+
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"
+#error_symbol = "[✗](bold red)"
+#vicmd_symbol = "[❮](bold blue)"
+
+[directory]
+truncation_length = 1
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[line_break]
+disabled = true
+
+[aws]
+disabled = true
+
+[battery]
+disabled = true
+
+[docker_context]
+disabled = true
+
+#[python]
+# disabled = true
+
+[git_branch]
+#disabled = true
+format = "[$symbol$branch]($style) "
+
+[git_status]
+#disabled = true
+format = '([\[$all_status$ahead_behind\]]($style) )'
+#format = '$modified'
+
+[golang]
+format = "[$symbol$version]($style) "
+
+[nodejs]
+format = "[$symbol$version]($style) "
+symbol = " "
+# symbol = "nodejs "
+
+[rust]
+format = "[$symbol$version]($style) "
+
+[python]
+format = '[${symbol}${pyenv_prefix}${version}( \($virtualenv\))]($style) '
+
+[custom.git_repo]
+when = '. current_git_repo -i'
+command = ". current_git_repo"
+symbol = ''
+style = 'bold blue'
+format = "[$symbol $output]($style)"
+

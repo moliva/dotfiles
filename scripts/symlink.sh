@@ -144,3 +144,5 @@ create_symlinks
 
 # symlink nvim config dir
 link_file "$DOTFILES/nvim" "$HOME/.config/nvim"
+
+link_file "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml"

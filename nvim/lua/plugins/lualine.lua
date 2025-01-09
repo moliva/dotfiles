@@ -18,7 +18,7 @@ return {
           return current_git_repo
         end
 
-        local handle = io.popen([[. ~/current_git_repo]])
+        local handle = io.popen([[current_git_repo]])
         local result = handle:read("*a")
         handle:close()
 
