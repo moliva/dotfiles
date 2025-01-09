@@ -156,7 +156,7 @@ vim.keymap.set("n", "<C-w>-", "<cmd>split<CR>")
 -- vim.keymap.set("n", "<C-w>t", "<cmd>tab split<CR>")
 
 -- clear highlighted search
-vim.keymap.set("n", "<leader>,", "<cmd>set hlsearch! hlsearch?<CR>", { desc = "Toggle search highlight" })
+vim.keymap.set("n", "<leader>,", "<cmd>noh<CR>", { desc = "Clean search highlight" })
 
 -- go to
 vim.keymap.set("n", "gR", function()
