@@ -1,3 +1,5 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
 # Don't print a new line at the start of the prompt
 add_newline = false
 scan_timeout = 10
@@ -86,4 +88,3 @@ command = ". current_git_repo"
 symbol = ''
 style = 'bold blue'
 format = "[$symbol $output]($style)"
-
