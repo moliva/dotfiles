@@ -77,6 +77,11 @@ brew install --cask qlcolocode
 brew install --cask qlmarkdown
 brew install --cask quicklook-json
 
+# better preview in yazi
+brew install ffmpeg
+brew install poppler
+brew install imagemagick
+
 # some gui apps + utils
 brew install --cask keycastr
 brew install --cask licecap
@@ -88,7 +93,7 @@ brew install --cask gimp
 
 # file syncing
 brew install --cask dropbox
-brew install --cask evernote
+brew install --cask google-drive
 brew install --cask tuxera-ntfs
 
 # browsers
