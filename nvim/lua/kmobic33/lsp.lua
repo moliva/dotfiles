@@ -162,7 +162,7 @@ function M.setup_lsps()
 end
 
 ---Ensure the installation of the following clis (whether they are lsps, linters, formatters or other tools)
----@param clis table
+---@param clis string[]
 function M.ensure_installed(clis)
   local registry = require("mason-registry")
 

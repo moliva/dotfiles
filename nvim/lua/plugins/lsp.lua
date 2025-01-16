@@ -258,6 +258,7 @@ return {
         silent = true,
       })
 
+      -- NOTE - let rust-tools plugin handle this - moliva - 2025/01/11
       lsp.skip_server_setup({ "rust_analyzer" })
 
       lsp.setup()
