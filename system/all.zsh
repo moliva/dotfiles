@@ -2,7 +2,7 @@
 
 # adding path directory for custom scripts
 # TODO - move to a function - moliva - 2025/01/03
-new_paths=(/usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin)
+new_paths=(/usr/bin /bin /usr/sbin /sbin $HOME/bin $HOME/.git-utils/bin $HOME/.cargo/bin $WASMTIME_HOME/bin $HOME/.local/share/solana/install/active_release/bin $HOME/.local/bin)
 path=($path ${new_paths:|path})
 new_paths=
 
@@ -292,10 +292,6 @@ groot() {
   cd `git rev-parse --show-toplevel`
 }
 
-gtoprepo() {
-  cd `git rev-parse --show-toplevel`
-}
-
 # grbranch () {
 #   git status -sb | sed -en 's/^## [a-za-z1-9\-_]+\.\.\.([a-za-z1-9\-_]+\/[a-za-z1-9\-_]+).*$/\1/p'
 # } 
@@ -538,3 +534,20 @@ rfind() (
       --preview-window '~4,+{2}+4/3,<80(up)' \
       --query "$*"
 )
+
+
+function pd() {
+  wd=$(phantom-dev)
+  
+  if [ "$wd" != "" ]; then
+    cd $wd
+  fi
+}
+
+function pd2() {
+  wd=$(phantom-dev-v2 "$@")
+  
+  if [ "$wd" != "" ]; then
+    cd $wd
+  fi
+}

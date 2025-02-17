@@ -4,6 +4,7 @@ local js_family = {
     function_declaration = [[ [ (function_declaration name: (_) @identifier) ] ]],
     function_expression = [[ [ (function_expression _ @identifier) ] ]],
     arrow_function = [[ [ (arrow_function _ @identifier) ] ]],
+    class_declaration = [[ [ (class_declaration name: (_) @identifier) ] ]],
   },
 }
 

@@ -17,6 +17,8 @@ brew install tree
 brew install wget
 brew install pstree
 brew install eza
+brew install fd
+brew install ripgrep
 
 brew install 1password-cli
 
@@ -30,6 +32,7 @@ brew install docker
 # development tools + utils
 brew install git
 brew install vim --override-system-vim
+brew install neovim
 brew install reattach-to-user-namespace
 brew install tmux
 brew install zsh

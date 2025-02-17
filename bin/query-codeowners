@@ -1,0 +1,99 @@
+#!/usr/bin/env node
+
+const { execSync } = require("child_process");
+const fs = require("fs");
+
+// src/endpoints/src/common/clients/jupiter/client.ts
+// .github/prune_lambda_versions.js
+
+const filePath = process.argv[2];
+if (!filePath) {
+  console.error("Usage: query-codeowners <file-path>");
+  process.exit(1);
+}
+
+try {
+  const gitRoot = execSync("git rev-parse --show-toplevel").toString().trim();
+
+  const codeownersPath = `${gitRoot}/.github/CODEOWNERS`;
+
+  if (!fs.existsSync(codeownersPath)) {
+    console.error(`CODEOWNERS file not found at ${codeownersPath}`);
+    process.exit(1);
+  }
+
+  const fileContents = fs.readFileSync(codeownersPath, "utf8");
+
+  const lines = fileContents
+    .split("\n")
+    // remove empty lines and comments
+    .filter((line) => line.trim() !== "" && !line.startsWith("#"));
+
+  const tree = {};
+  for (const line of lines) {
+    // split each line by whitespace, the first part is the path, the rest are the owners (potentially multiple of them)
+    const [path, ...owners] = line.split(/\s+/);
+
+    const pathParts = path.split("/").filter((part) => part.trim() !== "");
+
+    let current = tree;
+    for (const part of pathParts) {
+      if (!current[part]) {
+        current[part] = {};
+      }
+      current = current[part];
+    }
+
+    current.owners = owners;
+  }
+
+  let relativeFilePath = filePath;
+  if (filePath.startsWith(gitRoot)) {
+    relativeFilePath = filePath.replace(`${gitRoot}/`, "");
+  }
+
+  const owners = lookForOwners(relativeFilePath, tree);
+  if (owners.length === 0) {
+    console.log("No owners found for", filePath);
+  } else {
+    console.log(
+      `Owners for ${filePath}\n${owners.map((owner) => `- ${owner}`).join("\n")}`,
+    );
+  }
+} catch (error) {
+  console.error("Error:", error.message);
+  process.exit(1);
+}
+
+/**
+ * @param {string} filePath
+ * @param {*} tree
+ * @returns {string[]}
+ */
+function lookForOwners(filePath, tree) {
+  const parts = filePath.split("/");
+
+  // traverse the tree forward until we reach the end of the path
+  const path = [];
+  path.push(tree);
+  let current = tree;
+  for (const part of parts) {
+    if (!current[part]) {
+      // if we can't go deeper in the tree, break the loop
+      break;
+    }
+
+    path.push(current[part]);
+    current = current[part];
+  }
+
+  // traverse the path in reverse order and return the first populated owners found
+  for (const part of path.reverse()) {
+    if (part.owners) {
+      return part.owners;
+    }
+  }
+
+  // no owners found, return empty array
+  return [];
+}

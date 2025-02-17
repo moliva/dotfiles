@@ -23,3 +23,17 @@ vim.keymap.set("n", "<leader>gK", function()
 
   vim.notify(result)
 end, { desc = "Git checkout new branch" })
+
+local function query_code_owners()
+  local currentFile = vim.fn.expand("%p")
+
+  local result = vim.system({ "query-codeowners", currentFile }):wait()
+
+  if result.code == 0 then
+    vim.notify(result.stdout)
+  else
+    vim.notify("Error: " .. result.stderr, vim.log.levels.ERROR)
+  end
+end
+
+vim.keymap.set("n", "<leader>gw", query_code_owners, { desc = "Git checkout new branch" })

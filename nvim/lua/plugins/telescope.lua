@@ -3,10 +3,11 @@ local function grep_string_input()
 end
 
 ---live grep using extension filter
----@param opts {cwd: string | nil} | nil
+---@param opts {cwd: string | nil, hidden: boolean | nil} | nil
 local function live_multi_grep(opts)
   opts = opts or {}
   opts.cwd = opts.cwd or vim.uv.cwd()
+  opts.hidden = opts.hidden or false
 
   local pickers = require("telescope.pickers")
   local finders = require("telescope.finders")
@@ -23,6 +24,10 @@ local function live_multi_grep(opts)
       -- two spaces for file extension
       local pieces = vim.split(prompt, "  ")
       local args = { "rg" }
+
+      if opts.hidden then
+        table.insert(args, "--hidden")
+      end
 
       if pieces[1] then
         table.insert(args, "-e")
@@ -148,12 +153,27 @@ return {
         desc = "Telescope grep string with input",
       },
       {
+        "<leader>pD",
+        function()
+          -- require("telescope.builtin").live_grep()
+          live_multi_grep({ hidden = true })
+        end,
+        desc = "Telescope live grep (with hidden files)",
+      },
+      {
         "<leader>pd",
         function()
           -- require("telescope.builtin").live_grep()
           live_multi_grep()
         end,
         desc = "Telescope live grep",
+      },
+      {
+        "<leader>pc",
+        function()
+          require("telescope.builtin").commands()
+        end,
+        desc = "Telescope commands",
       },
       {
         "<leader>po",

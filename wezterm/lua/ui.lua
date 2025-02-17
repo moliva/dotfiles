@@ -6,6 +6,17 @@ function M.is_dark()
   return wezterm.gui.get_appearance():find("Dark")
 end
 
+-- TODO - use this  in a fzf an select presentation mode or sth - moliva - 2025/02/11
+function M.get_presentation_theme()
+  return {
+    color_scheme = nil,
+    background = {
+      color = "black",
+      opacity = 1,
+    },
+  }
+end
+
 function M.get_theme()
   return M.is_dark()
       and {
