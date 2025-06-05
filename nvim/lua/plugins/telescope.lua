@@ -153,6 +153,14 @@ return {
         desc = "Telescope grep string with input",
       },
       {
+        "<leader>pt",
+        function()
+          local buffer_dir = vim.fn.expand("%:p:h")
+          live_multi_grep({ cwd = buffer_dir })
+        end,
+        desc = "Telescope live grep from current dir",
+      },
+      {
         "<leader>pD",
         function()
           -- require("telescope.builtin").live_grep()

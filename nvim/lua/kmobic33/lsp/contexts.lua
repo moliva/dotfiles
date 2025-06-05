@@ -44,6 +44,7 @@ return {
   },
   tsx = js_family,
   js = js_family,
+  javascript = js_family,
   jsx = js_family,
   typescript = js_family,
 }

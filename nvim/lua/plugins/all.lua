@@ -164,6 +164,7 @@ return {
             return { "prettier" }
             -- end
           end,
+          kotlin = { "ktfmt" },
           typescriptreact = { "prettier" },
           javascript = { "prettier" },
           javascriptreact = { "prettier" },

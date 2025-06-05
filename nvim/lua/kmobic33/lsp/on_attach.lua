@@ -3,7 +3,7 @@ local M = {}
 local cache = {}
 
 ---@diagnostic disable-next-line: unused-local
-function M.on_attach(_client, bufnr)
+function M.on_attach(client, bufnr)
   if cache[bufnr] then
     -- already attached!
     return
@@ -15,6 +15,10 @@ function M.on_attach(_client, bufnr)
 
   local wk = require("which-key")
   local u = require("kmobic33.lsp.utils")
+
+  if client:supports_method("textDocument/documentColor") then
+    vim.lsp.document_color.enable(true, bufnr, { style = "virtual" })
+  end
 
   local opts = { buffer = bufnr, remap = false }
 

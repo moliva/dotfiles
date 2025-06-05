@@ -134,6 +134,10 @@ function M.setup_lsps()
     },
   })
 
+  lspconfig.kotlin_language_server.setup({
+    capabilities = capabilities,
+  })
+
   lspconfig.cssls.setup({
     capabilities = capabilities,
   })

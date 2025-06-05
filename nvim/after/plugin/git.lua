@@ -36,4 +36,8 @@ local function query_code_owners()
   end
 end
 
-vim.keymap.set("n", "<leader>gw", query_code_owners, { desc = "Git checkout new branch" })
+vim.keymap.set("n", "<leader>gw", query_code_owners, { desc = "View codeowners" })
+vim.keymap.set("n", "<leader>gW", function()
+  local cwd = vim.fn.getcwd()
+  vim.cmd("e " .. cwd .. "/.github/CODEOWNERS")
+end, { desc = "Edit codeowners" })
