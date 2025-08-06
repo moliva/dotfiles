@@ -156,6 +156,7 @@ return {
         "<leader>pt",
         function()
           local buffer_dir = vim.fn.expand("%:p:h")
+          -- TODO - if oil:// get the file path instead - moliva - 2025/08/01
           live_multi_grep({ cwd = buffer_dir })
         end,
         desc = "Telescope live grep from current dir",

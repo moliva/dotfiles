@@ -12,6 +12,7 @@ fi
 
 reload="clear-query+$list_sessions"
 
+# TODO - try to find the directory (inside repos) and cd into it - moliva - 2025/07/01
 create_new_session='execute(tmux new-session -s {q} -d)+accept-or-print-query'
 kill_session="execute(tmux kill-session -t {})+$reload"
 rename_session="execute(

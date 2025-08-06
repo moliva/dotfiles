@@ -66,7 +66,7 @@ function M.file_exists(name)
 end
 
 ---List of project description files for different languages
-local project_description_files = { "/package.json", "/Cargo.toml", "/go.mod", "pom.xml" }
+local project_description_files = { "/package.json", "/Cargo.toml", "/go.mod", "/pom.xml", "/requirements.txt", "/pyproject.toml", "/build.gradle", "/setup.py", "/Package.swift" }
 
 ---Tries to find a project description file in the given directory
 ---@param base_path string

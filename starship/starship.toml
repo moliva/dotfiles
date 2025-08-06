@@ -18,6 +18,7 @@ $java\
 $golang\
 $nodejs\
 $python\
+$swift\
 $rust\
 $nix_shell\
 $memory_usage\
@@ -91,3 +92,6 @@ command = ". current_git_repo"
 symbol = ''
 style = 'bold blue'
 format = "[$symbol $output]($style)"
+
+[swift]
+format = '[🏎  $version](red bold) '

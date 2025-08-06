@@ -42,6 +42,21 @@ return {
       function_definition = [[ [ (function_definition _ @context) ] ]],
     },
   },
+  python = {
+    nodes = {
+      function_definition = [[ [ (function_definition name: (_) @identifier) ] ]],
+      class_definition = [[ [ (class_definition name: (_) @identifier) ] ]],
+      try_statement = [[ [ (try_statement _ @context) ] ]],
+      lambda_expression = [[ [ (lambda_expression _ @context) ] ]],
+      decorator = [[ [ (decorator _ @context) ] ]],
+    },
+  },
+  yaml = {
+    nodes = {
+      document = [[ [ (document (_) @context) ] ]],
+      block_node = [[ [ (block_node (_) @context) ] ]],
+    },
+  },
   tsx = js_family,
   js = js_family,
   javascript = js_family,

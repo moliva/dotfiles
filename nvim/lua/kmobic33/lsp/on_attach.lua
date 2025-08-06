@@ -17,7 +17,7 @@ function M.on_attach(client, bufnr)
   local u = require("kmobic33.lsp.utils")
 
   if client:supports_method("textDocument/documentColor") then
-    vim.lsp.document_color.enable(true, bufnr, { style = "virtual" })
+    -- vim.lsp.document_color.enable(true, bufnr, { style = "virtual" })
   end
 
   local opts = { buffer = bufnr, remap = false }

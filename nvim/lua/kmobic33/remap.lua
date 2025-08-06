@@ -23,7 +23,7 @@ vim.keymap.set("n", "<A-w>", "<cmd>%bd|e#<cr>", { desc = "Close all buffers but 
 -- vim.keymap.set("n", "<A-Q>", "<cmd>bufdo bwipeout<cr>", { desc = "Close all buffers"})
 vim.keymap.set("n", "<A-Q>", "<cmd>1,$bd!<cr>", { desc = "Close all buffers" })
 
-vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste over without replacing the buffer" })
+vim.keymap.set("x", "<leader>p", '"_dp', { desc = "Paste over without replacing the buffer" })
 
 vim.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete into an anonymous buffer" })
 vim.keymap.set({ "n", "v" }, "<leader><leader>d", '"+d', { desc = "Delete to system clipboard" })

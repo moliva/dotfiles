@@ -46,35 +46,48 @@ function M.setup_lsps()
   --   capabilities = capabilities,
   -- })
 
-  local lua_rtp = vim.split(package.path, ";")
-  table.insert(lua_rtp, "lua/?.lua")
-  table.insert(lua_rtp, "lua/?/init.lua")
+  -- swift
+  lspconfig.sourcekit.setup({
+    capabilities = {
+      workspace = {
+        didChangeWatchedFiles = {
+          dynamicRegistration = true,
+        },
+      },
+    },
+  })
+
+  -- local lua_rtp = vim.split(package.path, ";")
+  -- table.insert(lua_rtp, "lua/?.lua")
+  -- table.insert(lua_rtp, "lua/?/init.lua")
 
   -- require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
   lspconfig.lua_ls.setup({
     capabilities = capabilities,
     settings = {
       Lua = {
-        runtime = {
-          version = "LuaJIT",
-          path = lua_rtp,
-        },
+        -- runtime = {
+        --   version = "LuaJIT",
+        --   path = lua_rtp,
+        -- },
         diagnostics = {
           -- Get the language server to recognize the `vim` and other globals
-          globals = { "vim", "describe", "it", "before_each", "after_each", "packer_plugins" },
+          -- globals = { "vim", "describe", "it", "before_each", "after_each", "packer_plugins" },
+          globals = { "describe", "it", "before_each", "after_each", "packer_plugins" },
         },
-        -- completion = { callSnippet = "Both" },
-        completion = { callSnippet = "Replace" },
+        -- -- completion = { callSnippet = "Both" },
+        -- completion = { callSnippet = "Replace" },
         telemetry = { enable = false },
         workspace = {
           -- checkThirdParty = false,
           -- Make the server aware of Neovim runtime files
           -- library = vim.api.nvim_get_runtime_file("lua", true),
+          -- library =  vim.api.nvim_get_runtime_file("", true),
           library = {
             unpack(vim.api.nvim_get_runtime_file("", true)),
             -- unpack(vim.api.nvim_get_runtime_file("lua", true)),
-            "${3rd}/luv/library",
-            "${3rd}/busted/library",
+            -- "${3rd}/luv/library", -- vim turns to unkown
+            -- "${3rd}/busted/library",-- vim turns to unkown
           },
         },
         hint = {
