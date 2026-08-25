@@ -24,3 +24,13 @@
 	gpgSign = true
 [init]
 	defaultBranch = main
+[coderabbit]
+	machineId = cli/291a2406c7824231a1bcf86869cd53f2
+[user]
+	signingKey = 5992BEE437B8E00E8CE00BB1B9A2EBB9D054B810
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential

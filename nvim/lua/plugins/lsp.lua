@@ -260,7 +260,8 @@ return {
       })
 
       -- NOTE - let rust-tools plugin handle this - moliva - 2025/01/11
-      lsp.skip_server_setup({ "rust_analyzer" })
+      -- NOTE - copilot.lua manages its own LSP client, lspconfig no longer has a "copilot" config
+      lsp.skip_server_setup({ "rust_analyzer", "copilot", "stylua" })
 
       lsp.setup()
 

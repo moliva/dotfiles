@@ -99,3 +99,15 @@ source $DOTFILES/utils/fzf-git/fzf-git.sh
 # Turns on profiling of zsh startup, uncomment first line as well as this
 #zprof
 #zmodload -u zsh/zprof
+
+# bun completions
+[ -s "/Users/moliva/.bun/_bun" ] && source "/Users/moliva/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# opencode
+export PATH=/Users/moliva/.opencode/bin:$PATH
+# Added by pham ai-gateway
+[ -f "$HOME/.pham/ai-gateway.env" ] && source "$HOME/.pham/ai-gateway.env"

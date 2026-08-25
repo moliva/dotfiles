@@ -1,0 +1,239 @@
+#!/usr/bin/env bash
+
+# From github.com/moliva/dotfiles
+# Fuzzy find and jump to Tmux panes running Claude Code
+
+list_claude_panes() {
+  local tmpdir=$(mktemp -d)
+
+  # Single tmux call — write tty-indexed lookup files
+  tmux list-panes -a -F '#{pane_tty} #{session_name}:#{window_index}.#{pane_index} #{session_name}:#{window_name}' 2>/dev/null | \
+    while read -r pane_tty target session_window; do
+      local key="${pane_tty#/dev/}"
+      printf '%s\t%s\n' "$target" "$session_window" > "$tmpdir/tty_$key"
+    done
+
+  # Single ps call — get all claude PIDs and TTYs
+  local pid_ttys=$(ps -eo pid,tty,comm | awk '/claude$/{print $1, $2}')
+  [ -z "$pid_ttys" ] && { rm -rf "$tmpdir"; return; }
+
+  # Single lsof call for all claude PIDs — extract cwds
+  local pids=$(echo "$pid_ttys" | awk '{printf "%s%s", (NR>1?",":""), $1}')
+  local current_pid=""
+  lsof -p "$pids" -Fpfn -d cwd 2>/dev/null | while IFS= read -r line; do
+    case "$line" in
+      p*) current_pid="${line#p}" ;;
+      fcwd) ;;
+      n/*) [ -n "$current_pid" ] && echo "${line#n}" > "$tmpdir/cwd_$current_pid"; current_pid="" ;;
+    esac
+  done
+
+  # Resolve git branches in parallel
+  echo "$pid_ttys" | while read -r pid tty; do
+    [ -f "$tmpdir/cwd_$pid" ] || continue
+    local cwd=$(cat "$tmpdir/cwd_$pid")
+    (
+      git -C "$cwd" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null > "$tmpdir/branch_$pid"
+    ) &
+  done
+  wait
+
+  # Assemble output
+  echo "$pid_ttys" | while read -r pid tty; do
+    [ -f "$tmpdir/tty_$tty" ] || continue
+
+    local target session_window
+    IFS=$'\t' read -r target session_window < "$tmpdir/tty_$tty"
+
+    local cwd=""
+    [ -f "$tmpdir/cwd_$pid" ] && cwd=$(cat "$tmpdir/cwd_$pid")
+    local short_dir="${cwd/#$HOME\/repos\/phantom/~~}"
+
+    local branch=""
+    [ -f "$tmpdir/branch_$pid" ] && branch=$(cat "$tmpdir/branch_$pid")
+
+    local ticket=""
+    [ -n "$branch" ] && ticket=$(echo "$branch" | grep -oiE '[A-Z]+-[0-9]+' | head -1 | tr '[:lower:]' '[:upper:]')
+
+    # Detect if pane is idle (waiting for user input)
+    # Busy sessions show: <spinner> <Word>… (<time> · ↓ <N> tokens)
+    local status="idle"
+    local recent=$(tmux capture-pane -p -t "$target" 2>/dev/null | grep -v '^$' | tail -10)
+    if echo "$recent" | grep -qE '^. \w+…'; then
+      status=""
+    fi
+
+    printf '%s\x1f%s\x1f%s\x1f%s\x1f%s\x1f%s\n' \
+      "$target" "$session_window" "$short_dir" "$branch" "$ticket" "$status"
+  done
+
+  rm -rf "$tmpdir"
+}
+
+format_lines() {
+  local targets=()
+  local col_sw=() col_dir=() col_branch=() col_ticket=() col_status=()
+
+  while IFS=$'\x1f' read -r target session_window dir branch ticket status; do
+    targets+=("$target")
+    col_sw+=("$session_window")
+    col_dir+=("$dir")
+    col_branch+=("$branch")
+    col_ticket+=("$ticket")
+    col_status+=("$status")
+  done
+
+  [ ${#targets[@]} -eq 0 ] && return
+
+  # Compute max widths for padding
+  local max_sw=0 max_dir=0 max_branch=0
+  for i in "${!targets[@]}"; do
+    local len=${#col_sw[$i]}; ((len > max_sw)) && max_sw=$len
+    len=${#col_dir[$i]}; ((len > max_dir)) && max_dir=$len
+    len=${#col_branch[$i]}; ((len > max_branch)) && max_branch=$len
+  done
+
+  # ANSI colors
+  local grey='\033[90m' blue='\033[34m' yellow='\033[33m' reset='\033[0m'
+
+  for i in "${!targets[@]}"; do
+    local prefix=" "
+    [ "${col_status[$i]}" = "idle" ] && prefix=$(printf "${yellow}i${reset}")
+    local line
+    line=$(printf "%b %-${max_sw}s  ${grey}%-${max_dir}s${reset}  %-${max_branch}s" \
+      "$prefix" "${col_sw[$i]}" "${col_dir[$i]}" "${col_branch[$i]}")
+    [ -n "${col_ticket[$i]}" ] && line+=$(printf "  ${blue}%s${reset}" "${col_ticket[$i]}")
+    printf '%s\t%b\n' "${targets[$i]}" "$line"
+  done
+}
+
+reload="reload:$0 --list | $0 --format"
+
+# Preview: capture the pane content for the selected entry
+# {1} is the target (session:window.pane), hidden from display but available to fzf
+preview_pane="tmux capture-pane -e -pt {1}"
+
+preview_half_page_up='preview-half-page-up'
+preview_half_page_down='preview-half-page-down'
+
+help_sequence='?'
+help_script="$(dirname "$0")/tmux-fuzzy-find-claude-help"
+help="execute($help_script)"
+
+# Kill the claude process in the selected pane
+kill_claude="execute(
+  target={1}
+  pane_tty=\$(tmux display-message -p -t \"\$target\" '#{pane_tty}')
+  pid=\$(ps -eo pid,tty,comm | awk -v tty=\"\${pane_tty#/dev/}\" '/claude\$/ && \$2 == tty {print \$1}')
+  if [ -n \"\$pid\" ]; then
+    kill \"\$pid\" 2>/dev/null
+  fi
+)+$reload"
+
+# Send input to the selected pane
+send_input="execute(
+  clear
+  printf \"\r\033[0;33mSend to {1} >\033[0m \"
+  read -e input
+  if [ -n \"\$input\" ]; then
+    tmux send-keys -l -t {1} \"\$input\"
+    tmux send-keys -t {1} Enter
+  fi
+)"
+
+jump_claude() {
+  local direction="$1" # "next" or "prev"
+
+  # Build ordered list of tmux targets running claude (by PID order)
+  local targets=()
+  local pane_map=$(tmux list-panes -a -F '#{pane_tty} #{session_name}:#{window_index}.#{pane_index}' 2>/dev/null)
+
+  local idle_only="${2:-false}"
+
+  while read -r pid tty; do
+    local target=$(echo "$pane_map" | grep "/dev/$tty " | head -1 | awk '{print $2}')
+    [ -z "$target" ] && continue
+    if [ "$idle_only" = "true" ]; then
+      local recent=$(tmux capture-pane -p -t "$target" 2>/dev/null | grep -v '^$' | tail -10)
+      echo "$recent" | grep -qE '^. \w+…' && continue
+    fi
+    targets+=("$target")
+  done < <(ps -eo pid,tty,comm | awk '/claude$/{print $1, $2}')
+
+  [ ${#targets[@]} -eq 0 ] && return 1
+
+  # Find current pane in the list
+  local current=$(tmux display-message -p '#{session_name}:#{window_index}.#{pane_index}')
+  local count=${#targets[@]}
+  local current_idx=-1
+
+  for i in "${!targets[@]}"; do
+    [ "${targets[$i]}" = "$current" ] && current_idx=$i && break
+  done
+
+  local next_idx
+  if [ "$direction" = "next" ]; then
+    next_idx=$(( (current_idx + 1) % count ))
+  else
+    next_idx=$(( (current_idx - 1 + count) % count ))
+  fi
+
+  tmux switch-client -t "${targets[$next_idx]}"
+}
+
+if [ "$1" = "--next" ]; then
+  jump_claude next
+  exit $?
+fi
+
+if [ "$1" = "--prev" ]; then
+  jump_claude prev
+  exit $?
+fi
+
+if [ "$1" = "--next-idle" ]; then
+  jump_claude next true
+  exit $?
+fi
+
+if [ "$1" = "--prev-idle" ]; then
+  jump_claude prev true
+  exit $?
+fi
+
+if [ "$1" = "--list" ]; then
+  list_claude_panes
+  exit 0
+fi
+
+if [ "$1" = "--format" ]; then
+  format_lines
+  exit 0
+fi
+
+selection=$( \
+  list_claude_panes | format_lines | \
+  fzf \
+    --reverse \
+    --prompt 'Claude > ' \
+    --header "Press '?' for help" \
+    --tmux center,80%,70% \
+    --cycle \
+    --delimiter '\t' \
+    --ansi \
+    --with-nth 2 \
+    --preview "$preview_pane" \
+    --preview-window 70% \
+    --bind "$help_sequence:$help" \
+    --bind "ctrl-r:$reload" \
+    --bind "ctrl-p:toggle-preview" \
+    --bind "ctrl-u:$preview_half_page_up" \
+    --bind "ctrl-d:$preview_half_page_down" \
+    --bind "ctrl-x:$kill_claude" \
+    --bind "ctrl-s:$send_input+refresh-preview" \
+)
+
+if [ "$?" -eq "0" ]; then
+  target=$(echo "$selection" | cut -f1)
+  tmux switch-client -t "$target"
+fi

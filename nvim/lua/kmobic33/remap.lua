@@ -158,8 +158,21 @@ vim.keymap.set("n", "<C-w>-", "<cmd>split<CR>")
 -- clear highlighted search
 vim.keymap.set("n", "<leader>,", "<cmd>noh<CR>", { desc = "Clean search highlight" })
 
--- go to
-vim.keymap.set("n", "gR", function()
+-- go to claude.md
+vim.keymap.set("n", "gCC", function()
+  local cwd = vim.fn.getcwd()
+  local file
+  if u.file_exists(cwd .. "/CLAUDE.md") then
+    file = cwd .. "/CLAUDE.md"
+  end
+
+  if file then
+    vim.cmd("e " .. file)
+  end
+end, { desc = "Go to CLAUDE.md in cwd" })
+
+-- go to readme
+vim.keymap.set("n", "gRR", function()
   local cwd = vim.fn.getcwd()
   local file
   if u.file_exists(cwd .. "/README.md") then
@@ -169,7 +182,23 @@ vim.keymap.set("n", "gR", function()
   if file then
     vim.cmd("e " .. file)
   end
-end, { desc = "Go to README" })
+end, { desc = "Go to README.md in cwd" })
+
+-- find the Claude.md from the current path upwards
+vim.keymap.set(
+  "n",
+  "gC",
+  u.edit_claude_from_current_file,
+  { desc = "Looks up for the CLAUDE.md from the current path upwards" }
+)
+
+-- find the readme from the current path upwards
+vim.keymap.set(
+  "n",
+  "gR",
+  u.edit_readme_from_current_file,
+  { desc = "Looks up for the README.md from the current path upwards" }
+)
 
 -- find the project description file (e.g. package.json, Cargo.toml) from the current path upwards
 vim.keymap.set(
@@ -185,6 +214,14 @@ vim.keymap.set(
   "gP",
   u.edit_project_description_file_in_cwd,
   { desc = "Open project description file at cwd (e.g. package.json, Cargo.toml)" }
+)
+
+vim.keymap.set(
+  "n",
+  "<leader><leader>re",
+  "<cmd>bufdo e<cr><cmd>lua vim.notify('Reloaded all buffers!')<cr>",
+  -- TODO - make sure to go back to the original buffer in the current window/tab - moliva - 2025/12/12
+  { desc = "Reload all buffers" }
 )
 
 -- local wk = require("which-key")
@@ -262,3 +299,7 @@ vim.keymap.set("n", "#", "#zz")
 vim.keymap.set("i", ",", ",<c-g>u")
 vim.keymap.set("i", ".", ".<c-g>u")
 vim.keymap.set("i", ";", ";<c-g>u")
+
+-- bls training log: find the latest "bls - <n> - <day> [week <w> - phase <p>]" entry and insert the next one
+vim.api.nvim_create_user_command("BlsNext", u.insert_next_bls_entry, { desc = "Insert the next bls training log entry" })
+vim.keymap.set("n", "<leader><leader>b", u.insert_next_bls_entry, { desc = "Insert next bls training log entry" })

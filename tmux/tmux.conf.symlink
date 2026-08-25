@@ -87,6 +87,9 @@ bind -r J resize-pane -D 10
 bind -r K resize-pane -U 10
 bind -r L resize-pane -R 10
 
+# toggle column zoom
+bind @ run-shell "tmux-column-zoom"
+
 # move window left or right
 bind -r C-j run "tmux swap-window -t -1 && tmux select-window -t $(expr '#I' - 1)"
 bind -r C-k run "tmux swap-window -t +1 && tmux select-window -t $(expr '#I' + 1)"
@@ -130,6 +133,13 @@ bind -Tcopy-mode-vi y send -X copy-selection
 # Buffers to/from Mac clipboard, yay tmux book from pragprog
 bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
 bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
+
+# claude session mgmt
+bind-key C-n run-shell "tmux-fuzzy-find-claude --next-idle"
+bind-key C-p run-shell "tmux-fuzzy-find-claude --prev-idle"
+# bind-key C-n run-shell "tmux-fuzzy-find-claude --next"
+# bind-key C-p run-shell "tmux-fuzzy-find-claude --prev"
+bind-key C-u run-shell "tmux-fuzzy-find-claude"
 
 # fuzzy finds a window in the current session
 bind C-f run "tmux-fuzzy-find-window"

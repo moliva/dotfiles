@@ -3,6 +3,7 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
+    enabled = false,
     event = "InsertEnter",
     config = function()
       require("copilot").setup({
@@ -26,6 +27,7 @@ return {
   },
   {
     "zbirenbaum/copilot-cmp",
+    enabled = false,
     config = function()
       require("copilot_cmp").setup()
     end,
@@ -153,6 +155,18 @@ return {
   -- },
 
   {
+    "ravitemer/mcphub.nvim",
+    enabled = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    build = "npm install -g mcp-hub@latest", -- Installs `mcp-hub` node binary globally
+    config = function()
+      require("mcphub").setup()
+    end,
+  },
+
+  {
     "yetone/avante.nvim",
     keys = {
       {
@@ -167,16 +181,16 @@ return {
     version = false, -- set this if you want to always pull the latest change
     opts = {
       -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
-      -- system_prompt = function()
-      --   local hub = require("mcphub").get_hub_instance()
-      --   return hub:get_active_servers_prompt()
-      -- end,
+      system_prompt = function()
+        local hub = require("mcphub").get_hub_instance()
+        return hub:get_active_servers_prompt()
+      end,
       -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
-      -- custom_tools = function()
-      --   return {
-      --     require("mcphub.extensions.avante").mcp_tool(),
-      --   }
-      -- end,
+      custom_tools = function()
+        return {
+          require("mcphub.extensions.avante").mcp_tool(),
+        }
+      end,
       -- disabled_tools = {
       --   "list_files",
       --   "search_files",

@@ -6,6 +6,7 @@
 
 vim.keymap.set("n", "<leader>gu", function()
   vim.notify("Pulling last changes...")
+  -- TODO - send this to async process - moliva - 2026/01/14
   local r = vim.fn.system("git spull")
   vim.notify(r)
 end, { desc = "Git pull" })

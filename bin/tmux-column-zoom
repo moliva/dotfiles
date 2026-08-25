@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Toggle the current tmux column to 95% width or back to original proportion.
+# Uses per-window options @column-zoomed and @column-orig-width to track state.
+
+zoomed=$(tmux show-option -wqv @column-zoomed)
+
+if [ "$zoomed" = "1" ]; then
+  orig_width=$(tmux show-option -wqv @column-orig-width)
+  tmux resize-pane -x "$orig_width"
+  tmux set-option -w @column-zoomed 0
+else
+  current_width=$(tmux display-message -p '#{pane_width}')
+  tmux set-option -w @column-orig-width "$current_width"
+  tmux resize-pane -x 100%
+  tmux set-option -w @column-zoomed 1
+fi

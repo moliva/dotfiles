@@ -12,8 +12,8 @@ export REPOS="$HOME/repos"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # docker
-export DOCKER_BUILDKIT=0
-export COMPOSE_DOCKER_CLI_BUILD=0
+# export DOCKER_BUILDKIT=0
+# export COMPOSE_DOCKER_CLI_BUILD=0
 
 export DOCKER_HOME_REGISTRY=raspberrypi.manatee-royal.ts.net:5000
 
@@ -536,7 +536,7 @@ rfind() (
 )
 
 
-function pd() {
+function pdo() {
   wd=$(phantom-dev)
   
   if [ "$wd" != "" ]; then
@@ -544,10 +544,14 @@ function pd() {
   fi
 }
 
-function pd2() {
+function pd() {
   wd=$(phantom-dev-v2 "$@")
   
-  if [ "$wd" != "" ]; then
+  # if the command echoed an actual dir and we didnt receive an option param (-r, --refresh-cache, etc), cd into it
+  if [ "$wd" != "" ] && [[ "$1" != -* ]]; then
     cd $wd
+  else
+    # else echo to the terminal
+    echo "$wd"
   fi
 }

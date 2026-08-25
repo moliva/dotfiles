@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+# Help screen for tmux-fuzzy-find-claude
+
+g="\033[90m"
+y="\033[33m"
+c="\033[1;36m"
+d="\033[2m"
+r="\033[0m"
+
+# Content lines: "visible_text|formatted_text"
+lines=(
+  "  Claude Session Finder|  ${c}Claude Session Finder${r}"
+  "---|---"
+  "|"
+  "  ?         This help message|  ${y}?${r}         This help message"
+  "  enter     Jump to selected pane|  ${y}enter${r}     Jump to selected pane"
+  "  ctrl-s    Send input to pane|  ${y}ctrl-s${r}    Send input to pane"
+  "  ctrl-x    Kill Claude process|  ${y}ctrl-x${r}    Kill Claude process"
+  "  ctrl-r    Refresh the list|  ${y}ctrl-r${r}    Refresh the list"
+  "  ctrl-p    Toggle preview on/off|  ${y}ctrl-p${r}    Toggle preview on/off"
+  "  ctrl-u    Preview half page up|  ${y}ctrl-u${r}    Preview half page up"
+  "  ctrl-d    Preview half page down|  ${y}ctrl-d${r}    Preview half page down"
+  "|"
+  "  Press any key to return|  ${d}Press any key to return${r}"
+)
+
+# Find the widest visible line
+max_w=0
+for entry in "${lines[@]}"; do
+  visible="${entry%%|*}"
+  [ "$visible" = "---" ] && continue
+  len=${#visible}
+  ((len > max_w)) && max_w=$len
+done
+
+w=$((max_w + 2)) # add right padding
+hbar=$(printf "─%.0s" $(seq 1 $w))
+empty=$(printf " %.0s" $(seq 1 $w))
+
+# Center vertically and horizontally
+rows=$(tput lines)
+cols=$(tput cols)
+total_h=$((${#lines[@]} + 2)) # +2 for top/bottom border
+top_margin=$(( (rows - total_h) / 2 ))
+left_margin=$(( (cols - w - 2) / 2 ))
+[ $top_margin -lt 0 ] && top_margin=0
+[ $left_margin -lt 0 ] && left_margin=0
+pad_left=$(printf " %.0s" $(seq 1 $left_margin) 2>/dev/null)
+
+printf "\033[2J\033[H"
+
+# Top margin
+for i in $(seq 1 $top_margin); do
+  echo
+done
+
+printf "${pad_left}${g}╭${hbar}╮${r}\n"
+
+for entry in "${lines[@]}"; do
+  visible="${entry%%|*}"
+  formatted="${entry#*|}"
+
+  if [ "$visible" = "---" ]; then
+    printf "${pad_left}${g}├${hbar}┤${r}\n"
+    continue
+  fi
+
+  pad_len=$((w - ${#visible}))
+  padding=$(printf " %.0s" $(seq 1 $pad_len))
+  printf "${pad_left}${g}│${r}$(printf '%b' "$formatted")${padding}${g}│${r}\n"
+done
+
+printf "${pad_left}${g}╰${hbar}╯${r}\n"
+
+read -rsn1
