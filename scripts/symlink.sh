@@ -141,3 +141,23 @@ link_file "$DOTFILES/nvim" "$HOME/.config/nvim" || true
 
 # symlink starship toml
 link_file "$DOTFILES/starship/starship.toml" "$HOME/.config/starship.toml" || true
+
+# symlink alfred workflows into alfred's (possibly synced) preferences
+link_alfred_workflows() {
+  local prefs
+  prefs=$(defaults read com.runningwithcrayons.Alfred-Preferences syncfolder 2>/dev/null || echo "$HOME/Library/Application Support/Alfred")
+  prefs="${prefs/#\~/$HOME}/Alfred.alfredpreferences/workflows"
+
+  if ! [ -d "$prefs" ]; then
+    info "alfred preferences not found, skipping workflows"
+    return
+  fi
+
+  for src in "$DOTFILES"/alfred-workflows/*/; do
+    src="${src%/}"
+    [ -x "$src/build.sh" ] && "$src/build.sh"
+    link_file "$src" "$prefs/user.workflow.$(basename "$src")"
+  done
+}
+
+link_alfred_workflows || true

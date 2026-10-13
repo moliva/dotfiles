@@ -1,0 +1,3 @@
+# build output (run the workflow's build.sh) and per-machine Alfred settings
+emoji-search/emoji-search
+*/prefs.plist

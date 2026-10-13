@@ -1,0 +1,41 @@
+# Your own search words for emojis. Changes apply immediately, no rebuild needed.
+#
+# Format:  <emoji or :shortcode:>  word, another phrase, ...
+# Words added here rank as high as the emoji's official name.
+
+🚀 ship, ship it, shipit, deploy, deployed, launch, release, go live
+✅ done, lgtm, approved, merged, complete, passed, green
+👍 lgtm, plusone, sgtm, sounds good, agree, ack
+👀 looking, on it, checking, taking a look, review, sus
+🙏 thanks, thank you, ty, please, pls, appreciate
+🎉 congrats, congratulations, yay, gg, celebrate, shipped
+🙌 yay, finally, praise, hooray
+🔥 lit, hype, on fire, incident, prod down
+🚨 alert, incident, outage, prod, sev, page
+🐛 bug, issue, defect
+🚧 wip, work in progress, in progress, under construction
+🔀 merge, pr, pull request
+🤝 deal, agreed, partnership
+💯 hundred, totally, exactly, absolutely, perfect
+🫡 ack, roger, will do, on it, aye
+✍️ noted, writing, taking notes
+📝 noted, notes, todo, doc
+😅 oops, phew, awkward, nervous laugh
+🤦 facepalm, ugh, doh
+🤷 dunno, idk, whatever, no idea
+🙃 sarcasm, irony, upside down
+😬 yikes, awkward, cringe, grimace
+🤯 mindblown, mind blown, wow
+💀 dead, ded, lmao, im dead
+😂 lol, lmao, haha, rofl
+🫠 melting, overwhelmed, embarrassed
+🥲 bittersweet, smiling through pain
+🏆 win, winner, champion, first place
+❌ no, nope, failed, wrong, cancel
+⚠️ warning, careful, caution, heads up
+🤔 wtf, hmm, thinking, wondering
+👋 hi, hello, bye, hey
+🧉 mate, yerba, argentina
+☕ coffee, morning, break
+🍺 beer, cheers, friday
+🥰 heart, hearts, in love, adore

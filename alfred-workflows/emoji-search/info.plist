@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.moliva.emoji-search</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A01</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A02</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A04</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A03</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A04</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A02</string>
+				<key>modifiers</key>
+				<integer>524288</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Fast emoji search with lots of synonyms</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Emoji Search</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string>Searching…</string>
+				<key>script</key>
+				<string>./emoji-search "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>↩ copy · ⌘↩ paste · ⌥↩ copy shortcode</string>
+				<key>title</key>
+				<string>Search emoji</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A01</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A02</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<true/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A03</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<true/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>./emoji-search --record "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A04</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Fast emoji search with lots of synonyms.
+
+;party → 🎉   ;lgtm → 👍   ;rokcet → 🚀 (typos ok)   ;🎉 → reverse lookup
+
+↩ copy · ⌘↩ paste into frontmost app · ⌥↩ copy :shortcode:
+Empty query shows your most used emojis; frequently used ones rank higher.
+
+Add your own words in synonyms.txt (open the workflow folder). No rebuild needed.
+Refresh Unicode data: ./build.sh --data</string>
+	<key>uidata</key>
+	<dict>
+		<key>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A01</key>
+		<dict>
+			<key>xpos</key>
+			<real>30.0</real>
+			<key>ypos</key>
+			<real>100.0</real>
+		</dict>
+		<key>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A02</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>20.0</real>
+		</dict>
+		<key>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A03</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>150.0</real>
+		</dict>
+		<key>5C1A2E7B-0F43-4C2E-9A11-3D6B8E2F4A04</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>280.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>;</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Keyword to search for emojis.</string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>None</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>👍 None</string>
+						<string>None</string>
+					</array>
+					<array>
+						<string>👍🏻 Light</string>
+						<string>Light</string>
+					</array>
+					<array>
+						<string>👍🏼 Medium-Light</string>
+						<string>Medium-Light</string>
+					</array>
+					<array>
+						<string>👍🏽 Medium</string>
+						<string>Medium</string>
+					</array>
+					<array>
+						<string>👍🏾 Medium-Dark</string>
+						<string>Medium-Dark</string>
+					</array>
+					<array>
+						<string>👍🏿 Dark</string>
+						<string>Dark</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Default skin tone for emojis</string>
+			<key>label</key>
+			<string>Skin Tone</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>SKIN_TONE</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
