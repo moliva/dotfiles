@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.moliva.datadog-search</string>
+	<key>category</key>
+	<string>Internet</string>
+	<key>connections</key>
+	<dict>
+		<key>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B01</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B02</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B03</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Search Datadog monitors, APM services, dashboards, logs and traces</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Datadog Search</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>./dd-search.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>monitors · apm · dashboards · logs · traces</string>
+				<key>title</key>
+				<string>Search Datadog</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B01</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>skipqueryencode</key>
+				<true/>
+				<key>skipvarencode</key>
+				<true/>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B02</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B03</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Search Datadog from Alfred.
+
+dd mon checkout     → monitors matching "checkout"
+dd apm api          → APM services matching "api"
+dd dash sales       → dashboards matching "sales"
+dd logs service:x   → log search
+dd traces …         → trace search
+dd checkout         → pick which product to search
+
+Short aliases: m/mon, a/apm/svc, d/dash/db, l/logs, t/traces.
+↩ open in browser · ⌘↩ copy URL · ⌘C copy URL
+
+Set your Datadog host (e.g. myorg.datadoghq.com) and APM env in Configure Workflow.</string>
+	<key>uidata</key>
+	<dict>
+		<key>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B01</key>
+		<dict>
+			<key>xpos</key>
+			<real>30.0</real>
+			<key>ypos</key>
+			<real>100.0</real>
+		</dict>
+		<key>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B02</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>40.0</real>
+		</dict>
+		<key>7D2B4C1E-8A3F-4E61-B7C2-1F9A0D3E5B03</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>170.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>dd</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Keyword to search Datadog.</string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>app.datadoghq.com</string>
+				<key>placeholder</key>
+				<string>myorg.datadoghq.com</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Datadog host, including your org subdomain if you have one.</string>
+			<key>label</key>
+			<string>Host</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>DD_HOST</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>prod</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Environment for APM service search.</string>
+			<key>label</key>
+			<string>APM env</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>DD_APM_ENV</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>

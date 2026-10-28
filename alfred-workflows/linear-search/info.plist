@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.moliva.linear-search</string>
+	<key>category</key>
+	<string>Internet</string>
+	<key>connections</key>
+	<dict>
+		<key>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A01</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A02</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A03</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Open Linear issues, search, and create new issues</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Linear Search</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>./ln-search.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>ABC-123 · search · new · mine · inbox · team · cycle · projects</string>
+				<key>title</key>
+				<string>Search Linear</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A01</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>skipqueryencode</key>
+				<true/>
+				<key>skipvarencode</key>
+				<true/>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A02</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A03</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Open Linear issues and searches from Alfred.
+
+ln abc-123          → open issue ABC-123
+ln 123              → open issue 123 in your default team
+ln redis eviction   → search, or create an issue with that title
+ln new fix login    → new issue in your default team, assigned to you
+ln mine             → your assigned issues
+ln inbox            → inbox
+ln team [KEY]       → a team's active issues
+ln cycle [KEY]      → a team's current cycle
+ln projects         → all projects
+ln proj redis       → projects named like "redis" (needs an API key)
+
+Short aliases: s, n, my, in, t, cy, pj.
+↩ open in browser · ⌘↩ copy URL · ⌘C copy URL
+
+Set your workspace URL slug, default team key and API key in Configure Workflow.</string>
+	<key>uidata</key>
+	<dict>
+		<key>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A01</key>
+		<dict>
+			<key>xpos</key>
+			<real>30.0</real>
+			<key>ypos</key>
+			<real>100.0</real>
+		</dict>
+		<key>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A02</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>40.0</real>
+		</dict>
+		<key>9C4F2A71-6B3E-4D85-9E1A-2F7C8B5D3A03</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>170.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>ln</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Keyword to search Linear.</string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>myorg</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Workspace URL slug, the part after linear.app/.</string>
+			<key>label</key>
+			<string>Workspace</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>LINEAR_WORKSPACE</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>ENG</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Default team key, used for new issues, bare issue numbers, team and cycle.</string>
+			<key>label</key>
+			<string>Team</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>LINEAR_TEAM</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>lin_api_…</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Personal API key (Linear → Settings → Security &amp; access). Enables "ln proj NAME" to find projects by name.</string>
+			<key>label</key>
+			<string>API key</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>LINEAR_API_KEY</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
