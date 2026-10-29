@@ -47,7 +47,8 @@ list_claude_panes() {
 
     local cwd=""
     [ -f "$tmpdir/cwd_$pid" ] && cwd=$(cat "$tmpdir/cwd_$pid")
-    local short_dir="${cwd/#$HOME\/repos\/phantom/~~}"
+    local short_dir="$cwd"
+    [ -n "${CLAUDE_UTILS_SHORT_PATH:-}" ] && short_dir="${cwd/#$CLAUDE_UTILS_SHORT_PATH/~~}"
 
     local branch=""
     [ -f "$tmpdir/branch_$pid" ] && branch=$(cat "$tmpdir/branch_$pid")

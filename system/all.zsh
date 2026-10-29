@@ -535,23 +535,3 @@ rfind() (
       --query "$*"
 )
 
-
-function pdo() {
-  wd=$(phantom-dev)
-  
-  if [ "$wd" != "" ]; then
-    cd $wd
-  fi
-}
-
-function pd() {
-  wd=$(phantom-dev-v2 "$@")
-  
-  # if the command echoed an actual dir and we didnt receive an option param (-r, --refresh-cache, etc), cd into it
-  if [ "$wd" != "" ] && [[ "$1" != -* ]]; then
-    cd $wd
-  else
-    # else echo to the terminal
-    echo "$wd"
-  fi
-}
