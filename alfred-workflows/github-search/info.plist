@@ -76,7 +76,7 @@
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>repos · prs · review · mine · issues · code · commits</string>
+				<string>repos · prs · review · mine · team · issues · code · commits</string>
 				<key>title</key>
 				<string>Search GitHub</string>
 				<key>type</key>
@@ -139,15 +139,16 @@ gh repo api         → open myorg/api, or search repos
 gh pr fix login     → pull requests matching "fix login"
 gh review           → open PRs waiting on your review
 gh mine             → your open PRs
+gh team             → open PRs waiting on your team's review
 gh issue flaky      → issues matching "flaky"
 gh code "fooBar"    → code search
 gh commit revert    → commit search
 gh api              → pick which kind of search
 
-Short aliases: r, p, rv, my, i, c, cm.
+Short aliases: r, p, rv, my, tm, i, c, cm.
 ↩ open in browser · ⌘↩ copy URL · ⌘C copy URL
 
-Set your org in Configure Workflow (leave it empty to search all of GitHub).</string>
+Set your org and team in Configure Workflow (leave the org empty to search all of GitHub).</string>
 	<key>uidata</key>
 	<dict>
 		<key>3A9E61C4-52D7-4B8F-A0E3-6C1D7F2B9E01</key>
@@ -215,6 +216,27 @@ Set your org in Configure Workflow (leave it empty to search all of GitHub).</st
 			<string>textfield</string>
 			<key>variable</key>
 			<string>GH_ORG</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>my-team</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Team whose review requests "gh team" shows: a team slug within the org, or org/team. Empty hides it.</string>
+			<key>label</key>
+			<string>Team</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>GH_TEAM</string>
 		</dict>
 	</array>
 	<key>version</key>

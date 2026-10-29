@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.moliva.solana-explorer</string>
+	<key>category</key>
+	<string>Internet</string>
+	<key>connections</key>
+	<dict>
+		<key>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B31</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B32</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B33</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Open Solana transactions, accounts, tokens and blocks in an explorer</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Solana Explorer</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>./sol-search.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>signature · address · mint · slot</string>
+				<key>title</key>
+				<string>Solana Explorer</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B31</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>skipqueryencode</key>
+				<true/>
+				<key>skipvarencode</key>
+				<true/>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B32</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B33</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Open Solana transactions, accounts, tokens and blocks from Alfred.
+
+sol &lt;signature&gt;       → transaction
+sol &lt;address&gt;         → account (or token, second result)
+sol &lt;slot&gt;            → block
+sol token &lt;mint&gt;      → force a type: tx, account, token, block
+
+Short aliases: t, a, tok, b.
+↩ open in browser · ⌘↩ copy URL · ⌘C copy URL
+
+The explorer (Solscan by default) and cluster are set in Configure Workflow.</string>
+	<key>uidata</key>
+	<dict>
+		<key>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B31</key>
+		<dict>
+			<key>xpos</key>
+			<real>30.0</real>
+			<key>ypos</key>
+			<real>100.0</real>
+		</dict>
+		<key>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B32</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>40.0</real>
+		</dict>
+		<key>C4A97E12-5D3B-4E8F-B1C6-7F2A0D9E8B33</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>170.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>sol</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Keyword to open the Solana explorer.</string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>https://solscan.io</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Explorer base URL. It must use Solscan-style /tx/, /account/, /token/ and /block/ paths.</string>
+			<key>label</key>
+			<string>Explorer</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>SOL_EXPLORER</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>devnet</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Cluster passed as ?cluster=. Empty means mainnet.</string>
+			<key>label</key>
+			<string>Cluster</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>SOL_CLUSTER</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>

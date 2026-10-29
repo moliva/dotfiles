@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.moliva.argocd-search</string>
+	<key>category</key>
+	<string>Internet</string>
+	<key>connections</key>
+	<dict>
+		<key>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D21</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D22</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D23</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Search and open Argo CD applications across instances</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Argo CD Search</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>./argo-search.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>&lt;instance&gt; &lt;app&gt; · e.g. stg checkout</string>
+				<key>title</key>
+				<string>Search Argo CD</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D21</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>skipqueryencode</key>
+				<true/>
+				<key>skipvarencode</key>
+				<true/>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D22</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D23</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Search and open Argo CD applications from Alfred.
+
+argo                  → pick an instance
+argo stg              → open the staging instance
+argo stg checkout     → search "checkout" in staging, or open the app named "checkout"
+argo checkout         → search in the default (first) instance, then the others
+
+↩ open in browser · ⌘↩ copy URL · ⌘C copy URL
+
+List your instances in Configure Workflow, one per line as aliases=host, e.g.
+prod,production=argocd.example.com
+stg,staging=argocd-staging.example.com</string>
+	<key>uidata</key>
+	<dict>
+		<key>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D21</key>
+		<dict>
+			<key>xpos</key>
+			<real>30.0</real>
+			<key>ypos</key>
+			<real>100.0</real>
+		</dict>
+		<key>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D22</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>40.0</real>
+		</dict>
+		<key>B81D5E3A-2C49-4F07-8D6B-9A3E1C7F4D23</key>
+		<dict>
+			<key>xpos</key>
+			<real>330.0</real>
+			<key>ypos</key>
+			<real>170.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>argo</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Keyword to search Argo CD.</string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>prod,production=argocd.example.com
+stg,staging=argocd-staging.example.com</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+				<key>verticalsize</key>
+				<integer>5</integer>
+			</dict>
+			<key>description</key>
+			<string>One instance per line as aliases=host (comma-separated aliases). The first one is the default.</string>
+			<key>label</key>
+			<string>Instances</string>
+			<key>type</key>
+			<string>textarea</string>
+			<key>variable</key>
+			<string>ARGO_INSTANCES</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>argocd</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Namespace Argo CD Application resources live in, used for direct app links.</string>
+			<key>label</key>
+			<string>App namespace</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>ARGO_APP_NAMESPACE</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>

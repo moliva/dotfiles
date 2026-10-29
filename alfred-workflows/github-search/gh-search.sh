@@ -1,6 +1,7 @@
 #!/bin/bash
 # Alfred script filter: "gh <type> <query>" → GitHub search URL.
-# Prints Alfred's JSON result format. GH_ORG comes from the workflow configuration (empty searches all of GitHub).
+# Prints Alfred's JSON result format. GH_ORG and GH_TEAM come from the workflow configuration (an empty org
+# searches all of GitHub).
 
 org="${GH_ORG:-}"
 scope=""
@@ -16,6 +17,11 @@ types=(
   "code|Code|c code|code|"
   "commits|Commits|cm commit commits|commits|"
 )
+
+# "gh team" → open PRs waiting on GH_TEAM's review ("team" within GH_ORG, or "org/team")
+team="${GH_TEAM:-}"
+[ -n "$team" ] && [[ "$team" != */* ]] && [ -n "$org" ] && team="${org}/${team}"
+[[ "$team" == */* ]] && types+=("team|Team Review Requests|tm team|pullrequests|is:pr is:open draft:false archived:false team-review-requested:${team} sort:updated-desc ")
 
 urlencode() {
   local LC_ALL=C s="$1" out="" c i
