@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.moliva.chrome-bookmarks</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Search bookmarks across all Chrome profiles and open them in their source profile</string>
+	<key>name</key>
+	<string>Chrome Bookmarks (all profiles)</string>
+	<key>readme</key>
+	<string>Keyword: cb
+
+↩ open in the bookmark's own Chrome profile
+⌘↩ copy URL
+⌥ show the full URL
+
+Set the workflow variable "profiles" to a comma-separated list of profile directories or names (e.g. "Default,Profile 2") to limit which profiles are searched. Empty means all.</string>
+	<key>connections</key>
+	<dict>
+		<key>A1B2C3D4-0001-4000-8000-SCRIPTFILTER</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>A1B2C3D4-0002-4000-8000-RUNSCRIPT000</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>A1B2C3D4-0002-4000-8000-RUNSCRIPT000</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Copy URL</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>A1B2C3D4-0002-4000-8000-RUNSCRIPT000</string>
+				<key>modifiers</key>
+				<integer>524288</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Reading Chrome bookmarks…</string>
+				<key>script</key>
+				<string>/usr/bin/python3 bookmarks.py</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Search bookmarks across all Chrome profiles</string>
+				<key>title</key>
+				<string>Chrome Bookmarks</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>A1B2C3D4-0001-4000-8000-SCRIPTFILTER</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>/bin/bash open.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>A1B2C3D4-0002-4000-8000-RUNSCRIPT000</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>uidata</key>
+	<dict>
+		<key>A1B2C3D4-0001-4000-8000-SCRIPTFILTER</key>
+		<dict>
+			<key>xpos</key>
+			<real>50</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+		<key>A1B2C3D4-0002-4000-8000-RUNSCRIPT000</key>
+		<dict>
+			<key>xpos</key>
+			<real>300</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>bm</string>
+				<key>placeholder</key>
+				<string>bm</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Alfred keyword to search Chrome bookmarks</string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string>Default,Profile 2</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Comma-separated profile directories or names to search; empty searches all</string>
+			<key>label</key>
+			<string>Profiles</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>profiles</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+</dict>
+</plist>

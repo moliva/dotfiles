@@ -7,6 +7,7 @@ workflow's README says otherwise.
 | Workflow | Keyword | What it does |
 | --- | --- | --- |
 | [Argo CD Search](argocd-search/) | `argo` | Search and open Argo CD apps across instances |
+| [Chrome Bookmarks](chrome-bookmarks/) | `bm` | Search bookmarks across all Chrome profiles, open in the source profile |
 | [Datadog Search](datadog-search/) | `dd` | Search monitors, APM services, dashboards, logs and traces |
 | [Emoji Search](emoji-search/) | `;` | Search and paste emoji |
 | [GitHub Search](github-search/) | `gh` | Open repos; search PRs, review requests, issues, code and commits |
