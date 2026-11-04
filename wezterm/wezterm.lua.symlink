@@ -370,6 +370,12 @@ local config = {
       key = "o",
       action = keys.tmux_prefixed_key({ mods = "CTRL", key = "q" }),
     },
+    -- jump to notes (tmux session notes, window 1, pane 1)
+    {
+      mods = "CMD|SHIFT",
+      key = "n",
+      action = keys.tmux_prefixed_key({ mods = "CTRL", key = "e" }),
+    },
 
     -- new tmux window (tab)
     {
@@ -389,6 +395,12 @@ local config = {
   --   visual_bell = "#202020",
   -- },
 }
+
+-- carriot agent shortcuts; comment out to disable
+local carriot_ok, carriot = pcall(dofile, os.getenv("HOME") .. "/carriot/tools/carriot/carriot.wezterm.lua")
+if carriot_ok then
+  carriot.apply(config, keys)
+end
 
 -- and finally, return the configuration to wezterm
 return config

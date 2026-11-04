@@ -9,6 +9,7 @@ gh pr fix login      → pull requests matching "fix login"
 gh review            → open PRs waiting on your review
 gh mine              → your open PRs
 gh team              → open PRs waiting on your team's review
+gh teams platform    → open myorg/platform team, or search the org's teams
 gh issue flaky       → issues matching "flaky"
 gh code "fooBar"     → code search
 gh commit revert     → commit search
@@ -23,6 +24,7 @@ gh                   → open the org page, or any search without a query
 | Review Requests | `rv`, `review`, `reviews` |
 | My PRs | `my`, `mine` |
 | Team Review Requests | `tm`, `team` |
+| Teams | `t`, `teams`, `group`, `groups` (needs an org) |
 | Issues | `i`, `issue`, `issues` |
 | Code | `c`, `code` |
 | Commits | `cm`, `commit`, `commits` |

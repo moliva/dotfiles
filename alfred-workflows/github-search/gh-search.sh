@@ -23,6 +23,9 @@ team="${GH_TEAM:-}"
 [ -n "$team" ] && [[ "$team" != */* ]] && [ -n "$org" ] && team="${org}/${team}"
 [[ "$team" == */* ]] && types+=("team|Team Review Requests|tm team|pullrequests|is:pr is:open draft:false archived:false team-review-requested:${team} sort:updated-desc ")
 
+# "gh teams foo" → the org's teams page filtered by "foo" (needs an org; GitHub has no cross-org team search)
+[ -n "$org" ] && types+=("teams|Teams|t teams group groups|teams|")
+
 urlencode() {
   local LC_ALL=C s="$1" out="" c i
   for ((i = 0; i < ${#s}; i++)); do
@@ -54,7 +57,21 @@ item() {
   local name title aliases kind quals label
   IFS='|' read -r name title aliases kind quals <<<"$1"
   if [ -n "$2" ]; then label="${title}: $2"; else label="${title}"; fi
-  add "$label" "https://github.com/search?q=$(urlencode "${scope}${quals}$2")&type=${kind}" "$name $2"
+  if [ "$kind" = teams ]; then
+    add "$label" "https://github.com/orgs/${org}/teams?query=$(urlencode "$2")" "$name $2"
+  else
+    add "$label" "https://github.com/search?q=$(urlencode "${scope}${quals}$2")&type=${kind}" "$name $2"
+  fi
+}
+
+# "gh teams platform-be" → open the team directly, before the search result
+team_item() {
+  [ -n "$1" ] && [[ "$1" != *" "* ]] || return 0
+  if [[ "$1" == */* ]]; then
+    add "Open team $1" "https://github.com/orgs/${1%%/*}/teams/${1#*/}" "teams $1"
+  else
+    add "Open team ${org}/$1" "https://github.com/orgs/${org}/teams/$1" "teams $1"
+  fi
 }
 
 # "gh repo api" → open the repo directly, before the search result
@@ -82,6 +99,7 @@ for t in "${types[@]}"; do
   IFS='|' read -r name _ aliases _ _ <<<"$t"
   if [[ " $aliases " == *" $first "* ]]; then
     [ "$name" = repos ] && repo_item "$rest"
+    [ "$name" = teams ] && team_item "$rest"
     item "$t" "$rest"
     joined=$(IFS=,; printf '%s' "${items[*]}")
     printf '{"items":[%s]}\n' "$joined"

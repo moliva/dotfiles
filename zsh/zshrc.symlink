@@ -17,8 +17,18 @@ new_paths=
 ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${HOME}/.localrc $DOTFILES/system/all.zsh)
 
 # load compinit (previously done by ohmyzsh)
+# only rebuild the completion dump once a day, otherwise skip the security check
 autoload -Uz compinit
-compinit
+stale_dumps=(${ZDOTDIR:-~}/.zcompdump(N.mh+24))
+if (( $#stale_dumps )); then
+	compinit
+else
+	compinit -C
+fi
+unset stale_dumps
+
+# gpg needs the current terminal for pinentry
+export GPG_TTY=$TTY
 
 # defaults in ohmyzsh + misc.zsh
 setopt auto_cd
@@ -109,5 +119,5 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # opencode
 export PATH=/Users/moliva/.opencode/bin:$PATH
-# Added by pham ai-gateway
-[ -f "$HOME/.pham/ai-gateway.env" ] && source "$HOME/.pham/ai-gateway.env"
+# Added by pham setup
+alias phi='pi --append-system-prompt ~/.pham/phi.md'

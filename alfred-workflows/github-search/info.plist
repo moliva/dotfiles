@@ -76,7 +76,7 @@
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>repos · prs · review · mine · team · issues · code · commits</string>
+				<string>repos · prs · review · mine · team · teams · issues · code · commits</string>
 				<key>title</key>
 				<string>Search GitHub</string>
 				<key>type</key>
@@ -140,12 +140,13 @@ gh pr fix login     → pull requests matching "fix login"
 gh review           → open PRs waiting on your review
 gh mine             → your open PRs
 gh team             → open PRs waiting on your team's review
+gh teams platform   → open myorg/platform team, or search teams
 gh issue flaky      → issues matching "flaky"
 gh code "fooBar"    → code search
 gh commit revert    → commit search
 gh api              → pick which kind of search
 
-Short aliases: r, p, rv, my, tm, i, c, cm.
+Short aliases: r, p, rv, my, tm, t, i, c, cm.
 ↩ open in browser · ⌘↩ copy URL · ⌘C copy URL
 
 Set your org and team in Configure Workflow (leave the org empty to search all of GitHub).</string>
