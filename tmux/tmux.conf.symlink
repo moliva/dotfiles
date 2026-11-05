@@ -144,7 +144,7 @@ bind-key C-u run-shell "tmux-fuzzy-find-claude"
 
 # hint-jump over the hyperlinks in the pane (OSC 8 targets + plain URLs): type the hint to open it,
 # Shift on the last key copies the target instead, Esc cancels
-bind u run-shell "tmux-links launch '#{pane_id}' '#{client_name}'"
+bind u run-shell "tmux-links launch '#{pane_id}'"
 
 # fuzzy finds a window in the current session
 bind C-f run "tmux-fuzzy-find-window"

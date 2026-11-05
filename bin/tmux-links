@@ -13,7 +13,7 @@
 //   - Backspace: undo the last typed hint character
 //
 // tmux.conf:
-//   bind u run-shell "tmux-links launch '#{pane_id}' '#{client_name}'"
+//   bind u run-shell "tmux-links launch '#{pane_id}'"
 
 const ALPHABET = "asdfghjklqwertyuiopzxcvbnm"
 const BLOCKED_SCHEMES = new Set(["file:"])
@@ -31,7 +31,7 @@ const tmux = (args: string[]): string => {
 
 const shellQuote = (s: string) => `'${s.replaceAll("'", `'\\''`)}'`
 
-const isOpenable = (uri: string): boolean => {
+const isOpenable =(uri: string): boolean => {
   try {
     return !BLOCKED_SCHEMES.has(new URL(uri).protocol)
   } catch {
@@ -309,10 +309,9 @@ async function ui(pane: string) {
   }
 }
 
-function launch(pane: string, client: string) {
-  const snap = capturePane(pane)
-  if (snap.links.length === 0) {
-    tmux(["display-message", "-c", client, "tmux-links: no links in this pane"])
+function launch(pane: string) {
+  if (capturePane(pane).links.length === 0) {
+    tmux(["display-message", "-d", "4000", "tmux-links: no openable links in this pane (file:// links are skipped)"])
     return
   }
 
@@ -333,11 +332,11 @@ function launch(pane: string, client: string) {
   const statusLines = status === "off" ? 0 : status === "on" ? 1 : Number.parseInt(status, 10) || 1
   const yOffset = opt("status-position") === "top" ? statusLines : 0
 
+  // No -c: tmux then picks the session's most recently active attached client. Targeting by client
+  // name breaks when a suspended client lingers on the same tty (both share the name).
   const command = [process.execPath, import.meta.path, "ui", pane].map(shellQuote).join(" ")
   tmux([
     "display-popup",
-    "-c",
-    client,
     "-B",
     "-E",
     "-x",
@@ -353,11 +352,11 @@ function launch(pane: string, client: string) {
 }
 
 if (import.meta.main) {
-  const [mode, pane, client] = process.argv.slice(2)
-  if (mode === "launch" && pane && client) launch(pane, client)
+  const [mode, pane] = process.argv.slice(2)
+  if (mode === "launch" && pane) launch(pane)
   else if (mode === "ui" && pane) await ui(pane)
   else {
-    console.error("usage: tmux-links launch <pane_id> <client_name>")
+    console.error("usage: tmux-links launch <pane_id>   (bound in tmux.conf; `ui` is the popup's internal mode)")
     process.exit(2)
   }
 }
