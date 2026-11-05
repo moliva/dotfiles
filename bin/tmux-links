@@ -1,0 +1,363 @@
+#!/usr/bin/env bun
+
+// From github.com/moliva/dotfiles
+// Hint-jump over the hyperlinks visible in a tmux pane.
+//
+// Finds OSC 8 hyperlinks (the *target*, not the visible text) and plain-text
+// http(s) URLs, overlays a short hint on each one in a popup that sits exactly
+// on top of the pane, and opens the link when you type its hint.
+//
+//   - lowercase hint: open the link (like clicking it)
+//   - last key uppercase (Shift): copy the link target to the clipboard
+//   - Esc / Ctrl-C: cancel and go back to the normal view
+//   - Backspace: undo the last typed hint character
+//
+// tmux.conf:
+//   bind u run-shell "tmux-links launch '#{pane_id}' '#{client_name}'"
+
+const ALPHABET = "asdfghjklqwertyuiopzxcvbnm"
+const BLOCKED_SCHEMES = new Set(["file:"])
+const PLAIN_URL = /https?:\/\/[^\s<>"'`\u0000]+/gu
+const TRAILING_PUNCTUATION = /[.,;:!?'")\]}>]+$/u
+
+type Link = { uri: string; text: string; hint: string; first: Cell | null }
+type Cell = { ch: string; w: number; col: number; link: Link | null }
+
+const tmux = (args: string[]): string => {
+  const res = Bun.spawnSync(["tmux", ...args])
+  if (res.exitCode !== 0) throw new Error(res.stderr.toString().trim() || `tmux ${args[0]} failed`)
+  return res.stdout.toString()
+}
+
+const shellQuote = (s: string) => `'${s.replaceAll("'", `'\\''`)}'`
+
+const isOpenable = (uri: string): boolean => {
+  try {
+    return !BLOCKED_SCHEMES.has(new URL(uri).protocol)
+  } catch {
+    return false
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Scanning
+// ---------------------------------------------------------------------------
+
+const CSI = /\x1b\[[0-?]*[ -/]*[@-~]/y
+const OSC_END = /\x07|\x1b\\/g
+
+/** Splits `capture-pane -e -J` output into logical lines of cells carrying their OSC 8 link. */
+export function parseCapture(text: string): Cell[][] {
+  const lines: Cell[][] = [[]]
+  let open: Link | null = null
+  let i = 0
+
+  while (i < text.length) {
+    const c = text[i]
+
+    if (c === "\x1b") {
+      if (text[i + 1] === "]") {
+        OSC_END.lastIndex = i + 2
+        const m = OSC_END.exec(text)
+        const payloadEnd = m ? m.index : text.length
+        const payload = text.slice(i + 2, payloadEnd)
+        if (payload.startsWith("8;")) {
+          const uri = payload.slice(payload.indexOf(";", 2) + 1)
+          open = uri && isOpenable(uri) ? { uri, text: "", hint: "", first: null } : null
+        }
+        i = m ? m.index + m[0].length : text.length
+      } else if (text[i + 1] === "[") {
+        CSI.lastIndex = i
+        i = CSI.test(text) ? CSI.lastIndex : i + 2
+      } else {
+        i += 2
+      }
+      continue
+    }
+
+    if (c === "\n") {
+      lines.push([])
+      i++
+      continue
+    }
+    if (c === "\r") {
+      i++
+      continue
+    }
+
+    const ch = String.fromCodePoint(text.codePointAt(i)!)
+    i += ch.length
+    const line = lines[lines.length - 1]!
+    const w = Bun.stringWidth(ch)
+    if (w === 0 && line.length > 0) {
+      line[line.length - 1]!.ch += ch
+      continue
+    }
+    if (open) open.text += ch
+    line.push({ ch, w: Math.max(w, 1), col: 0, link: open })
+  }
+
+  if (text.endsWith("\n")) lines.pop()
+  return lines
+}
+
+/** Marks plain-text http(s) URLs (outside any OSC 8 span) as links. Works across wrapped lines. */
+function addPlainUrls(line: Cell[]) {
+  let joined = ""
+  const unitToCell: number[] = []
+  line.forEach((cell, idx) => {
+    const s = cell.link ? "\u0000" : cell.ch
+    for (let k = 0; k < s.length; k++) unitToCell.push(idx)
+    joined += s
+  })
+
+  for (const m of joined.matchAll(PLAIN_URL)) {
+    const uri = m[0].replace(TRAILING_PUNCTUATION, "")
+    if (!uri || !isOpenable(uri)) continue
+    const link: Link = { uri, text: uri, hint: "", first: null }
+    const from = unitToCell[m.index]!
+    const to = unitToCell[m.index + uri.length - 1]!
+    for (let idx = from; idx <= to; idx++) line[idx]!.link = link
+  }
+}
+
+/** Re-wraps logical lines to the pane width, reproducing tmux's soft wrapping. */
+function layout(lines: Cell[][], width: number): Cell[][] {
+  const rows: Cell[][] = []
+  for (const line of lines) {
+    addPlainUrls(line)
+    let row: Cell[] = []
+    let col = 0
+    for (const cell of line) {
+      if (col + cell.w > width && row.length > 0) {
+        rows.push(row)
+        row = []
+        col = 0
+      }
+      cell.col = col
+      col += cell.w
+      row.push(cell)
+    }
+    rows.push(row)
+  }
+  return rows
+}
+
+export function makeHints(n: number): string[] {
+  const A = ALPHABET.length
+  if (n <= A) return [...ALPHABET].slice(0, n)
+  const prefixes = Math.min(A, Math.ceil((n - A) / (A - 1)))
+  const singles = [...ALPHABET].slice(0, A - prefixes)
+  const doubles = [...ALPHABET].slice(A - prefixes).flatMap(a => [...ALPHABET].map(b => a + b))
+  return [...singles, ...doubles].slice(0, n)
+}
+
+export type Snapshot = { rows: Cell[][]; links: Link[]; width: number; height: number }
+
+export function buildSnapshot(text: string, width: number, height: number): Snapshot {
+  const rows = layout(parseCapture(text), width).slice(0, height)
+
+  // Links in reading order; mark the first cell of each so the hint lands there.
+  const links: Link[] = []
+  for (const row of rows) {
+    for (const cell of row) {
+      if (cell.link && !cell.link.first) {
+        cell.link.first = cell
+        links.push(cell.link)
+      }
+    }
+  }
+
+  // The shortest hints go to the bottom-most links: that is usually the freshest output.
+  const hints = makeHints(links.length)
+  const shown = links.slice(-hints.length)
+  for (const link of links) link.hint = ""
+  ;[...shown].reverse().forEach((link, k) => (link.hint = hints[k]!))
+  return { rows, links: shown, width, height }
+}
+
+function capturePane(pane: string): Snapshot {
+  const [width, height, scroll] = tmux([
+    "display-message",
+    "-p",
+    "-t",
+    pane,
+    "#{pane_width}\t#{pane_height}\t#{?pane_in_mode,#{scroll_position},0}",
+  ])
+    .trim()
+    .split("\t")
+    .map(n => Number.parseInt(n, 10))
+  const sp = Number.isFinite(scroll) ? scroll! : 0
+  const text = tmux([
+    "capture-pane",
+    "-p",
+    "-e",
+    "-J",
+    "-t",
+    pane,
+    "-S",
+    String(-sp),
+    "-E",
+    String(height! - 1 - sp),
+  ])
+  return buildSnapshot(text, width!, height!)
+}
+
+// ---------------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------------
+
+const STYLE = {
+  text: "\x1b[0;2m",
+  link: "\x1b[0;4;36m",
+  linkDim: "\x1b[0;2;4m",
+  hint: "\x1b[0;1;30;43m",
+  typed: "\x1b[0;1;30;42m",
+}
+
+function renderRow(row: Cell[], typed: string): string {
+  let out = ""
+  let style = ""
+  const put = (s: string, st: string) => {
+    if (st !== style) {
+      out += st
+      style = st
+    }
+    out += s
+  }
+
+  let skipUntil = -1
+  for (const cell of row) {
+    if (cell.col < skipUntil) {
+      const overflow = cell.col + cell.w - skipUntil
+      if (overflow > 0) put(" ".repeat(overflow), style)
+      continue
+    }
+    const link = cell.link
+    if (link && link.first === cell && link.hint.startsWith(typed)) {
+      for (let k = 0; k < link.hint.length; k++) put(link.hint[k]!, k < typed.length ? STYLE.typed : STYLE.hint)
+      skipUntil = cell.col + link.hint.length
+      // a wide cell replaced by a narrower hint must not shift the rest of the row
+      if (cell.col + cell.w > skipUntil) put(" ".repeat(cell.col + cell.w - skipUntil), STYLE.text)
+      continue
+    }
+    put(cell.ch, link ? (link.hint.startsWith(typed) ? STYLE.link : STYLE.linkDim) : STYLE.text)
+  }
+  return out + "\x1b[0m\x1b[K"
+}
+
+function render(snap: Snapshot, typed: string) {
+  let frame = "\x1b[?25l"
+  for (let r = 0; r < snap.height; r++) {
+    frame += `\x1b[${r + 1};1H${renderRow(snap.rows[r] ?? [], typed)}`
+  }
+  process.stdout.write(frame)
+}
+
+// ---------------------------------------------------------------------------
+// Actions
+// ---------------------------------------------------------------------------
+
+async function act(uri: string, copy: boolean) {
+  const proc = copy
+    ? Bun.spawn(["pbcopy"], { stdin: new Blob([uri]) })
+    : Bun.spawn(["open", uri], { stdout: "ignore", stderr: "ignore" })
+  await proc.exited
+}
+
+// ---------------------------------------------------------------------------
+// Modes
+// ---------------------------------------------------------------------------
+
+async function ui(pane: string) {
+  const snap = capturePane(pane)
+  if (snap.links.length === 0) return
+
+  let typed = ""
+  const finish = (code = 0) => {
+    process.stdout.write("\x1b[0m\x1b[?25h")
+    process.stdin.setRawMode?.(false)
+    process.exit(code)
+  }
+
+  render(snap, typed)
+  process.stdin.setRawMode(true)
+  process.stdin.resume()
+
+  for await (const chunk of process.stdin) {
+    const key = Buffer.from(chunk as Uint8Array).toString("utf8")
+
+    if (key === "\x1b" || key === "\x03") finish()
+    if (key === "\x7f" || key === "\b") {
+      typed = typed.slice(0, -1)
+      render(snap, typed)
+      continue
+    }
+    if (key.length !== 1 || !/[a-z]/i.test(key)) continue
+
+    const next = typed + key.toLowerCase()
+    const candidates = snap.links.filter(l => l.hint.startsWith(next))
+    if (candidates.length === 0) continue
+
+    const hit = candidates.find(l => l.hint === next)
+    if (hit) {
+      await act(hit.uri, key !== key.toLowerCase())
+      finish()
+    }
+    typed = next
+    render(snap, typed)
+  }
+}
+
+function launch(pane: string, client: string) {
+  const snap = capturePane(pane)
+  if (snap.links.length === 0) {
+    tmux(["display-message", "-c", client, "tmux-links: no links in this pane"])
+    return
+  }
+
+  const [left, top, width, height, sessionId] = tmux([
+    "display-message",
+    "-p",
+    "-t",
+    pane,
+    "#{pane_left}\t#{pane_top}\t#{pane_width}\t#{pane_height}\t#{session_id}",
+  ])
+    .trim()
+    .split("\t")
+
+  // display-popup positions are in client coordinates, so account for a top status line,
+  // and -y is the popup's *bottom* edge (its top row is y - height).
+  const opt = (name: string) => tmux(["show-options", "-Aqv", "-t", sessionId!, name]).trim()
+  const status = opt("status")
+  const statusLines = status === "off" ? 0 : status === "on" ? 1 : Number.parseInt(status, 10) || 1
+  const yOffset = opt("status-position") === "top" ? statusLines : 0
+
+  const command = [process.execPath, import.meta.path, "ui", pane].map(shellQuote).join(" ")
+  tmux([
+    "display-popup",
+    "-c",
+    client,
+    "-B",
+    "-E",
+    "-x",
+    left!,
+    "-y",
+    String(Number.parseInt(top!, 10) + yOffset + Number.parseInt(height!, 10)),
+    "-w",
+    width!,
+    "-h",
+    height!,
+    command,
+  ])
+}
+
+if (import.meta.main) {
+  const [mode, pane, client] = process.argv.slice(2)
+  if (mode === "launch" && pane && client) launch(pane, client)
+  else if (mode === "ui" && pane) await ui(pane)
+  else {
+    console.error("usage: tmux-links launch <pane_id> <client_name>")
+    process.exit(2)
+  }
+}
