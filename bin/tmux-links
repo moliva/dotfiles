@@ -209,10 +209,11 @@ function capturePane(pane: string): Snapshot {
 
 const STYLE = {
   text: "\x1b[0;2m",
-  link: "\x1b[0;4;36m",
+  // 256-color indexes 16+ are fixed RGB, so a terminal theme can't remap them (unlike ANSI 0-15)
+  link: "\x1b[0;4;38;5;81m",
   linkDim: "\x1b[0;2;4m",
-  hint: "\x1b[0;1;30;43m",
-  typed: "\x1b[0;1;30;42m",
+  hint: "\x1b[0;1;38;5;231;48;5;160m",
+  typed: "\x1b[0;1;38;5;220;48;5;238m",
 }
 
 function renderRow(row: Cell[], typed: string): string {
