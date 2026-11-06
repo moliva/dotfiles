@@ -10,7 +10,8 @@ right. Each carries the window and tab ids that focus.js uses to switch to it.
 Chrome is never launched: if it is not running there is nothing to list.
 
 A window's profile (avatar icon, subtitle label) comes from its on-screen title,
-read through System Events, because the AppleScript window name omits it. That read
+read through System Events, because the AppleScript window name omits it (and Chrome
+truncates that name, so windows are paired by their active tab's title). That read
 is fragile (permissions, a slow System Events, titles changing between the two
 queries), but a window never changes profile, so each profile is remembered per
 Chrome window id once it is certain (window-profiles.json in the workflow cache
@@ -50,7 +51,7 @@ JSON.stringify(Application("System Events").processes.byName("Google Chrome").wi
 """
 
 TITLE_RE = re.compile(r"^(.*) [-–] Google Chrome(?: [-–] (.+))?$")
-MEMORY_NOTE_RE = re.compile(r" [-–] High memory usage [-–] [\d.,]+ ?[KMGT]?B$")
+NOTES_RE = re.compile(r"(?: [-–] (?:High memory usage [-–] [\d.,]+ ?[KMGT]?B|Pinned))+$")
 
 
 def chrome_running():
@@ -184,19 +185,29 @@ def screen_titles():
     return [], reason
 
 
+def title_text(window):
+    """The active tab's title, which the on-screen title starts with. The window's
+    AppleScript name is no use for this: Chrome truncates it in the middle ('…')."""
+    tabs = window.get("tabs") or []
+    active = window.get("active") or 1
+    if 1 <= active <= len(tabs) and tabs[active - 1].get("title"):
+        return tabs[active - 1]["title"]
+    return window.get("name") or ""
+
+
 def attach_screen_titles(windows, titles):
     """Pair each AppleScript window with its on-screen title: the first unused one
-    whose text before ' - Google Chrome' is the window's name (the active tab's
-    title). Chrome may append notes there ('- High memory usage - 849 MB'), so an
-    exact match is preferred and a 'name - …' prefix match is the fallback.
+    whose text before ' - Google Chrome' is the window's active tab title. Chrome
+    appends notes there ('- High memory usage - 849 MB', '- Pinned'); the ones known
+    are stripped, and a 'title - …' prefix match is the fallback for the rest.
     Same-titled windows pair in order. A pairing is marked certain only when it is an
     exact match and every on-screen title matching the window names the same profile,
     which is what makes it safe to remember."""
     parsed = [TITLE_RE.match(title or "") for title in titles]
-    text = [MEMORY_NOTE_RE.sub("", m.group(1)) if m else "" for m in parsed]
+    text = [NOTES_RE.sub("", m.group(1)) if m else "" for m in parsed]
     used = set()
     for window in windows:
-        name = window.get("name") or ""
+        name = title_text(window)
         for exact in (True, False):
             matches = [
                 i

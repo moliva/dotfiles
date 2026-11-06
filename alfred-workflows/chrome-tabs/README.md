@@ -30,7 +30,8 @@ name leaves the profile out. The on-screen title does include it (`<tab> - Googl
 you use several profiles), so `tabs.py` also reads the window titles through System Events and pairs each with its
 AppleScript window by the active tab's title (same-titled windows pair in order). The profile's avatar becomes the
 icon, as in Chrome Bookmarks, and its name goes in the subtitle. Chrome's `Account (profile name)` labels and its
-`- High memory usage - 849 MB` title notes are handled. A profile without an avatar file gets the
+`- High memory usage - 849 MB` and `- Pinned` title notes are handled. Windows are paired on the active tab's full
+title, because Chrome truncates the AppleScript window name in the middle (`…`). A profile without an avatar file gets the
 workflow icon. If a window's title has no profile (a single-profile Chrome), you just get `Window N`.
 
 Reading titles is the fragile part (permissions, a slow System Events, titles changing between the two queries), but
