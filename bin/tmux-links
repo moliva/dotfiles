@@ -12,10 +12,15 @@
 //   - Esc / Ctrl-C: cancel and go back to the normal view
 //   - Backspace: undo the last typed hint character
 //
+// Documentation: bin/tmux-links.md
+//
 // tmux.conf:
 //   bind u run-shell "tmux-links launch '#{pane_id}'"
 
-const ALPHABET = "asdfghjklqwertyuiopzxcvbnm"
+// Hint keys in the order they are handed out, like Vimium's: home row under the main fingers first,
+// alternating hands (fjdksla), then the home-row stretch keys, the top row near home, and the bottom row.
+// Keys near the end become the prefixes of two-key hints, so they should be the least comfortable ones.
+const ALPHABET = "fjdkslaghrueiwoqptyvmcnxbz"
 const BLOCKED_SCHEMES = new Set(["file:"])
 const PLAIN_URL = /https?:\/\/[^\s<>"'`\u0000]+/gu
 const TRAILING_PUNCTUATION = /[.,;:!?'")\]}>]+$/u
@@ -141,6 +146,14 @@ function layout(lines: Cell[][], width: number): Cell[][] {
     rows.push(row)
   }
   return rows
+}
+
+/** The hint key a keypress types, and whether Shift asks to copy instead of open (uppercase letter). */
+export function keyOf(key: string): { base: string; copy: boolean } | null {
+  if (key.length !== 1) return null
+  const lower = key.toLowerCase()
+  if (!ALPHABET.includes(lower)) return null
+  return { base: lower, copy: key !== lower }
 }
 
 export function makeHints(n: number): string[] {
@@ -294,15 +307,16 @@ async function ui(pane: string) {
       render(snap, typed)
       continue
     }
-    if (key.length !== 1 || !/[a-z]/i.test(key)) continue
+    const pressed = keyOf(key)
+    if (!pressed) continue
 
-    const next = typed + key.toLowerCase()
+    const next = typed + pressed.base
     const candidates = snap.links.filter(l => l.hint.startsWith(next))
     if (candidates.length === 0) continue
 
     const hit = candidates.find(l => l.hint === next)
     if (hit) {
-      await act(hit.uri, key !== key.toLowerCase())
+      await act(hit.uri, pressed.copy)
       finish()
     }
     typed = next
