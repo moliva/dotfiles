@@ -31,7 +31,15 @@ you use several profiles), so `tabs.py` also reads the window titles through Sys
 AppleScript window by the active tab's title (same-titled windows pair in order). The profile's avatar becomes the
 icon, as in Chrome Bookmarks, and its name goes in the subtitle. Chrome's `Account (profile name)` labels and its
 `- High memory usage - 849 MB` title notes are handled. A profile without an avatar file gets the
-workflow icon. If the titles can't be read, or a window's title has no profile, you just get `Window N`.
+workflow icon. If a window's title has no profile (a single-profile Chrome), you just get `Window N`.
+
+Reading titles is the fragile part (permissions, a slow System Events, titles changing between the two queries), but
+a window never changes profile. So once a window's profile is certain (an exact title match that no other window's
+title contradicts), `tabs.py` remembers it by Chrome window id in `window-profiles.json` in the workflow's cache
+folder, and reuses it whenever a later read fails or can't be paired. Entries for closed windows are dropped, and the
+whole cache is cleared when Chrome quits, since window ids don't survive a restart. Windows that were never certain
+(for example two same-titled `New Tab` windows on different profiles) show `· profile unknown` while titles can't be
+read, rather than silently losing it; the last reason is in `titles-error.txt` next to the cache.
 
 **First run.** macOS asks whether Alfred may control Google Chrome and System Events (System Settings → Privacy &
 Security → Automation). Allow both. Reading window titles also needs Alfred in Accessibility, which it usually
