@@ -8,6 +8,7 @@ workflow's README says otherwise.
 | --- | --- | --- |
 | [Argo CD Search](argocd-search/) | `argo` | Search and open Argo CD apps across instances |
 | [Chrome Bookmarks](chrome-bookmarks/) | `bm` | Search bookmarks across all Chrome profiles, open in the source profile |
+| [Chrome Tabs](chrome-tabs/) | `tb` | Search the tabs open in every Chrome window and switch to one |
 | [Datadog Search](datadog-search/) | `dd` | Search monitors, APM services, dashboards, logs and traces |
 | [Emoji Search](emoji-search/) | `;` | Search and paste emoji |
 | [GitHub Search](github-search/) | `gh` | Open repos; search PRs, review requests, issues, code and commits |

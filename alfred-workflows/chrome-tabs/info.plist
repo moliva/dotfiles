@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.moliva.chrome-tabs</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Search and switch to open tabs across all Chrome windows</string>
+	<key>name</key>
+	<string>Chrome Tabs (all windows)</string>
+	<key>readme</key>
+	<string>Keyword: tb
+
+Lists every open tab in every Chrome window, front window first.
+
+↩ switch to the tab (raises its window)
+⌘↩ copy URL
+
+Chrome asks for Automation access for Alfred the first time.</string>
+	<key>connections</key>
+	<dict>
+		<key>37509D05-A37F-4470-AFC7-AF2B9592A7B8</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7720042B-7FD4-4CA0-8E86-1074573F6431</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>7720042B-7FD4-4CA0-8E86-1074573F6431</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Copy URL</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Reading Chrome tabs…</string>
+				<key>script</key>
+				<string>/usr/bin/python3 tabs.py</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Search and switch to open Chrome tabs</string>
+				<key>title</key>
+				<string>Chrome Tabs</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>37509D05-A37F-4470-AFC7-AF2B9592A7B8</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>/bin/bash open.sh "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>7720042B-7FD4-4CA0-8E86-1074573F6431</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>uidata</key>
+	<dict>
+		<key>37509D05-A37F-4470-AFC7-AF2B9592A7B8</key>
+		<dict>
+			<key>xpos</key>
+			<real>50</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+		<key>7720042B-7FD4-4CA0-8E86-1074573F6431</key>
+		<dict>
+			<key>xpos</key>
+			<real>300</real>
+			<key>ypos</key>
+			<real>50</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>tb</string>
+				<key>placeholder</key>
+				<string>tb</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Alfred keyword to search open Chrome tabs</string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+	</array>
+	<key>version</key>
+	<string>1.0.0</string>
+</dict>
+</plist>
