@@ -25,16 +25,22 @@ How it works: `tabs.py` asks Chrome for its windows and tabs through its AppleSc
 query), and `focus.js` activates a tab by window id and tab id, so it still lands on the right tab if tabs moved
 between listing and selecting. If the tab was closed in the meantime you get a notification.
 
-**Profiles.** Chrome's AppleScript interface does not say which profile a window belongs to. The workflow
-recovers it from the window title (`<tab> - Google Chrome - <profile>`, shown once you use several profiles)
-and, when found, uses the profile's avatar as the icon. Where the title carries no profile you get `Window N`.
+**Profiles.** Chrome's AppleScript interface does not say which profile a window belongs to, and its window
+name leaves the profile out. The on-screen title does include it (`<tab> - Google Chrome - <profile>`, shown once
+you use several profiles), so `tabs.py` also reads the window titles through System Events and pairs each with its
+AppleScript window by the active tab's title (same-titled windows pair in order). The profile's avatar becomes the
+icon, as in Chrome Bookmarks, and its name goes in the subtitle. Chrome's `Account (profile name)` labels and its
+`- High memory usage - 849 MB` title notes are handled. A profile without an avatar file gets the
+workflow icon. If the titles can't be read, or a window's title has no profile, you just get `Window N`.
 
-**First run.** macOS asks whether Alfred may control Google Chrome (System Settings → Privacy & Security →
-Automation). Allow it.
+**First run.** macOS asks whether Alfred may control Google Chrome and System Events (System Settings → Privacy &
+Security → Automation). Allow both. Reading window titles also needs Alfred in Accessibility, which it usually
+already has.
 
 Keyword is set in Alfred Preferences → Workflows → Chrome Tabs → Configure Workflow.
 
 Needs `/usr/bin/python3` (Xcode Command Line Tools); the script uses only the standard library.
 
 Testing without Chrome: `TABS_JSON=dump.json /usr/bin/python3 tabs.py` reads windows from a JSON file shaped like
-the query result (`[{id, name, mode, active, tabs: [{id, title, url}]}]`).
+the query result (`[{id, name, mode, active, tabs: [{id, title, url}]}]`), and `TABS_AX=titles.json` supplies the
+on-screen window titles as a JSON list of strings.
