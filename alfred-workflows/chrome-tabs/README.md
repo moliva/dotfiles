@@ -6,11 +6,15 @@ Search the tabs open in every Chrome window, and jump to one.
 tb grafana           → open tabs matching "grafana", in any window
 tb window 2          → every tab in the second window
 tb work inbox        → matches the profile name too, when Chrome shows it in the window title
+tb pull 4821         → matches words anywhere in the URL, not just the title
 ```
 
 Results come in Chrome's order: windows front to back, tabs left to right. The subtitle reads
 `[Window 2 · profile]  host`, and `▶` marks the tab that is active in its window. Incognito windows show as
-`[Incognito]`. Alfred matches on title, window label, host and URL.
+`[Incognito]`. Alfred matches on title, window label, host and URL. Alfred only matches query words against
+the start of whole words, so the URL is also fed in broken into its parts (path segments, query keys and values,
+split again on `-`/`_`, percent-decoded) and without its scheme: `tb pull 4821`, `tb backend` or a pasted
+`tb github.com/acme/backend` all find `https://github.com/acme/backend-3/pull/4821`.
 
 | Key | Action |
 | --- | --- |

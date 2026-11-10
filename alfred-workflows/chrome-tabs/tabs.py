@@ -27,7 +27,7 @@ import os
 import re
 import subprocess
 import sys
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 CHROME = os.path.expanduser("~/Library/Application Support/Google/Chrome")
 CACHE_DIR = os.environ.get("alfred_workflow_cache") or os.path.expanduser("~/Library/Caches/com.moliva.chrome-tabs")
@@ -239,6 +239,20 @@ def window_profile(window, known):
     return name, None
 
 
+def url_words(url):
+    """The URL as words Alfred can match. Alfred matches each query word against the
+    start of a space-separated word, so a raw URL only matches from 'https'. This adds
+    the URL without its scheme (for pasted fragments like 'github.com/org/repo'), its
+    path, query and fragment parts (percent-decoded), and those parts split again on
+    '-' and '_'."""
+    bare = re.sub(r"^[a-z][a-z0-9+.-]*://", "", url, flags=re.I)
+    words = [url, bare]
+    for part in re.split(r"[/?#&=:.;,+%@~!$'()*\[\]\s]+", unquote(bare)):
+        words.append(part)
+        words.extend(re.split(r"[-_]+", part))
+    return " ".join(dict.fromkeys(word for word in words if word))
+
+
 def items(windows):
     known = profiles()
     for number, window in enumerate(windows, start=1):
@@ -263,7 +277,7 @@ def items(windows):
                 "title": title,
                 "subtitle": f"{marker}[{label}]  {host}",
                 "arg": url,
-                "match": f"{title} {label} {host} {url}",
+                "match": f"{title} {label} {host} {url_words(url)}",
                 "icon": icon,
                 "quicklookurl": url,
                 "text": {"copy": url, "largetype": url},
