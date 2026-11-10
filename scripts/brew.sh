@@ -35,6 +35,7 @@ brew install vim --override-system-vim
 brew install neovim
 brew install reattach-to-user-namespace
 brew install tmux
+brew install bun # runtime for bin/tmux-links (see bin/tmux-links.md)
 brew install zsh
 brew install highlight
 # brew install z

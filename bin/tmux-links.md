@@ -38,10 +38,20 @@ It starts with the home row under the main fingers, alternating hands (`fjdksla`
 - With more than 26 links, hints become two letters. The last letters of the alphabet (`z`, `b`, `x`, ...) become the first letter of those, so they are the least used keys.
 - Each hint is drawn on the first cell of its link. As you type, links that no longer match dim.
 
+## Dependencies
+
+| Dependency | Why it is needed | Installed by |
+| --- | --- | --- |
+| [Bun](https://bun.sh) | Runs the script (`#!/usr/bin/env bun`) and uses Bun-only APIs (`Bun.spawn`, `Bun.stringWidth`), so Node is not a substitute. | `scripts/brew.sh` (`brew install bun`) |
+| tmux 3.2 or newer | Opens the hint overlay with `display-popup`, which needs 3.2+. | `scripts/brew.sh` (`brew install tmux`) |
+| `open` and `pbcopy` | Open links and copy link targets. | Ships with macOS, nothing to install |
+
+On a new machine, `scripts/install.sh` runs `scripts/brew.sh`, which installs Bun and tmux. If you set things up by hand, run `brew install bun tmux`.
+
 ## Setup
 
 - `tmux/tmux.conf.symlink` binds it: `bind u run-shell "tmux-links launch '#{pane_id}'"`.
-- Needs `bun` (the script has a `#!/usr/bin/env bun` shebang) and tmux 3.2 or newer, because it opens a `display-popup` over the pane.
+- `bin/` is on `PATH` (set in `zsh/zshrc.symlink`), so the binding finds `tmux-links`.
 - macOS only in practice: it opens links with `open` and copies with `pbcopy`.
 
 ## Changing the keys
