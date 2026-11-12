@@ -22,7 +22,7 @@
 // Keys near the end become the prefixes of two-key hints, so they should be the least comfortable ones.
 const ALPHABET = "fjdkslaghrueiwoqptyvmcnxbz"
 const BLOCKED_SCHEMES = new Set(["file:"])
-const PLAIN_URL = /https?:\/\/[^\s<>"'`\u0000]+/gu
+const PLAIN_URL = /(?:https?|carriot):\/\/[^\s<>"'`\u0000]+/gu
 const TRAILING_PUNCTUATION = /[.,;:!?'")\]}>]+$/u
 
 type Link = { uri: string; text: string; hint: string; first: Cell | null }
@@ -106,7 +106,7 @@ export function parseCapture(text: string): Cell[][] {
   return lines
 }
 
-/** Marks plain-text http(s) URLs (outside any OSC 8 span) as links. Works across wrapped lines. */
+/** Marks plain-text http(s) and carriot:// URLs (outside any OSC 8 span) as links. Works across wrapped lines. */
 function addPlainUrls(line: Cell[]) {
   let joined = ""
   const unitToCell: number[] = []

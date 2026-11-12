@@ -5,7 +5,7 @@ Hint-jump over the links in a tmux pane. Press `prefix u` (Ctrl-a, then u), type
 ## What it finds
 
 - **OSC 8 hyperlinks**: the link target, not the visible text. Programs that emit terminal hyperlinks show up even when the text is not a URL.
-- **Plain `http(s)` URLs** in the text, including ones wrapped across lines. Trailing punctuation (`.`, `,`, `)` and similar) is dropped from the URL.
+- **Plain `http(s)` and `carriot://` URLs** in the text, including ones wrapped across lines. Trailing punctuation (`.`, `,`, `)` and similar) is dropped from the URL.
 - **Not `file:` links**: they are skipped on purpose.
 - **Only what is on screen.** In copy mode it is the part you have scrolled to.
 
