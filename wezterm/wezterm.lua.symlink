@@ -383,6 +383,13 @@ local config = {
       key = "t",
       action = keys.tmux_prefixed_key({ mods = "SHIFT", key = "n" }),
     },
+
+    -- hint-jump over the links in the pane (tmux-links launch)
+    {
+      mods = "CMD",
+      key = "u",
+      action = keys.tmux_prefixed_key({ key = "u" }),
+    },
   },
   -- audible_bell = "SystemBeep",
   -- visual_bell = {
