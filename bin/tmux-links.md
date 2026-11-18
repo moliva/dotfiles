@@ -23,6 +23,16 @@ If the pane has nothing openable, a four-second message says so and nothing else
 
 Shift only matters on the key that completes the hint. For a two-letter hint, Shift on the first letter does nothing.
 
+Once the overlay is visible you can type straight away. Keys typed while it is still loading are kept and handled in order.
+
+## How it opens fast
+
+Every process start costs about 10 ms here, so the path from the key press to the hints is kept short:
+
+1. `launch` reads the pane geometry and its text in a single `tmux` call, works out the hints, and pre-renders the first frame to a temp file.
+2. The popup's shell runs `stty raw -echo`, `cat`s that frame, and only then starts Bun for the interactive part. The hints show up right away instead of on a blank popup.
+3. The interactive part reuses `launch`'s capture instead of capturing again. `launch` deletes the temp files when the popup closes.
+
 ## Hint letters
 
 Hints use this order:

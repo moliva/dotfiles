@@ -17,6 +17,10 @@
 // tmux.conf:
 //   bind u run-shell "tmux-links launch '#{pane_id}'"
 
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
+
 // Hint keys in the order they are handed out, like Vimium's: home row under the main fingers first,
 // alternating hands (fjdksla), then the home-row stretch keys, the top row near home, and the bottom row.
 // Keys near the end become the prefixes of two-key hints, so they should be the least comfortable ones.
@@ -189,31 +193,33 @@ export function buildSnapshot(text: string, width: number, height: number): Snap
   return { rows, links: shown, width, height }
 }
 
-function capturePane(pane: string): Snapshot {
-  const [width, height, scroll] = tmux([
-    "display-message",
-    "-p",
-    "-t",
-    pane,
-    "#{pane_width}\t#{pane_height}\t#{?pane_in_mode,#{scroll_position},0}",
-  ])
-    .trim()
-    .split("\t")
-    .map(n => Number.parseInt(n, 10))
-  const sp = Number.isFinite(scroll) ? scroll! : 0
-  const text = tmux([
-    "capture-pane",
-    "-p",
-    "-e",
-    "-J",
-    "-t",
-    pane,
-    "-S",
-    String(-sp),
-    "-E",
-    String(height! - 1 - sp),
-  ])
-  return buildSnapshot(text, width!, height!)
+type PaneInfo = { width: number; height: number; left: number; top: number; status: string; statusPosition: string }
+
+const PANE_FORMAT = [
+  "#{pane_width}",
+  "#{pane_height}",
+  "#{?pane_in_mode,#{scroll_position},0}",
+  "#{pane_left}",
+  "#{pane_top}",
+  "#{status}",
+  "#{status-position}",
+].join("\t")
+
+/** Pane geometry plus its visible text, in a single tmux call: each process start costs ~10ms, and they add up to visible lag. */
+function capturePane(pane: string): { info: PaneInfo; text: string } {
+  const out = tmux(["display-message", "-p", "-t", pane, PANE_FORMAT, ";", "capture-pane", "-p", "-e", "-J", "-t", pane])
+  const nl = out.indexOf("\n")
+  const [width, height, scroll, left, top, status, statusPosition] = out.slice(0, nl).split("\t")
+  const num = (s: string | undefined) => Number.parseInt(s ?? "", 10) || 0
+  const info = { width: num(width), height: num(height), left: num(left), top: num(top), status: status ?? "on", statusPosition: statusPosition ?? "" }
+
+  // In copy mode the visible part is scrolled back, so capture that range instead.
+  const sp = num(scroll)
+  const text =
+    sp > 0
+      ? tmux(["capture-pane", "-p", "-e", "-J", "-t", pane, "-S", String(-sp), "-E", String(info.height - 1 - sp)])
+      : out.slice(nl + 1)
+  return { info, text }
 }
 
 // ---------------------------------------------------------------------------
@@ -260,12 +266,35 @@ function renderRow(row: Cell[], typed: string): string {
   return out + "\x1b[0m\x1b[K"
 }
 
-function render(snap: Snapshot, typed: string) {
+function frameOf(snap: Snapshot, typed: string): string {
   let frame = "\x1b[?25l"
   for (let r = 0; r < snap.height; r++) {
     frame += `\x1b[${r + 1};1H${renderRow(snap.rows[r] ?? [], typed)}`
   }
-  process.stdout.write(frame)
+  return frame
+}
+
+function render(snap: Snapshot, typed: string) {
+  process.stdout.write(frameOf(snap, typed))
+}
+
+/**
+ * Splits a stdin chunk into single keys. Keys typed before the UI is up arrive together in one
+ * chunk; escape sequences (arrows, function keys) yield nothing, a lone Esc yields "\x1b".
+ */
+export function keysOf(chunk: string): string[] {
+  const keys: string[] = []
+  for (let i = 0; i < chunk.length; ) {
+    if (chunk[i] === "\x1b" && (chunk[i + 1] === "[" || chunk[i + 1] === "O")) {
+      CSI.lastIndex = i
+      i = chunk[i + 1] === "[" && CSI.test(chunk) ? CSI.lastIndex : i + 3
+      continue
+    }
+    const ch = String.fromCodePoint(chunk.codePointAt(i)!)
+    keys.push(ch)
+    i += ch.length
+  }
+  return keys
 }
 
 // ---------------------------------------------------------------------------
@@ -283,8 +312,9 @@ async function act(uri: string, copy: boolean) {
 // Modes
 // ---------------------------------------------------------------------------
 
-async function ui(pane: string) {
-  const snap = capturePane(pane)
+async function ui(dir: string) {
+  const { text, width, height } = JSON.parse(readFileSync(join(dir, "snapshot.json"), "utf8"))
+  const snap = buildSnapshot(text, width, height)
   if (snap.links.length === 0) return
 
   let typed = ""
@@ -294,82 +324,86 @@ async function ui(pane: string) {
     process.exit(code)
   }
 
+  // The popup already shows this frame (launch pre-rendered it); drawing it again changes nothing visible.
   render(snap, typed)
   process.stdin.setRawMode(true)
   process.stdin.resume()
 
   for await (const chunk of process.stdin) {
-    const key = Buffer.from(chunk as Uint8Array).toString("utf8")
+    for (const key of keysOf(Buffer.from(chunk as Uint8Array).toString("utf8"))) {
+      if (key === "\x1b" || key === "\x03") finish()
+      if (key === "\x7f" || key === "\b") {
+        typed = typed.slice(0, -1)
+        render(snap, typed)
+        continue
+      }
+      const pressed = keyOf(key)
+      if (!pressed) continue
 
-    if (key === "\x1b" || key === "\x03") finish()
-    if (key === "\x7f" || key === "\b") {
-      typed = typed.slice(0, -1)
+      const next = typed + pressed.base
+      const candidates = snap.links.filter(l => l.hint.startsWith(next))
+      if (candidates.length === 0) continue
+
+      const hit = candidates.find(l => l.hint === next)
+      if (hit) {
+        await act(hit.uri, pressed.copy)
+        finish()
+      }
+      typed = next
       render(snap, typed)
-      continue
     }
-    const pressed = keyOf(key)
-    if (!pressed) continue
-
-    const next = typed + pressed.base
-    const candidates = snap.links.filter(l => l.hint.startsWith(next))
-    if (candidates.length === 0) continue
-
-    const hit = candidates.find(l => l.hint === next)
-    if (hit) {
-      await act(hit.uri, pressed.copy)
-      finish()
-    }
-    typed = next
-    render(snap, typed)
   }
 }
 
 function launch(pane: string) {
-  if (capturePane(pane).links.length === 0) {
+  const { info, text } = capturePane(pane)
+  const snap = buildSnapshot(text, info.width, info.height)
+  if (snap.links.length === 0) {
     tmux(["display-message", "-d", "4000", "tmux-links: no openable links in this pane (file:// links are skipped)"])
     return
   }
 
-  const [left, top, width, height, sessionId] = tmux([
-    "display-message",
-    "-p",
-    "-t",
-    pane,
-    "#{pane_left}\t#{pane_top}\t#{pane_width}\t#{pane_height}\t#{session_id}",
-  ])
-    .trim()
-    .split("\t")
-
   // display-popup positions are in client coordinates, so account for a top status line,
   // and -y is the popup's *bottom* edge (its top row is y - height).
-  const opt = (name: string) => tmux(["show-options", "-Aqv", "-t", sessionId!, name]).trim()
-  const status = opt("status")
-  const statusLines = status === "off" ? 0 : status === "on" ? 1 : Number.parseInt(status, 10) || 1
-  const yOffset = opt("status-position") === "top" ? statusLines : 0
+  const statusLines = info.status === "off" ? 0 : info.status === "on" ? 1 : Number.parseInt(info.status, 10) || 1
+  const yOffset = info.statusPosition === "top" ? statusLines : 0
 
-  // No -c: tmux then picks the session's most recently active attached client. Targeting by client
-  // name breaks when a suspended client lingers on the same tty (both share the name).
-  const command = [process.execPath, import.meta.path, "ui", pane].map(shellQuote).join(" ")
-  tmux([
-    "display-popup",
-    "-B",
-    "-E",
-    "-x",
-    left!,
-    "-y",
-    String(Number.parseInt(top!, 10) + yOffset + Number.parseInt(height!, 10)),
-    "-w",
-    width!,
-    "-h",
-    height!,
-    command,
-  ])
+  // Hand the capture and a pre-rendered first frame to the popup. Its shell prints the frame with
+  // `cat` right away, so the hints appear without waiting for a second Bun start, and the UI reuses
+  // the same capture instead of taking another one. `stty raw -echo` first, so keys typed while Bun
+  // loads are neither echoed nor held for a newline; the UI reads them once it is up.
+  const dir = mkdtempSync(join(tmpdir(), "tmux-links-"))
+  try {
+    writeFileSync(join(dir, "snapshot.json"), JSON.stringify({ text, width: info.width, height: info.height }))
+    writeFileSync(join(dir, "frame"), frameOf(snap, ""))
+    const ui = [process.execPath, import.meta.path, "ui", dir].map(shellQuote).join(" ")
+    const command = `stty raw -echo; cat ${shellQuote(join(dir, "frame"))}; exec ${ui}`
+
+    // No -c: tmux then picks the session's most recently active attached client. Targeting by client
+    // name breaks when a suspended client lingers on the same tty (both share the name).
+    tmux([
+      "display-popup",
+      "-B",
+      "-E",
+      "-x",
+      String(info.left),
+      "-y",
+      String(info.top + yOffset + info.height),
+      "-w",
+      String(info.width),
+      "-h",
+      String(info.height),
+      command,
+    ])
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
 }
 
 if (import.meta.main) {
-  const [mode, pane] = process.argv.slice(2)
-  if (mode === "launch" && pane) launch(pane)
-  else if (mode === "ui" && pane) await ui(pane)
+  const [mode, arg] = process.argv.slice(2)
+  if (mode === "launch" && arg) launch(arg)
+  else if (mode === "ui" && arg) await ui(arg)
   else {
     console.error("usage: tmux-links launch <pane_id>   (bound in tmux.conf; `ui` is the popup's internal mode)")
     process.exit(2)
