@@ -52,6 +52,11 @@ already has.
 
 Keyword is set in Alfred Preferences → Workflows → Chrome Tabs → Configure Workflow.
 
+**Match mode.** Multi-word queries (`tb work inbox`) only work with the Script Filter's match mode set to
+**Word matching - Any order**: open the Script Filter and click the cog next to "Alfred Filters Results". Alfred's
+default mode matches the whole query as one phrase, so `tb something another` returns nothing even when each word
+matches a tab on its own.
+
 Needs `/usr/bin/python3` (Xcode Command Line Tools); the script uses only the standard library.
 
 Testing without Chrome: `TABS_JSON=dump.json /usr/bin/python3 tabs.py` reads windows from a JSON file shaped like

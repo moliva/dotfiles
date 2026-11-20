@@ -6,21 +6,6 @@
 	<string>com.moliva.chrome-tabs</string>
 	<key>category</key>
 	<string>Productivity</string>
-	<key>createdby</key>
-	<string>moliva</string>
-	<key>description</key>
-	<string>Search and switch to open tabs across all Chrome windows</string>
-	<key>name</key>
-	<string>Chrome Tabs (all windows)</string>
-	<key>readme</key>
-	<string>Keyword: tb
-
-Lists every open tab in every Chrome window, front window first.
-
-↩ switch to the tab (raises its window)
-⌘↩ copy URL
-
-Chrome asks for Automation access for Alfred the first time.</string>
 	<key>connections</key>
 	<dict>
 		<key>37509D05-A37F-4470-AFC7-AF2B9592A7B8</key>
@@ -47,6 +32,14 @@ Chrome asks for Automation access for Alfred the first time.</string>
 			</dict>
 		</array>
 	</dict>
+	<key>createdby</key>
+	<string>moliva</string>
+	<key>description</key>
+	<string>Search and switch to open tabs across all Chrome windows</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Chrome Tabs (all windows)</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -55,7 +48,7 @@ Chrome asks for Automation access for Alfred the first time.</string>
 				<key>alfredfiltersresults</key>
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
-				<integer>0</integer>
+				<integer>2</integer>
 				<key>argumenttreatemptyqueryasnil</key>
 				<true/>
 				<key>argumenttrimmode</key>
@@ -122,6 +115,15 @@ Chrome asks for Automation access for Alfred the first time.</string>
 			<integer>2</integer>
 		</dict>
 	</array>
+	<key>readme</key>
+	<string>Keyword: tb
+
+Lists every open tab in every Chrome window, front window first.
+
+↩ switch to the tab (raises its window)
+⌘↩ copy URL
+
+Chrome asks for Automation access for Alfred the first time.</string>
 	<key>uidata</key>
 	<dict>
 		<key>37509D05-A37F-4470-AFC7-AF2B9592A7B8</key>
